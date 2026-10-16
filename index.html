@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>রিয়াদ কম্পিউটার সেন্টার</title>
+    <!-- CSS ফাইল লিংক -->
+    <link rel="stylesheet" href="style.css">
+    <!-- ফন্ট অসম আইকন -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="dark-theme"> <!-- ডিফল্ট ডার্ক থিম -->
+
+    <!-- হেডার সেকশন -->
+    <header class="main-header">
+        <!-- বাম পাশে ড্রপডাউন ও মোবাইল হ্যামবার্গার মেনু -->
+        <div class="left-menu-container">
+            <div class="dropdown">
+                <!-- ক্লিক করলে ড্রপডাউন ওপেন ও ফিক্সড থাকবে -->
+                <button class="dropdown-btn" onclick="toggleDropdown(event)">
+                    <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
+                </button>
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="#home"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                    <a href="#packages" onclick="closeDropdown()"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ</a>
+                    <a href="#olt" onclick="closeDropdown()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
+                    <a href="#mikrotik" onclick="closeDropdown()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
+                    <a href="#iptv" onclick="closeDropdown()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
+                    <a href="#speedtest" onclick="closeDropdown()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
+                    <a href="#realip" onclick="closeDropdown()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
+                    <a href="#notice" onclick="closeDropdown()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
+                    <a href="#contact" onclick="closeDropdown()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
+                    
+                    <!-- মোবাইল ও ছোট স্ক্রিনের জন্য মেনু বারের অপশনগুলো -->
+                    <div class="mobile-menu-divider"></div>
+                    <a href="#home" onclick="closeDropdown()"><i class="fa-solid fa-house"></i> হোম</a>
+                    <a href="#packages" onclick="closeDropdown()"><i class="fa-solid fa-bolt"></i> প্যাকেজসমূহ</a>
+                    <a href="#olt" onclick="closeDropdown()"><i class="fa-solid fa-network-wired"></i> ওএলটি ও নেটওয়ার্ক</a>
+                    <a href="#mikrotik" onclick="closeDropdown()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক</a>
+                    <a href="#iptv" onclick="closeDropdown()"><i class="fa-solid fa-tv"></i> আইপিটিভি</a>
+                    <a href="#support" onclick="closeDropdown()"><i class="fa-solid fa-headset"></i> সাপোর্ট</a>
+                    <a href="#contact" onclick="closeDropdown()"><i class="fa-solid fa-envelope"></i> যোগাযোগ</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- পেজের মাঝে উপরের দিকে সেন্টারে ওয়েবসাইটের নাম -->
+        <div class="center-title" id="home">
+            <h1>রিয়াদ কম্পিউটার সেন্টার</h1>
+            <p>রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ।</p>
+        </div>
+
+        <!-- ডান দিকের ইউটিলিটি: লাইভ ঘড়ি ও থিম চেঞ্জার -->
+        <div class="right-utility">
+            <div class="live-clock"><i class="fa-regular fa-clock"></i> <span id="clock">10:35 AM</span></div>
+            
+            <!-- থিম সিলেকশন ড্রপডাউন -->
+            <div class="theme-switcher">
+                <select id="themeSelect" onchange="changeTheme(this.value)">
+                    <option value="dark-theme">🌙 ডার্ক থিম</option>
+                    <option value="light-theme">☀️ লাইট থিম</option>
+                    <option value="blue-theme">🌊 রয়্যাল ব্লু</option>
+                    <option value="green-theme">🌿 এমারেল্ড গ্রিন</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- নিচের মূল মেনু বার (বড় স্ক্রিনে দেখাবে, মোবাইলে হাইড থাকবে) -->
+    <nav class="sub-navbar desktop-menu">
+        <ul>
+            <li><a href="#home" class="active"><i class="fa-solid fa-house"></i> হোম</a></li>
+            <li><a href="#packages"><i class="fa-solid fa-bolt"></i> প্যাকেজসমূহ</a></li>
+            <li><a href="#olt"><i class="fa-solid fa-network-wired"></i> ওএলটি ও নেটওয়ার্ক</a></li>
+            <li><a href="#mikrotik"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক</a></li>
+            <li><a href="#iptv"><i class="fa-solid fa-tv"></i> আইপিটিভি</a></li>
+            <li><a href="#support"><i class="fa-solid fa-headset"></i> সাপোর্ট</a></li>
+            <li><a href="#contact"><i class="fa-solid fa-envelope"></i> যোগাযোগ</a></li>
+        </ul>
+    </nav>
+
+    <!-- স্লাইডার সেকশন (বামে ৮৫% লেখা এবং ডানে ১৫% মানুষের ছবি) -->
+    <section class="slider-section">
+        <div class="slider-grid-wrapper">
+            
+            <!-- বাম দিক: ৮৫% জায়গা (লেখা ও টেক্সট স্লাইড) -->
+            <div class="left-text-slider">
+                <div class="slide fade active">
+                    <div class="slide-content">
+                        <h2>🚀 আনলিমিটেড হাই-স্পিড ব্রডব্যান্ড ইন্টারনেট</h2>
+                        <p>আপনার ঘরের ওয়াইফাই করুন আরও শক্তিশালী, ল্যাগ-ফ্রি ও নিরবচ্ছিন্ন। আজই কানেকশন নিন!</p>
+                        <a href="#packages" class="slide-btn">প্যাকেজ দেখুন</a>
+                    </div>
+                </div>
+                <div class="slide fade">
+                    <div class="slide-content">
+                        <h2>⚡ উন্নত প্রযুক্তির ওএলটি ও মাইক্রোটিক সার্ভার</h2>
+                        <p>আমরা প্রদান করি নিরবচ্ছিন্ন ব্যান্ডউইথ এবং সুপার ফাস্ট ব্রাউজিং অভিজ্ঞতা।</p>
+                        <a href="#olt" class="slide-btn">বিস্তারিত জানুন</a>
+                    </div>
+                </div>
+                <div class="slide fade">
+                    <div class="slide-content">
+                        <h2>📞 ২৪/৭ কাস্টমার সাপোর্ট ও হটলাইন</h2>
+                        <p>যেকোনো নেটওয়ার্ক সমস্যায় আমাদের টেকনিক্যাল টিম সবসময় আপনার পাশে প্রস্তুত।</p>
+                        <a href="#contact" class="slide-btn">যোগাযোগ করুন</a>
+                    </div>
+                </div>
+
+                <!-- স্লাইডার নেভিগেশন বাটন -->
+                <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                <a class="next" onclick="plusSlides(1)">&#10095;</a>
+            </div>
+
+            <!-- ডান দিক: ১৫% জায়গা (মানুষের ছবি স্লাইড) -->
+            <div class="right-person-slider">
+                <div class="person-slide fade-person active">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ১">
+                    <div class="person-caption">সাপোর্ট টিম</div>
+                </div>
+                <div class="person-slide fade-person">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ২">
+                    <div class="person-caption">টেকনিক্যাল এক্সপার্ট</div>
+                </div>
+                <div class="person-slide fade-person">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ৩">
+                    <div class="person-caption">কাস্টমার কেয়ার</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ডট ইন্ডিকেটর -->
+        <div class="dot-container">
+            <span class="dot" onclick="currentSlide(1)"></span> 
+            <span class="dot" onclick="currentSlide(2)"></span> 
+            <span class="dot" onclick="currentSlide(3)"></span> 
+        </div>
+    </section>
+
+    <!-- ১. ওএলটি ও নেটওয়ার্ক ওভারভিউ সেকশন -->
+    <main class="main-content" id="olt">
+        <div class="section-title">
+            <h2>আমাদের সার্ভিস সমূহঃ-</h2>
+            <p>কম্পিউটার ও মোবাইল সার্ভিস</p>
+        </div>
+
+        <div class="card-grid">
+            <div class="feature-card">
+                <div class="card-icon"><i class="fa-solid fa-server"></i></div>
+                <h3>মোবাইল ও কম্পিউটার  সার্ভিস</h3>
+                <p class="price" style="color: var(--accent-color);">সকাল 8 থেকে রাত 8টা</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> কম্পিউটার ইউনডোজ সেটআপ</li>
+                    <li><i class="fa-solid fa-check"></i> মোবাইল ফোন আনলক</li>
+                    <li><i class="fa-solid fa-check"></i> মোবাইল ফ্লাস ও গান ডাউনলোড</li>
+                </ul>
+                <a href="#" class="card-btn">স্ট্যাটাস চেক</a>
+            </div>
+
+            <div class="feature-card popular">
+                <div class="badge">লাইভ সার্ভার</div>
+                <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
+                <h3>মাইক্রোটিক রাউটার সার্ভিস</h3>
+                <p class="price" style="color: #34d399;">সক্রিয় ও সুরক্ষিত</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> রিয়েল-টাইপ ব্যান্ডউইথ ম্যানেজমেন্ট</li>
+                    <li><i class="fa-solid fa-check"></i> সিকিউর ফায়ারওয়াল ও কিউ ম্যানেজমেন্ট</li>
+                    <li><i class="fa-solid fa-check"></i> হাই স্পিড রাউটিং কোর</li>
+                </ul>
+                <a href="#" class="card-btn">কন্ট্রোল প্যানেল</a>
+            </div>
+
+            <div class="feature-card">
+                <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                <h3>নিরাপদ বিডিআই হাব</h3>
+                <p class="price" style="color: var(--accent-color);">1 Gbps লোকাল স্পিড</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> সুপার ফাস্ট লোকাল মুভি ও সার্ভার</li>
+                    <li><i class="fa-solid fa-check"></i> আইপিটিভি স্ট্রিমিং ফ্রেন্ডলি</li>
+                    <li><i class="fa-solid fa-check"></i> ল্যাগ-ফ্রি গেমিং সার্ভার</li>
+                </ul>
+                <a href="#" class="card-btn">আইপিটিভি লিস্ট</a>
+            </div>
+        </div>
+    </main>
+
+
+    <!-- ২. ইন্টারনেট প্যাকেজ সেকশন (এখানে ক্লিক করলে সরাসরি চলে আসবে) -->
+    <section class="main-content" id="packages">
+        <div class="section-title">
+            <h2>জনপ্রিয় ইন্টারনেট প্যাকেজসমূহ</h2>
+            <p>আপনার বাজেট ও গতির চাহিদা অনুযায়ী সেরা অফার বেছে নিন</p>
+        </div>
+        <div class="card-grid">
+            <div class="feature-card">
+                <div class="card-icon"><i class="fa-solid fa-gauge-high"></i></div>
+                <h3>30 Mbps Speed</h3>
+                <p class="price">500 টাকা / মাস</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> ইউটিউব ও ফেসবুক 100 Mbps</li>
+                    <li><i class="fa-solid fa-check"></i> আনলিমিটেড ব্রাউজিং</li>
+                    <li><i class="fa-solid fa-check"></i> ইউটিউব এইচডি স্ট্রিমিং</li>
+
+                </ul>
+                <a href="#contact" class="card-btn">সংযুক্ত হন</a>
+            </div>
+
+            <div class="feature-card popular">
+                <div class="badge">সেরা অফার</div>
+                <div class="card-icon"><i class="fa-solid fa-rocket"></i></div>
+                <h3>50 Mbps Speed</h3>
+                <p class="price">700 টাকা / মাস</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> ইউটিউব ও ফেসবুক 100 Mbps</li>
+                    <li><i class="fa-solid fa-check"></i> সুপার ফাস্ট ব্রাউজিং</li>
+                    <li><i class="fa-solid fa-check"></i> ৪কে ভিডিও স্ট্রিমিং</li>
+                    <li><i class="fa-solid fa-check"></i> অনলাইন গেমিং ফ্রেন্ডলি</li>
+                </ul>
+                <a href="#contact" class="card-btn">সংযুক্ত হন</a>
+            </div>
+            <div class="feature-card">
+                <div class="card-icon"><i class="fa-solid fa-crown"></i></div>
+                <h3>100 Mbps Speed</h3>
+                <p class="price">1000 টাকা / মাস</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> ইউটিউব ও ফেসবুক 100 Mbps</li>
+                    <li><i class="fa-solid fa-check"></i> ডেডিকেটেড ব্যান্ডউইথ</li>
+                    <li><i class="fa-solid fa-check"></i> মাল্টি-ডিভাইস সাপোর্ট</li>
+                    <li><i class="fa-solid fa-check"></i> ২৪ ঘন্টা সাপোর্ট</li>
+                </ul>
+                <a href="#contact" class="card-btn">সংযুক্ত হন</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ৩. যোগাযোগ ও সাপোর্ট সেকশন -->
+    <section class="main-content" id="contact">
+        <div class="section-title">
+            <h2>যোগাযোগ ও হেল্পলাইন</h2>
+            <p>যেকোনো সহায়তায় আমাদের সাথে যোগাযোগ করুন</p>
+        </div>
+        <div class="card-grid">
+            <div class="feature-card" style="text-align: center;">
+                <div class="card-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                <h3>হটলাইন নম্বর</h3>
+                <p class="price" style="color: var(--accent-color);">01718167671</p>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">সকাল ৮:০০ থেকে রাত ১১:০০ টা পর্যন্ত খোলা।</p>
+                <a href="tel:+8801718167671" class="card-btn">কল করুন</a>
+            </div>
+            <div class="feature-card" style="text-align: center;" id="support">
+                <div class="card-icon"><i class="fa-solid fa-headset"></i></div>
+                <h3>টেকনিক্যাল সাপোর্ট</h3>
+                <p class="price" style="color: #34d399;">২৪/৭ সক্রিয়</p>
+                <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 15px;">নেটওয়ার্ক বা রাউটার সমস্যায় তাৎক্ষণিক সাহায্য।</p>
+                <a href="https://wa.me/8801718167671" class="card-btn" target="_blank">মেসেজ পাঠান</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ফুটার সেকশন -->
+    <footer>
+        <p>&copy; ২০২৬ স্পিডনেট লিঙ্ক। সর্বস্বত্ব সংরক্ষিত। পিসি এবং মোবাইল ফ্রেন্ডলি ডিজাইন।</p>
+    </footer>
+
+    <!-- হোয়াটসঅ্যাপ ফ্লোটিং চ্যাট বাটন (ডান কোণায়) -->
+    <a href="https://wa.me/8801718167671?text=হ্যালো,%20আমি%20ইন্টারনেট%20কানেকশন%20সম্পর্কে জানতে চাই।" class="whatsapp-float" target="_blank" title="হোয়াটসঅ্যাপে যোগাযোগ করুন">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- জাভাস্ক্রিপ্ট স্ক্রিপ্ট -->
+    <script>
+        // ক্লিক করলে ড্রপডাউন ট্যুগল করার ফাংশন
+        function toggleDropdown(event) {
+            event.stopPropagation();
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        // লিঙ্কে ক্লিক করলে ড্রপডাউন বন্ধ হয়ে যাওয়া
+        function closeDropdown() {
+            document.getElementById("myDropdown").classList.remove("show");
+        }
+
+        // পেজের বাইরে কোথাও ক্লিক করলে ড্রপডাউন বন্ধ হয়ে যাবে
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-btn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        // স্লাইডার স্ক্রিপ্ট
+        let slideIndex = 1;
+        showSlides(slideIndex);
+
+        function plusSlides(n) {
+            showSlides(slideIndex += n);
+        }
+
+        function currentSlide(n) {
+            showSlides(slideIndex = n);
+        }
+
+        function showSlides(n) {
+            let i;
+            let slides = document.getElementsByClassName("slide");
+            let personSlides = document.getElementsByClassName("person-slide");
+            let dots = document.getElementsByClassName("dot");
+            
+            if (n > slides.length) {slideIndex = 1}
+            if (n < 1) {slideIndex = slides.length}
+            
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            for (i = 0; i < personSlides.length; i++) {
+                personSlides[i].style.display = "none";  
+            }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active-dot", "");
+            }
+            
+            slides[slideIndex-1].style.display = "block";  
+            personSlides[slideIndex-1].style.display = "block";  
+            dots[slideIndex-1].className += " active-dot";
+        }
+
+        // অটো স্লাইড (প্রতি ৫ সেকেন্ড পর পর)
+        setInterval(function() {
+            plusSlides(1);
+        }, 5000);
+
+        // লাইভ ঘড়ি
+        function updateClock() {
+            const now = new Date();
+            let hours = now.getHours();
+            let minutes = now.getMinutes();
+            let ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; 
+            minutes = minutes < 10 ? '0'+minutes : minutes;
+            document.getElementById('clock').innerText = hours + ':' + minutes + ' ' + ampm;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // থিম চেঞ্জ ফাংশন ও মেমোরি সেভ
+        function changeTheme(themeName) {
+            document.body.className = themeName;
+            localStorage.setItem('selectedTheme', themeName);
+        }
+
+        // পেজ লোড হলে আগের সেভ করা থিম সেট করা
+        window.onload = function() {
+            const savedTheme = localStorage.getItem('selectedTheme');
+            if (savedTheme) {
+                document.body.className = savedTheme;
+                document.getElementById('themeSelect').value = savedTheme;
+            }
+        };
+    </script>
+</body>
+</html>
