@@ -5,81 +5,142 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ইলেকট্রনিক্স ও সার্ভিসিং পয়েন্ট</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f5; margin: 0; padding: 10px; }
-        .container { max-width: 950px; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2, h3 { text-align: center; color: #2c3e50; margin: 3px 0 10px 0; }
-        .form-group { margin-bottom: 8px; }
-        label { display: block; margin-bottom: 2px; font-weight: bold; color: #34495e; font-size: 13px; }
-        input, select { width: 100%; padding: 6px 8px; box-sizing: border-box; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 13px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f5; margin: 0; padding: 6px; }
+        .container { max-width: 950px; margin: auto; background: white; padding: 10px; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        h2, h3 { text-align: center; color: #2c3e50; margin: 2px 0 8px 0; }
+        .form-group { margin-bottom: 6px; }
+        label { display: block; margin-bottom: 2px; font-weight: bold; color: #34495e; font-size: 12px; }
+        input, select { width: 100%; padding: 5px 7px; box-sizing: border-box; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 12px; }
         
         .table-responsive {
             width: 100%;
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
-            margin-top: 8px;
+            margin-top: 6px;
             border: 1px solid #ddd;
             border-radius: 4px;
         }
 
-        table { width: 100%; border-collapse: collapse; min-width: 550px; font-size: 13px; }
-        th, td { border: 1px solid #444; padding: 6px 8px; text-align: center; white-space: nowrap; }
+        table { width: 100%; border-collapse: collapse; min-width: 500px; font-size: 12px; }
+        th, td { border: 1px solid #444; padding: 5px 6px; text-align: center; }
         th { background-color: #f2f2f2; color: #000; font-weight: bold; }
         
         .text-left { text-align: left !important; }
         
-        button { background: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 13px; font-weight: bold; }
+        button { background: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 12px; font-weight: bold; }
         button:hover { opacity: 0.9; }
-        .btn-danger { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; }
-        .btn-warning { background: #ffc107; color: #000; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: bold; }
-        .btn-info { background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn-danger { background: #dc3545; color: white; border: none; padding: 3px 6px; border-radius: 3px; cursor: pointer; font-size: 11px; }
+        .btn-warning { background: #ffc107; color: #000; border: none; padding: 3px 6px; border-radius: 3px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .btn-info { background: #17a2b8; color: white; border: none; padding: 3px 6px; border-radius: 3px; cursor: pointer; font-size: 11px; }
         .btn-secondary { background: #6c757d; }
         
-        .total-section { text-align: right; font-size: 16px; font-weight: bold; margin-top: 10px; color: #2c3e50; }
-        .actions { margin-top: 12px; display: flex; justify-content: space-between; gap: 10px; }
+        .total-section { text-align: right; font-size: 13px; font-weight: bold; margin-top: 6px; color: #2c3e50; }
+        .grand-total-line { border-top: 1px solid #000; padding-top: 3px; display: inline-block; }
+        .discount-box { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 6px; font-size: 12px; font-weight: bold; }
+        .discount-box input { width: 110px; display: inline-block; text-align: right; }
+
+        .actions { margin-top: 10px; display: flex; justify-content: space-between; gap: 8px; }
         .hidden { display: none !important; }
         
-        /* রেসপন্সিভ নেভিগেশন বার (সেলস মেমো ও হিসাব সার্চ সেন্টারে থাকবে) */
-        .nav-bar { display: flex; justify-content: center; align-items: center; background: #2c3e50; color: white; padding: 8px 12px; border-radius: 5px; margin-bottom: 12px; font-size: 13px; position: relative; gap: 20px; }
-        .nav-center { display: flex; align-items: center; gap: 15px; }
+        /* লগইন পেজ */
+        #loginSection {
+            max-width: 350px;
+            margin: 20px auto 0 auto;
+            background: #fff;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        /* নেভিগেশন বার */
+        .nav-bar { display: flex; justify-content: center; align-items: center; background: #2c3e50; color: white; padding: 6px 10px; border-radius: 5px; margin-bottom: 10px; font-size: 12px; position: relative; gap: 15px; }
+        .nav-center { display: flex; align-items: center; gap: 12px; }
         .nav-bar span { cursor: pointer; color: #f1c40f; font-weight: bold; }
         
-        /* ডান কোণায় হ্যামবার্গার মেনু */
-        .nav-right-toggle { position: absolute; right: 12px; display: flex; align-items: center; }
-        .menu-toggle { background: #34495e; color: white; border: 1px solid #f1c40f; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        .nav-right-toggle { position: absolute; right: 10px; display: flex; align-items: center; }
+        .menu-toggle { background: #34495e; color: white; border: 1px solid #f1c40f; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 13px; }
 
-        /* ড্রপডাউন মেনু */
-        .dropdown-menu { display: none; position: absolute; right: 10px; top: 45px; background: #2c3e50; border: 1px solid #455a64; border-radius: 5px; padding: 10px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); min-width: 180px; text-align: left; }
-        .dropdown-menu div { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; }
+        .dropdown-menu { display: none; position: absolute; right: 10px; top: 35px; background: #2c3e50; border: 1px solid #455a64; border-radius: 5px; padding: 8px; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.3); min-width: 160px; text-align: left; }
+        .dropdown-menu div { padding: 5px 0; border-bottom: 1px solid rgba(255,255,255,0.1); cursor: pointer; font-size: 12px; }
         .dropdown-menu div:last-child { border-bottom: none; }
 
-        .box-section { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #e9ecef; margin-bottom: 10px; }
+        .box-section { background: #f8f9fa; padding: 8px; border-radius: 6px; border: 1px solid #e9ecef; margin-bottom: 8px; }
         
-        .memo-header { text-align: center; margin-bottom: 8px; border-bottom: 2px dashed #000; padding-bottom: 4px; }
-        .memo-header h2 { margin: 0; font-size: 22px; color: #000; font-weight: bold; }
-        .memo-header p { margin: 2px 0; font-size: 13px; color: #000; }
+        .memo-header { text-align: center; margin-bottom: 6px; border-bottom: 2px dashed #000; padding-bottom: 4px; }
+        .memo-header h2 { margin: 0; font-size: 20px; color: #000; font-weight: bold; }
+        .memo-header p { margin: 1px 0; font-size: 11px; color: #000; }
 
-        .signature-section { display: flex; justify-content: space-between; margin-top: 40px; font-size: 13px; font-weight: bold; color: #000; }
-        .signature-box { border-top: 1px dashed #000; padding-top: 3px; text-align: center; width: 140px; }
+        .signature-section { display: flex; justify-content: space-between; margin-top: 40px; font-size: 12px; font-weight: bold; color: #000; }
+        .signature-box { border-top: 1px dashed #000; padding-top: 4px; text-align: center; width: 120px; }
 
-        /* প্রিভিউ মডাল (বড় স্ক্রিনে ফুল সাইজ এবং ছোট স্ক্রিনে স্ক্রোলযোগ্য) */
-        #previewModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 10px; box-sizing: border-box; }
-        .preview-content { background: white; padding: 20px; width: 650px; max-width: 100%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; box-sizing: border-box; }
+        /* প্রিভিউ পপআপ (বড় স্ক্রিনে প্রশস্ত এবং স্ক্রল ছাড়া ফিট হওয়ার জন্য) */
+        #previewModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 8px; box-sizing: border-box; }
+        .preview-content { background: white; padding: 14px; width: 580px; max-width: 100%; max-height: 96vh; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; box-sizing: border-box; }
+        #previewBody { padding: 4px; margin-top: 4px; background: #fff; border: 1px dashed #bbb; border-radius: 4px; overflow-y: auto; width: 100%; box-sizing: border-box; }
 
-        .badge-low { background: #dc3545; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
-        .badge-ok { background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+        .badge-low { background: #dc3545; color: white; padding: 1px 4px; border-radius: 3px; font-size: 10px; }
+        .badge-ok { background: #28a745; color: white; padding: 1px 4px; border-radius: 3px; font-size: 10px; }
 
+        /* বড় স্ক্রিনের জন্য ইনপুট ফর্ম গ্রিড */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            align-items: flex-end;
+        }
+        .grid-cust-name { grid-column: span 3; }
+        .grid-cust-phone { grid-column: span 3; }
+        .grid-category { grid-column: span 2; }
+        .grid-product { grid-column: span 3; }
+        .grid-price { grid-column: span 1; }
+        .grid-qty { grid-column: span 1; }
+        .grid-disc { grid-column: span 1; }
+        .grid-btn { grid-column: span 2; display: flex; gap: 4px; }
+
+        /* ছোট স্ক্রিন বা মোবাইলের জন্য রেসপন্সিভ ডিজাইন */
+        @media (max-width: 768px) {
+            body { padding: 4px; }
+            .container { padding: 6px; }
+            .form-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            .grid-cust-name { grid-column: span 2; }
+            .grid-cust-phone { grid-column: span 1; }
+            .grid-category { grid-column: span 1; }
+            .grid-product { grid-column: span 2; }
+            .grid-price { grid-column: span 1; }
+            .grid-qty { grid-column: span 1; }
+            .grid-disc { grid-column: span 1; }
+            .grid-btn { grid-column: span 3; display: flex; gap: 4px; }
+            
+            /* ছোট স্ক্রিনে প্রিভিউ টেবিল কম্প্যাক্ট ও ফিট রাখা */
+            .preview-content { width: 100% !important; padding: 8px; max-height: 98vh; }
+            #previewBody table { font-size: 11px !important; min-width: 100% !important; }
+            #previewBody th, #previewBody td { padding: 3px !important; }
+            .memo-header h2 { font-size: 16px; }
+            .memo-header p { font-size: 10px; }
+            .signature-section { margin-top: 25px; font-size: 10px; }
+            .signature-box { width: 90px; }
+        }
+
+        /* প্রিন্ট পেজ স্টাইল */
         @media print {
             .nav-bar, .actions, .add-box, .no-print, #loginSection, #passSection, #adminSection, #searchSection, #previewModal { display: none !important; }
             body { background: white; padding: 0; margin: 0; }
             .container { box-shadow: none; padding: 0; border: none; margin: 0 auto; width: 100%; max-width: 100%; }
-            #posSection { margin: 0 auto; width: 80%; padding: 10px; border: none !important; box-shadow: none !important; display: block !important; }
+            #posSection { margin: 0 auto; width: 50%; padding: 0; border: none !important; box-shadow: none !important; display: block !important; }
             .action-col { display: none !important; }
             .table-responsive { border: none !important; overflow: visible !important; }
-            table { font-size: 16px; min-width: 100% !important; }
-            th, td { padding: 8px; border: 1px solid #000; white-space: normal !important; }
-            .memo-header h2 { font-size: 26px; }
-            .memo-header p { font-size: 15px; }
-            .total-section { font-size: 18px; }
+            table { font-size: 11px; min-width: 100% !important; }
+            th, td { padding: 4px 5px; border: 1px solid #000; white-space: normal !important; }
+            .memo-header h2 { font-size: 16px; }
+            .memo-header p { font-size: 10px; }
+            .total-section { font-size: 12px; }
+            .grand-total-line { border-top: 1.5px solid #000 !important; padding-top: 2px; }
+            .signature-section { margin-top: 50px; font-size: 11px; }
+            .signature-box { width: 100px; }
         }
     </style>
 </head>
@@ -88,7 +149,7 @@
 <div class="container">
     <!-- লগইন সেকশন -->
     <div id="loginSection">
-        <h2>🔐 শপ ম্যানেজমেন্ট লগইন</h2>
+        <h2>🔐 শপ লগইন</h2>
         <div class="form-group">
             <label>ইউজারনেম:</label>
             <input type="text" id="loginUser" placeholder="ইউজারনেম দিন">
@@ -97,30 +158,26 @@
             <label>পাসওয়ার্ড:</label>
             <input type="password" id="loginPass" placeholder="পাসওয়ার্ড দিন">
         </div>
-        <button onclick="login()" style="width: 100%;">লগইন করুন</button>
+        <button onclick="login()" style="width: 100%; margin-top: 4px;">লগইন করুন</button>
     </div>
 
     <!-- মূল অ্যাপ্লিকেশন ড্যাশবোর্ড -->
     <div id="appSection" class="hidden">
         <div class="nav-bar no-print">
-            <!-- মাঝখানে সেন্টারড সেলস মেমো ও হিসাব সার্চ -->
             <div class="nav-center">
                 <span onclick="showSection('posSection')">🛒 সেলস মেমো</span>
                 <span>|</span>
                 <span onclick="showSection('searchSection')">🔍 হিসাব সার্চ</span>
             </div>
 
-            <!-- ডান কোণায় হ্যামবার্গার মেনু -->
             <div class="nav-right-toggle">
                 <button class="menu-toggle" onclick="toggleHamburgerMenu()">☰</button>
             </div>
 
-            <!-- ড্রপডাউন মেনু (ইউজার, পাসওয়ার্ড, অ্যাডমিন ও লগআউট) -->
             <div id="hamburgerDropdown" class="dropdown-menu">
-                <div id="adminMenuTabMobile" class="hidden" onclick="showSection('adminSection'); toggleHamburgerMenu();">⚙️ অ্যাডমিন & স্টক</div>
-                <div style="font-size: 12px; color: #f1c40f; border-bottom: 1px solid #555; padding-bottom: 4px; font-weight: bold;">👤 <span id="currentUserDisplay"></span> (<span id="currentRoleDisplay"></span>)</div>
-                
+                <div style="font-size: 11px; color: #f1c40f; border-bottom: 1px solid #555; padding-bottom: 3px; font-weight: bold;">👤 <span id="currentUserDisplay"></span> (<span id="currentRoleDisplay"></span>)</div>
                 <div onclick="showSection('passSection'); toggleHamburgerMenu();">🔑 পাসওয়ার্ড পরিবর্তন</div>
+                <div id="adminMenuTabMobile" class="hidden" onclick="showSection('adminSection'); toggleHamburgerMenu();">⚙️ অ্যাডমিন & স্টক</div>
                 <div onclick="logout()" style="color: #ff6b6b;">🚪 লগআউট</div>
             </div>
         </div>
@@ -128,48 +185,52 @@
         <!-- POS মেমো সেকশন -->
         <div id="posSection">
             <div class="memo-header">
-                <h2>⚡ ইলেকট্রনিক্স & সার্ভিসিং ⚡</h2>
+                <h2>⚡ইলেকট্রনিক্স & সার্ভিসিং⚡</h2>
                 <p>সকল প্রকার ইলেকট্রনিক্স মালামাল বিক্রয় ও সার্ভিসিং করা হয়</p>
                 <p style="font-size: 13px;">রহনপুর বড় বাজার, মোবাইল: ০১৭১৮১৬৭৬৭১</p>
             </div>
 
-            <div style="display: flex; gap: 10px;">
-                <div class="form-group" style="flex: 1;">
+            <div class="form-grid" style="margin-bottom: 6px;">
+                <div class="form-group grid-cust-name">
                     <label>গ্রাহকের নাম:</label>
                     <input type="text" id="custName" placeholder="গ্রাহকের নাম">
                 </div>
-                <div class="form-group" style="flex: 1;">
+                <div class="form-group grid-cust-phone">
                     <label>মোবাইল নম্বর:</label>
-                    <input type="text" id="custPhone" placeholder="মোবাইল নম্বর">
+                    <input type="tel" id="custPhone" placeholder="মোবাইল নম্বর">
                 </div>
             </div>
 
             <div class="box-section add-box no-print">
-                <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
-                    <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                <div class="form-grid">
+                    <div class="form-group grid-category">
                         <label>ক্যাটাগরি:</label>
                         <select id="categorySelect" onchange="filterProductsByCategory()">
-                            <option value="">-- ক্যাটাগরি বাছুন --</option>
+                            <option value="">-- ক্যাটাগরি --</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 2; min-width: 180px; margin-bottom: 0;">
+                    <div class="form-group grid-product">
                         <label>পণ্য / পার্টস:</label>
                         <select id="productSelect" onchange="handleProductSelect()">
-                            <option value="">-- আগে ক্যাটাগরি বাছুন --</option>
+                            <option value="">-- আগে ক্যাটাগরি --</option>
                         </select>
-                        <input type="text" id="customProdName" placeholder="পণ্যের নাম লিখুন..." class="hidden" style="margin-top: 5px;">
+                        <input type="text" id="customProdName" placeholder="পণ্যের নাম লিখুন..." class="hidden" style="margin-top: 3px;">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 90px; margin-bottom: 0;">
+                    <div class="form-group grid-price">
                         <label>দর (৳):</label>
                         <input type="number" id="prodPrice" placeholder="দাম">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 70px; margin-bottom: 0;">
+                    <div class="form-group grid-qty">
                         <label>পরিমাণ:</label>
                         <input type="number" id="prodQty" value="1" min="1">
                     </div>
-                    <div>
-                        <button type="button" id="addBtn" onclick="addItem()" style="height: 31px; padding: 2px 10px;">+ যোগ</button>
-                        <button type="button" id="cancelEditBtn" onclick="resetForm()" class="btn-secondary hidden" style="height: 31px; padding: 2px 8px;">বাতিল</button>
+                    <div class="form-group grid-disc">
+                        <label>ছাড় (টাকা):</label>
+                        <input type="number" id="prodDiscount" value="0" min="0" placeholder="টাকা">
+                    </div>
+                    <div class="form-group grid-btn" style="display: flex; gap: 4px; align-items: flex-end;">
+                        <button type="button" id="addBtn" onclick="addItem()" style="height: 28px; padding: 2px 8px; flex: 1;">+ যোগ</button>
+                        <button type="button" id="cancelEditBtn" onclick="resetForm()" class="btn-secondary hidden" style="height: 28px; padding: 2px 6px;">বাতিল</button>
                     </div>
                 </div>
             </div>
@@ -178,21 +239,38 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 8%;">ক্র:</th>
-                            <th class="text-left" style="width: 40%;">পণ্যের বিবরণ</th>
-                            <th style="width: 15%;">দর</th>
+                            <th style="width: 5%;">ক্র:</th>
+                            <th class="text-left" style="width: 38%;">পণ্যের বিবরণ</th>
+                            <th style="width: 12%;">দর</th>
                             <th style="width: 10%;">পরিমাণ</th>
-                            <th style="width: 15%;">মোট (৳)</th>
-                            <th class="action-col no-print" style="width: 12%;">অ্যাকশন</th>
+                            <th style="width: 9%;">ছাড়</th>
+                            <th style="width: 13%;">মোট (৳)</th>
+                            <th class="action-col no-print" style="width: 13%;">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="cartTable">
-                        <tr><td colspan="6" style="color: #888; padding: 6px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>
+                        <tr><td colspan="7" style="color: #888; padding: 5px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>
                     </tbody>
                 </table>
             </div>
 
-            <div class="total-section">সর্বমোট: <span id="grandTotal">0.00</span> ৳</div>
+            <!-- সাব-টোটাল -->
+            <div class="total-section">সাব-টোটাল: <span id="subTotal">0.00</span> ৳</div>
+            
+            <!-- প্রিন্ট ও মেমোতে বিশেষ ছাড় -->
+            <div id="printOverallDiscountSection" class="total-section" style="display: none; color: #c0392b;">
+                বিশেষ মেমো ছাড়: - <span id="printOverallDiscountVal">0.00</span> ৳
+            </div>
+
+            <div class="discount-box no-print">
+                <label for="overallDiscount">পুরো মেমোতে বিশেষ ছাড় (টাকা):</label>
+                <input type="number" id="overallDiscount" value="0" min="0" oninput="updateCart()" placeholder="টাকা">
+            </div>
+            
+            <!-- ফাইনাল সর্বমোট -->
+            <div class="total-section" style="color: #000; font-size: 15px;">
+                <span class="grand-total-line">ফাইনাল সর্বমোট: <span id="grandTotal">0.00</span> ৳</span>
+            </div>
 
             <div class="signature-section">
                 <div class="signature-box">গ্রাহকের স্বাক্ষর</div>
@@ -200,19 +278,19 @@
             </div>
 
             <div class="actions no-print">
-                <button type="button" onclick="openPreview()" class="btn-info" style="font-size: 14px; padding: 8px 15px;">👁️ প্রিভিউ</button>
-                <button type="button" onclick="saveAndPrintSheet()" style="background: #007bff; font-size: 15px; padding: 8px 18px;">🖨️ প্রিন্ট ও সেভ করুন</button>
+                <button type="button" onclick="openPreview()" class="btn-info" style="font-size: 12px; padding: 6px 12px;">👁️ প্রিভিউ</button>
+                <button type="button" onclick="saveAndPrintSheet()" style="background: #007bff; font-size: 12px; padding: 6px 15px;">🖨️ প্রিন্ট ও সেভ করুন</button>
             </div>
         </div>
 
         <!-- প্রিভিউ পপআপ -->
         <div id="previewModal" class="hidden">
             <div class="preview-content">
-                <h3 style="margin-top: 0; color: #2c3e50; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 8px;">📋 ক্যাশ মেমো প্রিভিউ</h3>
-                <div id="previewBody" style="padding: 10px; margin-top: 10px; background: #fff; border: 1px dashed #bbb; border-radius: 4px;"></div>
-                <div style="text-align: right; margin-top: 15px; border-top: 1px solid #ddd; padding-top: 10px;">
-                    <button type="button" onclick="closePreview()" class="btn-secondary">বন্ধ করুন</button>
-                    <button type="button" onclick="closePreview(); saveAndPrintSheet();" style="background: #007bff;">প্রিন্ট ও সেভ করুন</button>
+                <h3 style="margin-top: 0; color: #2c3e50; text-align: center; border-bottom: 1px solid #ddd; padding-bottom: 6px; font-size: 14px;">📋 ক্যাশ মেমো প্রিভিউ</h3>
+                <div id="previewBody"></div>
+                <div style="text-align: right; margin-top: 8px; border-top: 1px solid #ddd; padding-top: 6px; display: flex; justify-content: space-between;">
+                    <button type="button" onclick="closePreview()" class="btn-secondary" style="padding: 4px 10px; font-size: 11px;">বন্ধ করুন</button>
+                    <button type="button" onclick="closePreview(); saveAndPrintSheet();" style="background: #007bff; padding: 4px 10px; font-size: 11px;">প্রিন্ট ও সেভ করুন</button>
                 </div>
             </div>
         </div>
@@ -221,41 +299,41 @@
         <div id="searchSection" class="hidden">
             <h3>🔍 মেমো ও বিক্রয় হিসাব সার্চ</h3>
             <div class="box-section">
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 130px;">
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 110px;">
                         <label>তারিখ (YYYY-MM-DD):</label>
                         <input type="date" id="searchDate">
                     </div>
-                    <div style="flex: 1; min-width: 130px;">
+                    <div style="flex: 1; min-width: 110px;">
                         <label>মাস (YYYY-MM):</label>
                         <input type="month" id="searchMonth">
                     </div>
-                    <div style="flex: 1; min-width: 130px;">
+                    <div style="flex: 1; min-width: 90px;">
                         <label>বছর (YYYY):</label>
                         <input type="text" id="searchYear" placeholder="2026">
                     </div>
                 </div>
-                <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 130px;">
+                <div style="display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 110px;">
                         <label>গ্রাহকের নাম:</label>
                         <input type="text" id="searchName" placeholder="নাম">
                     </div>
-                    <div style="flex: 1; min-width: 130px;">
+                    <div style="flex: 1; min-width: 110px;">
                         <label>মোবাইল নম্বর:</label>
                         <input type="text" id="searchPhone" placeholder="ফোন">
                     </div>
-                    <div style="flex: 1; min-width: 130px;">
+                    <div style="flex: 1; min-width: 110px;">
                         <label>ইউজার / ক্যাশিয়ার:</label>
                         <input type="text" id="searchUser" placeholder="ইউজারনেম">
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <div style="display: flex; gap: 8px; margin-top: 8px;">
                     <button onclick="searchSales()" style="flex: 2;">সার্চ করুন</button>
                     <button onclick="resetSearchForm()" class="btn-secondary" style="flex: 1;">🔄 রিসেট</button>
                 </div>
             </div>
 
-            <div id="searchSummary" style="font-weight: bold; font-size: 14px; margin: 8px 0; color: #2c3e50;"></div>
+            <div id="searchSummary" style="font-weight: bold; font-size: 12px; margin: 6px 0; color: #2c3e50;"></div>
 
             <div class="table-responsive">
                 <table>
@@ -267,12 +345,13 @@
                             <th class="text-left">পণ্য</th>
                             <th>দর</th>
                             <th>পরিমাণ</th>
+                            <th>ছাড় (৳)</th>
                             <th>মোট (৳)</th>
                             <th class="no-print">অ্যাকশন</th>
                         </tr>
                     </thead>
                     <tbody id="searchTableResult">
-                        <tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>
+                        <tr><td colspan="9" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -297,22 +376,22 @@
             <h3>⚙️ অ্যাডমিন প্যানেল & স্টক ম্যানেজমেন্ট</h3>
             
             <div class="box-section">
-                <h4 style="margin-top:0; color: #007bff;">➕ নতুন প্রডাক্ট ও প্রাথমিক স্টক যোগ</h4>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div class="form-group" style="flex: 1; min-width: 140px;">
-                        <label>ক্যাটাগরির নাম:</label>
-                        <input type="text" id="newProdCategory" placeholder="যেমন: লাইট, ফ্যান, ক্যাবল">
+                <h4 style="margin-top:0; color: #007bff; font-size: 12px;">➕ নতুন প্রডাক্ট ও প্রাথমিক স্টক যোগ</h4>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 110px;">
+                        <label>ক্যাটাগরি:</label>
+                        <input type="text" id="newProdCategory" placeholder="যেমন: লাইট">
                     </div>
-                    <div class="form-group" style="flex: 2; min-width: 180px;">
+                    <div class="form-group" style="flex: 2; min-width: 130px;">
                         <label>প্রোডাক্টের নাম:</label>
                         <input type="text" id="newProdName" placeholder="প্রোডাক্ট নাম">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                    <div class="form-group" style="flex: 1; min-width: 75px;">
                         <label>দাম (৳):</label>
                         <input type="number" id="newProdPrice" placeholder="দাম">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 100px;">
-                        <label>প্রাথমিক স্টক:</label>
+                    <div class="form-group" style="flex: 1; min-width: 75px;">
+                        <label>স্টক:</label>
                         <input type="number" id="newProdStock" value="0">
                     </div>
                 </div>
@@ -320,43 +399,43 @@
             </div>
 
             <div class="box-section">
-                <h4 style="margin-top:0; color: #17a2b8;">📦 ক্যাটাগরিভিত্তিক স্টক যোগ (Stock In) বা কমান (Stock Out)</h4>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div class="form-group" style="flex: 1; min-width: 140px;">
-                        <label>ক্যাটাগরি সিলেক্ট করুন:</label>
+                <h4 style="margin-top:0; color: #17a2b8; font-size: 12px;">📦 ক্যাটাগরিভিত্তিক স্টক ম্যানেজমেন্ট (In / Out)</h4>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 110px;">
+                        <label>ক্যাটাগরি:</label>
                         <select id="admCatSelect" onchange="filterAdmStockProducts()">
-                            <option value="">-- ক্যাটাগরি বাছুন --</option>
+                            <option value="">-- বাছুন --</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 2; min-width: 180px;">
-                        <label>প্রোডাক্ট সিলেক্ট করুন:</label>
+                    <div class="form-group" style="flex: 2; min-width: 130px;">
+                        <label>প্রোডাক্ট:</label>
                         <select id="admProdSelect">
-                            <option value="">-- আগে ক্যাটাগরি বাছুন --</option>
+                            <option value="">-- ক্যাটাগরি --</option>
                         </select>
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 100px;">
-                        <label>পরিমাণ (পিস):</label>
+                    <div class="form-group" style="flex: 1; min-width: 75px;">
+                        <label>পরিমাণ:</label>
                         <input type="number" id="admStockQty" placeholder="পরিমাণ" min="1">
                     </div>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 5px;">
-                    <button onclick="updateStockWeb('ADD')" style="background: #28a745; flex: 1;">➕ স্টক বাড়ান (Stock In)</button>
-                    <button onclick="updateStockWeb('REDUCE')" style="background: #dc3545; flex: 1;">➖ স্টক কমান (Stock Out)</button>
+                <div style="display: flex; gap: 8px; margin-top: 6px;">
+                    <button onclick="updateStockWeb('ADD')" style="background: #28a745; flex: 1;">➕ স্টক বাড়ান (In)</button>
+                    <button onclick="updateStockWeb('REDUCE')" style="background: #dc3545; flex: 1;">➖ স্টক কমান (Out)</button>
                 </div>
             </div>
 
             <div class="box-section">
-                <h4 style="margin-top:0; color: #2c3e50;">📊 ক্যাটাগরি অনুযায়ী বর্তমান স্টক রিপোর্ট ও চেক</h4>
-                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap;">
-                    <div style="flex: 1; min-width: 140px;">
-                        <label>ক্যাটাগরি ফিল্টার:</label>
+                <h4 style="margin-top:0; color: #2c3e50; font-size: 12px;">📊 বর্তমান স্টক রিপোর্ট চেক</h4>
+                <div style="display: flex; gap: 6px; align-items: center; margin-bottom: 6px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 110px;">
+                        <label>ফিল্টার:</label>
                         <select id="reportCatFilter" onchange="renderStockReportTable()">
-                            <option value="ALL">-- সব ক্যাটাগরি দেখান --</option>
+                            <option value="ALL">-- সব ক্যাটাগরি --</option>
                         </select>
                     </div>
-                    <div style="flex: 1; min-width: 140px;">
-                        <label>খুঁজুন (নাম দিয়ে):</label>
-                        <input type="text" id="reportSearchKey" onkeyup="renderStockReportTable()" placeholder="প্রডাক্ট নাম লিখুন...">
+                    <div style="flex: 1; min-width: 110px;">
+                        <label>খুঁজুন:</label>
+                        <input type="text" id="reportSearchKey" onkeyup="renderStockReportTable()" placeholder="নাম লিখুন...">
                     </div>
                 </div>
 
@@ -366,10 +445,10 @@
                             <tr>
                                 <th>ক্যাটাগরি</th>
                                 <th class="text-left">প্রডাক্টের নাম</th>
-                                <th>দর (৳)</th>
-                                <th>মোট ইন (Stock In)</th>
-                                <th>মোট বিক্রি (Sold)</th>
-                                <th>বর্তমান স্টক (Stock)</th>
+                                <th>দর</th>
+                                <th>ইন</th>
+                                <th>বিক্রি</th>
+                                <th>স্টক</th>
                                 <th>স্ট্যাটাস</th>
                             </tr>
                         </thead>
@@ -381,17 +460,17 @@
             </div>
 
             <div class="box-section">
-                <h4 style="margin-top:0; color: #6c757d;">👤 ইউজার ম্যানেজমেন্ট</h4>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <div class="form-group" style="flex: 1; min-width: 130px;">
+                <h4 style="margin-top:0; color: #6c757d; font-size: 12px;">👤 ইউজার ম্যানেজমেন্ট</h4>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
                         <label>ইউজারনেম:</label>
                         <input type="text" id="admTargetUser" placeholder="ইউজারনেম">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 130px;">
-                        <label>নতুন পাসওয়ার্ড:</label>
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                        <label>পাসওয়ার্ড:</label>
                         <input type="text" id="admNewPass" placeholder="পাসওয়ার্ড">
                     </div>
-                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                    <div class="form-group" style="flex: 1; min-width: 85px;">
                         <label>রোল:</label>
                         <select id="admNewRole">
                             <option value="User">User</option>
@@ -406,7 +485,7 @@
 </div>
 
 <script>
-    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFRUccmr0EetumcdmPQk7DDYjSK_fr3M5oytLZcZM1JvYHmWJlokNKiGIK9k26gvqH/exec";
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzbKuwm9Z14KRGDRAyItLuCBpdAPYmGKl8w4IStHDgp-8mqdumWbWXQtmqcDrYYTaD5/exec";
 
     let loggedInUser = null;
     let loggedInRole = null;
@@ -536,13 +615,13 @@
                 
                 let categories = [...new Set(productList.map(p => p.category))];
                 let catSelect = document.getElementById("categorySelect");
-                catSelect.innerHTML = '<option value="">-- ক্যাটাগরি বাছুন --</option>';
+                catSelect.innerHTML = '<option value="">-- ক্যাটাগরি --</option>';
                 
                 let admCatSelect = document.getElementById("admCatSelect");
-                if(admCatSelect) admCatSelect.innerHTML = '<option value="">-- ক্যাটাগরি বাছুন --</option>';
+                if(admCatSelect) admCatSelect.innerHTML = '<option value="">-- ক্যাটাগরি --</option>';
 
                 let reportCatFilter = document.getElementById("reportCatFilter");
-                if(reportCatFilter) reportCatFilter.innerHTML = '<option value="ALL">-- সব ক্যাটাগরি দেখান --</option>';
+                if(reportCatFilter) reportCatFilter.innerHTML = '<option value="ALL">-- সব ক্যাটাগরি --</option>';
 
                 categories.forEach(cat => {
                     let opt1 = document.createElement("option");
@@ -570,10 +649,10 @@
     function filterProductsByCategory() {
         let selectedCat = document.getElementById("categorySelect").value;
         let prodSelect = document.getElementById("productSelect");
-        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট বাছুন --</option>';
+        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট --</option>';
 
         if(selectedCat === "") {
-            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি --</option>';
             return;
         }
 
@@ -581,24 +660,24 @@
             if(prod.category === selectedCat) {
                 let opt = document.createElement("option");
                 opt.value = idx;
-                opt.innerText = `${prod.name} (${prod.price} ৳) - [স্টক: ${prod.stock} টি]`;
+                opt.innerText = `${prod.name} (${prod.price}৳) [স্টক:${prod.stock}]`;
                 prodSelect.appendChild(opt);
             }
         });
 
         let customOpt = document.createElement("option");
         customOpt.value = "CUSTOM";
-        customOpt.innerText = "➕ নতুন / অন্যান্য (ম্যানুয়ালি লিখুন)";
+        customOpt.innerText = "➕ নতুন / অন্যান্য (ম্যানুয়াল)";
         prodSelect.appendChild(customOpt);
     }
 
     function filterAdmStockProducts() {
         let selectedCat = document.getElementById("admCatSelect").value;
         let prodSelect = document.getElementById("admProdSelect");
-        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট বাছুন --</option>';
+        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট --</option>';
 
         if(selectedCat === "") {
-            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি --</option>';
             return;
         }
 
@@ -606,7 +685,7 @@
             if(prod.category === selectedCat) {
                 let opt = document.createElement("option");
                 opt.value = prod.name;
-                opt.innerText = `${prod.name} [বর্তমান স্টক: ${prod.stock} টি]`;
+                opt.innerText = `${prod.name} [স্টক: ${prod.stock}]`;
                 prodSelect.appendChild(opt);
             }
         });
@@ -633,8 +712,8 @@
 
         filtered.forEach(prod => {
             let statusBadge = prod.stock <= 5 
-                ? `<span class="badge-low">স্টক কম (${prod.stock})</span>` 
-                : `<span class="badge-ok">পর্যাপ্ত (${prod.stock})</span>`;
+                ? `<span class="badge-low">কম (${prod.stock})</span>` 
+                : `<span class="badge-ok">ঠিক (${prod.stock})</span>`;
 
             tbody.innerHTML += `<tr>
                 <td><b>${prod.category}</b></td>
@@ -677,14 +756,18 @@
 
         let price = parseFloat(document.getElementById("prodPrice").value);
         let qty = parseInt(document.getElementById("prodQty").value);
+        let discountVal = parseFloat(document.getElementById("prodDiscount").value) || 0;
 
         if(!name) return alert("পণ্যের নাম নির্ধারণ করুন!");
         if(isNaN(price) || isNaN(qty) || qty <= 0) return alert("সঠিক দাম ও পরিমাণ দিন!");
 
+        let grossTotal = price * qty;
+        let netTotal = Math.max(0, grossTotal - discountVal);
+
         if (editIndex === -1) {
-            cart.push({ name: name, price: price, qty: qty, total: price * qty });
+            cart.push({ name: name, price: price, qty: qty, discount: discountVal, total: netTotal });
         } else {
-            cart[editIndex] = { name: name, price: price, qty: qty, total: price * qty };
+            cart[editIndex] = { name: name, price: price, qty: qty, discount: discountVal, total: netTotal };
         }
 
         updateCart();
@@ -694,21 +777,24 @@
     function updateCart() {
         let tbody = document.getElementById("cartTable");
         tbody.innerHTML = "";
-        let grandTotal = 0;
+        let subTotal = 0;
 
         if (cart.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="color: #888; padding: 6px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="7" style="color: #888; padding: 5px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>`;
+            document.getElementById("subTotal").innerText = "0.00";
             document.getElementById("grandTotal").innerText = "0.00";
+            document.getElementById("printOverallDiscountSection").style.display = "none";
             return;
         }
 
         cart.forEach((item, index) => {
-            grandTotal += item.total;
+            subTotal += item.total;
             tbody.innerHTML += `<tr>
                 <td>${index + 1}</td>
                 <td class="text-left">${item.name}</td>
                 <td>${item.price}</td>
                 <td>${item.qty}</td>
+                <td>${item.discount.toFixed(2)}</td>
                 <td>${item.total.toFixed(2)}</td>
                 <td class="action-col" style="white-space: nowrap;">
                     <button class="btn-warning" onclick="editItemForm(${index})">এডিট</button>
@@ -717,6 +803,18 @@
             </tr>`;
         });
 
+        document.getElementById("subTotal").innerText = subTotal.toFixed(2);
+
+        let overallDisc = parseFloat(document.getElementById("overallDiscount").value) || 0;
+        let printDiscSec = document.getElementById("printOverallDiscountSection");
+        if(overallDisc > 0) {
+            printDiscSec.style.display = "block";
+            document.getElementById("printOverallDiscountVal").innerText = overallDisc.toFixed(2);
+        } else {
+            printDiscSec.style.display = "none";
+        }
+
+        let grandTotal = Math.max(0, subTotal - overallDisc);
         document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
     }
 
@@ -731,6 +829,7 @@
         document.getElementById("customProdName").value = item.name;
         document.getElementById("prodPrice").value = item.price;
         document.getElementById("prodQty").value = item.qty;
+        document.getElementById("prodDiscount").value = item.discount;
 
         document.getElementById("addBtn").innerText = "✓ আপডেট";
         document.getElementById("cancelEditBtn").classList.remove("hidden");
@@ -739,11 +838,12 @@
     function resetForm() {
         editIndex = -1;
         document.getElementById("categorySelect").value = "";
-        document.getElementById("productSelect").innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+        document.getElementById("productSelect").innerHTML = '<option value="">-- আগে ক্যাটাগরি --</option>';
         document.getElementById("customProdName").value = "";
         document.getElementById("customProdName").classList.add("hidden");
         document.getElementById("prodPrice").value = "";
         document.getElementById("prodQty").value = "1";
+        document.getElementById("prodDiscount").value = "0";
 
         document.getElementById("addBtn").innerText = "+ যোগ";
         document.getElementById("cancelEditBtn").classList.add("hidden");
@@ -759,42 +859,58 @@
         if(cart.length === 0) return alert("মেমো ফাঁকা! আগে পণ্য যোগ করুন।");
         
         let cName = document.getElementById("custName").value || "সাধারণ কাস্টমার";
-        let cPhone = document.getElementById("custPhone").value || "N/A";
-        let grandTotal = cart.reduce((sum, item) => sum + item.total, 0);
+        let rawPhone = document.getElementById("custPhone").value.trim();
+        let displayPhone = rawPhone !== "" ? rawPhone : "N/A";
 
-        let html = `<div style="text-align:center;">
-            <h3 style="margin:0; font-size:18px; color:#000;">ইলেকট্রনিক্স & সার্ভিসিং</h3>
-            <p style="margin:2px 0; font-size:12px; color:#000;">রহনপুর বড় বাজার, মোবাইল: ০১৭১৮১৬৭৬৭১</p>
-            <hr style="border:1px dashed #000; margin: 6px 0;">
-        </div>
-        <p style="margin:4px 0; font-size:13px; color:#000;"><b>গ্রাহক:</b> ${cName} | <b>ফোন:</b> ${cPhone}</p>
-        <div style="overflow-x: auto;">
-            <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:5px; color:#000;">
+        let subTotal = cart.reduce((sum, item) => sum + item.total, 0);
+        let overallDisc = parseFloat(document.getElementById("overallDiscount").value) || 0;
+        let grandTotal = Math.max(0, subTotal - overallDisc);
+
+        // বড় স্ক্রিনে কোনো স্ক্রল ছাড়া অটো-ফিট এবং ছোট স্ক্রিনের মতো নিখুঁতভাবে দেখানোর জন্য প্রিভিউ টেবিল
+        let html = `<div style="width: 100%; box-sizing: border-box;">
+            <div style="text-align:center;">
+                <h3 style="margin:0; font-size:18px; color:#000; font-weight:bold;">ইলেকট্রনিক্স & সার্ভিসিং</h3>
+                <p style="margin:1px 0; font-size:11px; color:#000;">সকল প্রকার ইলেকট্রনিক্স মালামাল বিক্রয় ও সার্ভিসিং করা হয়</p>
+                <p style="margin:1px 0; font-size:11px; color:#000;">রহনপুর বড় বাজার, মোবাইল: ০১৭১৮১৬৭৬৭১</p>
+                <hr style="border:1px dashed #000; margin: 4px 0;">
+            </div>
+            <p style="margin:2px 0; font-size:11px; color:#000;"><b>গ্রাহক:</b> ${cName} | <b>ফোন:</b> ${displayPhone}</p>
+            <table style="width:100%; border-collapse:collapse; font-size:11px; margin-top:4px; color:#000;">
                 <thead>
                     <tr style="background:#f2f2f2;">
-                        <th style="border:1px solid #000; padding:4px;">পণ্যের বিবরণ</th>
-                        <th style="border:1px solid #000; padding:4px;">দর</th>
-                        <th style="border:1px solid #000; padding:4px;">পরিমাণ</th>
-                        <th style="border:1px solid #000; padding:4px;">মোট</th>
+                        <th style="border:1px solid #000; padding:4px; width: 6%;">ক্র:</th>
+                        <th style="border:1px solid #000; padding:4px; text-align:left;">পণ্যের বিবরণ</th>
+                        <th style="border:1px solid #000; padding:4px; width:12%;">দর</th>
+                        <th style="border:1px solid #000; padding:4px; width:10%;">পরিমাণ</th>
+                        <th style="border:1px solid #000; padding:4px; width:10%;">ছাড়</th>
+                        <th style="border:1px solid #000; padding:4px; width:15%;">মোট (৳)</th>
                     </tr>
                 </thead>
                 <tbody>`;
 
-        cart.forEach(item => {
+        cart.forEach((item, index) => {
             html += `<tr>
+                <td style="border:1px solid #000; padding:4px; text-align:center;">${index + 1}</td>
                 <td style="border:1px solid #000; padding:4px; text-align:left;">${item.name}</td>
                 <td style="border:1px solid #000; padding:4px; text-align:center;">${item.price}</td>
                 <td style="border:1px solid #000; padding:4px; text-align:center;">${item.qty}</td>
+                <td style="border:1px solid #000; padding:4px; text-align:center;">${item.discount.toFixed(2)}</td>
                 <td style="border:1px solid #000; padding:4px; text-align:center;">${item.total.toFixed(2)}</td>
             </tr>`;
         });
 
-        html += `</tbody></table></div>
-        <p style="text-align:right; font-weight:bold; margin-top:8px; font-size:14px; color:#000;">সর্বমোট: ${grandTotal.toFixed(2)} ৳</p>
-        <div style="display:flex; justify-content:space-between; margin-top:25px; font-size:12px; font-weight:bold; color:#000;">
-            <div style="border-top:1px dashed #000; width:110px; text-align:center; padding-top:2px;">গ্রাহকের স্বাক্ষর</div>
-            <div style="border-top:1px dashed #000; width:110px; text-align:center; padding-top:2px;">বিক্রেতার স্বাক্ষর</div>
-        </div>`;
+        html += `</tbody></table>
+        <div style="text-align:right; font-size:12px; margin-top:6px; color:#000; font-weight:bold;">সাব-টোটাল: ${subTotal.toFixed(2)} ৳</div>`;
+        if(overallDisc > 0) {
+            html += `<div style="text-align:right; font-size:12px; color:#c0392b; font-weight:bold; margin-top:2px;">বিশেষ মেমো ছাড়: - ${overallDisc.toFixed(2)} ৳</div>`;
+        }
+        html += `<div style="text-align:right; font-weight:bold; margin-top:4px; font-size:14px; color:#000;">
+            <span style="border-top: 1.5px solid #000; padding-top: 2px; display: inline-block;">ফাইনাল সর্বমোট: ${grandTotal.toFixed(2)} ৳</span>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:30px; font-size:11px; font-weight:bold; color:#000;">
+            <div style="border-top:1px dashed #000; width:110px; text-align:center; padding-top:3px;">গ্রাহকের স্বাক্ষর</div>
+            <div style="border-top:1px dashed #000; width:110px; text-align:center; padding-top:3px;">বিক্রেতার স্বাক্ষর</div>
+        </div></div>`;
 
         document.getElementById("previewBody").innerHTML = html;
         document.getElementById("previewModal").classList.remove("hidden");
@@ -807,11 +923,16 @@
     function saveAndPrintSheet() {
         if(cart.length === 0) return alert("মেমো ফাঁকা! আগে পণ্য যোগ করুন।");
 
+        let rawPhone = document.getElementById("custPhone").value.trim();
+        let cPhone = rawPhone !== "" ? "'" + rawPhone : "";
+        let overallDisc = parseFloat(document.getElementById("overallDiscount").value) || 0;
+
         let payload = {
             action: "saveSale",
             cashier: loggedInUser,
             customerName: document.getElementById("custName").value || "Walk-in Customer",
-            customerPhone: document.getElementById("custPhone").value || "",
+            customerPhone: cPhone,
+            overallDiscount: overallDisc,
             items: cart
         };
 
@@ -819,6 +940,7 @@
             if(data.status === "success") {
                 window.print();
                 cart = [];
+                document.getElementById("overallDiscount").value = "0";
                 updateCart();
                 document.getElementById("custName").value = "";
                 document.getElementById("custPhone").value = "";
@@ -877,7 +999,7 @@
             alert(data.message);
             if(data.status === "success") {
                 document.getElementById("admCatSelect").value = "";
-                document.getElementById("admProdSelect").innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+                document.getElementById("admProdSelect").innerHTML = '<option value="">-- ক্যাটাগরি --</option>';
                 document.getElementById("admStockQty").value = "";
                 fetchProducts();
             }
@@ -902,7 +1024,7 @@
                 let totalAmount = 0;
 
                 if(res.data.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
+                    tbody.innerHTML = `<tr><td colspan="9" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
                     document.getElementById("searchSummary").innerText = "মোট বিক্রি: 0.00 ৳";
                     return;
                 }
@@ -916,6 +1038,7 @@
                         <td class="text-left">${row.productName}</td>
                         <td>${row.unitPrice}</td>
                         <td>${row.qty}</td>
+                        <td>${row.discount}</td>
                         <td>${row.total}</td>
                         <td class="no-print">
                             <button class="btn-info" onclick="reprintMemo('${row.customerName}', '${row.customerPhone}', '${row.productName}', ${row.unitPrice}, ${row.qty})">🖨️ রি-প্রিন্ট</button>
@@ -936,14 +1059,14 @@
         document.getElementById("searchPhone").value = "";
         document.getElementById("searchUser").value = "";
         
-        document.getElementById("searchTableResult").innerHTML = `<tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
+        document.getElementById("searchTableResult").innerHTML = `<tr><td colspan="9" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
         document.getElementById("searchSummary").innerText = "";
     }
 
     function reprintMemo(custName, custPhone, prodName, price, qty) {
         document.getElementById("custName").value = custName;
         document.getElementById("custPhone").value = custPhone;
-        cart = [{ name: prodName, price: parseFloat(price), qty: parseInt(qty), total: parseFloat(price) * parseInt(qty) }];
+        cart = [{ name: prodName, price: parseFloat(price), qty: parseInt(qty), discount: 0, total: parseFloat(price) * parseInt(qty) }];
         updateCart();
         showSection('posSection');
         alert("মেমোটি রি-প্রিন্ট করার জন্য লোড করা হয়েছে। 'প্রিন্ট ও সেভ করুন' বা 'প্রিভিউ' বাটনে ক্লিক করুন।");
