@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গ্রামীণ চিকিৎসালয়</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f4f7f6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
+        
+        /* Login Overlay */
+        #loginSection {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: linear-gradient(135deg, #1e293b, #0f172a);
+            display: flex; justify-content: center; align-items: center; z-index: 3000; padding: 15px;
+        }
+        .login-card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); width: 100%; max-width: 380px; }
+
+        /* Sidebar Styling */
+        .sidebar { height: 100vh; position: fixed; top: 0; left: 0; width: 260px; background-color: #1e293b; color: white; padding-top: 15px; z-index: 1000; overflow-y: auto; transition: 0.3s ease; display: none; }
+        .sidebar-brand { font-size: 18px; font-weight: bold; padding: 15px 20px; color: #38bdf8; border-bottom: 1px solid #334155; }
+        
+        .sidebar-menu-wrapper { margin-top: 25px; }
+
+        /* Draggable Menu Styling (Only for Admin) */
+        .draggable-menu-item.admin-draggable {
+            cursor: grab;
+            user-select: none;
+            transition: background-color 0.2s;
+        }
+        .draggable-menu-item.admin-draggable:active {
+            cursor: grabbing;
+        }
+        .draggable-menu-item.dragging {
+            opacity: 0.5;
+            background-color: #334155;
+        }
+
+        .nav-item-btn { width: 100%; text-align: left; padding: 12px 20px; background: none; border: none; color: #cbd5e1; font-size: 14px; display: flex; align-items: center; justify-content: space-between; transition: 0.2s; cursor: pointer; }
+        .nav-item-btn:hover { background-color: #334155; color: white; }
+        .submenu { background-color: #0f172a; display: none; list-style: none; padding: 0; margin: 0; }
+        .submenu a { display: block; padding: 8px 15px 8px 45px; color: #94a3b8; text-decoration: none; font-size: 13px; }
+        .submenu a:hover { background-color: #1e293b; color: #38bdf8; }
+
+        /* Main Content Area */
+        .main-content { margin-left: 260px; padding: 25px; display: none; transition: 0.3s ease; margin-top: 50px; }
+        .header-title { text-align: center; color: #1e293b; font-weight: bold; margin-bottom: 20px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; padding-top: 10px; }
+        
+        /* Stat Cards Styling */
+        .card-stat { border: none; border-radius: 10px; color: white; padding: 12px 10px !important; margin-bottom: 8px; text-align: center; }
+        .card-stat h6 { font-size: 11px; margin-bottom: 4px; opacity: 0.9; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .card-stat h2 { font-size: 18px; font-weight: bold; margin-bottom: 0; }
+        
+        .bg-blue { background: #2563eb; } .bg-orange { background: #ea580c; }
+        .bg-green { background: #16a34a; } .bg-purple { background: #9333ea; }
+        
+        .table-container { background: white; border-radius: 12px; padding: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+        /* Mobile Top Navbar */
+        .mobile-navbar { display: none; background: #1e293b; color: white; padding: 8px 15px; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; width: 100%; z-index: 1100; height: 50px; }
+
+        /* Responsive Media Query */
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-260px); width: 260px; top: 50px; height: calc(100vh - 50px); padding-top: 5px; }
+            .sidebar.mobile-show { transform: translateX(0); }
+            .sidebar-menu-wrapper { margin-top: 10px; }
+            .main-content { margin-left: 0 !important; padding: 15px 10px; margin-top: 60px; }
+            .mobile-navbar { display: flex; }
+            .header-title { padding-top: 10px; margin-bottom: 15px; }
+            .header-title h2 { font-size: 18px !important; }
+            .header-title small { font-size: 10px; }
+        }
+
+        /* Print Optimization */
+        @media print {
+            body * { visibility: hidden; }
+            #printableSlip, #printableSlip *, #docPadReport, #docPadReport *, #printableSearchHistory, #printableSearchHistory * { visibility: visible; }
+            #printableSlip, #docPadReport { position: absolute; left: 0; top: 0; width: 100%; max-width: 100%; margin: 0 auto; padding: 10px; border: none !important; box-shadow: none !important; }
+            #printableSearchHistory { position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 10px; }
+            .modal-footer, .btn, .no-print, .date-filter-box, .mobile-navbar, .input-group { display: none !important; }
+            .print-date-display { display: inline-block !important; }
+        }
+        .print-date-display { display: none; }
+        #printableSlip, #docPadReport { border: 1px dashed #333; border-radius: 8px; background: #fff; max-width: 480px; margin: auto; font-family: 'Segoe UI', Arial, sans-serif; }
+    </style>
+</head>
+<body>
+
+<!-- Login Section -->
+<div id="loginSection">
+    <div class="login-card">
+        <h3 class="text-center fw-bold text-primary mb-2">গ্রামীণ চিকিৎসালয়</h3>
+        <p class="text-center text-muted small mb-4">প্রবেশ করতে লগইন করুন</p>
+        <div class="mb-3">
+            <label class="form-label">ইউজারনেম</label>
+            <input type="text" id="loginUser" class="form-control" placeholder="ইউজারনেম লিখুন">
+        </div>
+        <div class="mb-3">
+            <label class="form-label">পাসওয়ার্ড</label>
+            <input type="password" id="loginPass" class="form-control" placeholder="পাসওয়ার্ড দিন">
+        </div>
+        <button onclick="handleLogin()" class="btn btn-primary w-100 py-2 fw-bold">লগইন করুন</button>
+    </div>
+</div>
+
+<!-- Mobile Top Navbar -->
+<div class="mobile-navbar" id="mobileNavbar" style="display: none;">
+    <span class="fw-bold fs-6"><i class="fa-solid fa-hospital me-2"></i>গ্রামীণ চিকিৎসালয়</span>
+    <button class="btn btn-sm btn-outline-light py-0 px-2" onclick="toggleMobileSidebar()"><i class="fa-solid fa-bars fs-5"></i></button>
+</div>
+
+<!-- Left Sidebar Menu -->
+<div class="sidebar" id="sidebarMenu">
+    <div class="sidebar-brand text-center d-flex justify-content-between align-items-center px-3 d-lg-none">
+        <span>মেনু</span>
+        <button class="btn btn-sm text-white" onclick="toggleMobileSidebar()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <!-- Drag and Drop Menu Wrapper -->
+    <div class="sidebar-menu-wrapper" id="sidebarMenuWrapper">
+        <div class="draggable-menu-item" draggable="false" id="menuNewPatient">
+            <button class="nav-item-btn" onclick="openAddPatientModal()">
+                <span><i class="fa-solid fa-user-plus me-2 text-warning"></i> নতুন রোগী এন্ট্রি</span>
+            </button>
+        </div>
+
+        <div class="draggable-menu-item" draggable="false" id="menuDocReport">
+            <button class="nav-item-btn" onclick="toggleSubmenu('docSubmenu')">
+                <span><i class="fa-solid fa-user-md me-2 text-info"></i> ডাক্তার তালিকা ও রিপোর্ট</span>
+                <i class="fa-solid fa-chevron-down small"></i>
+            </button>
+            <ul class="submenu p-2" id="docSubmenu">
+                <li><input type="text" id="docSearchBox" class="form-control form-control-sm mb-2" placeholder="ডাক্তার খুঁজুন..." onkeyup="filterDoctorsMenu()"></li>
+                <div id="doctorSubmenuList" style="max-height: 150px; overflow-y: auto;"></div>
+            </ul>
+        </div>
+
+        <div class="draggable-menu-item admin-only" draggable="false" id="menuDocManager">
+            <button class="nav-item-btn" data-bs-toggle="modal" data-bs-target="#doctorManagerModal">
+                <span><i class="fa-solid fa-user-gear me-2 text-success"></i> ডাক্তার ম্যানেজমেন্ট</span>
+            </button>
+        </div>
+
+        <div class="draggable-menu-item admin-only" draggable="false" id="menuLogs">
+            <button class="nav-item-btn" onclick="openLogsModal()">
+                <span><i class="fa-solid fa-shield-halved me-2 text-danger"></i> ইউজার অ্যাক্টিভিটি লগ</span>
+            </button>
+        </div>
+
+        <div class="draggable-menu-item" draggable="false" id="menuSearch">
+            <button class="nav-item-btn" data-bs-toggle="modal" data-bs-target="#searchHistoryModal">
+                <span><i class="fa-solid fa-magnifying-glass me-2 text-primary"></i> পূর্বের ডাটা ও সার্চ</span>
+            </button>
+        </div>
+
+        <div class="draggable-menu-item" draggable="false" id="menuLinks">
+            <button class="nav-item-btn" onclick="toggleSubmenu('customLinksSubmenu')">
+                <span><i class="fa-solid fa-link me-2 text-warning"></i> গুরুত্বপূর্ণ লিংকসমূহ</span>
+                <i class="fa-solid fa-chevron-down small"></i>
+            </button>
+            <ul class="submenu" id="customLinksSubmenu">
+                <li><a href="dairy.html" target="_blank"><i class="fa-solid fa-globe me-1"></i> প্রতিদিনের হিসাব খাতা</a></li>
+                <li><a href="https://www.google.com" target="_blank"><i class="fa-solid fa-globe me-1"></i> গুগল সার্চ</a></li>
+                <li><a href="https://sheets.google.com" target="_blank"><i class="fa-solid fa-file-excel me-1"></i> গুগল শিট</a></li>
+            </ul>
+        </div>
+
+        <div class="draggable-menu-item" draggable="false" id="menuUser">
+            <button class="nav-item-btn" onclick="toggleSubmenu('userSubmenu')">
+                <span><i class="fa-solid fa-user-circle me-2 text-warning"></i> <span id="displayUsername">ইউজার</span></span>
+                <i class="fa-solid fa-chevron-down small"></i>
+            </button>
+            <ul class="submenu" id="userSubmenu">
+                <li class="admin-only"><a href="#" onclick="openUserManagerModal()"><i class="fa-solid fa-users-gear me-1"></i> ইউজার ম্যানেজমেন্ট</a></li>
+                <li><a href="#" data-bs-toggle="modal" data-bs-target="#changePassModal"><i class="fa-solid fa-key me-1"></i> পাসওয়ার্ড পরিবর্তন</a></li>
+                <li><a href="#" onclick="handleLogout()" class="text-danger"><i class="fa-solid fa-right-from-bracket me-1"></i> লগআউট</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content" id="mainDashboard">
+    <div class="header-title">
+        <h2 class="fw-bold mb-0 text-primary fs-4"><i class="fa-solid fa-clinic-medical me-2"></i>গ্রামীণ চিকিৎসালয়</h2>
+        <small class="text-muted" style="font-size: 11px;">দৈনিক রোগীর হিসাব ও রানিং ড্যাশবোর্ড</small>
+    </div>
+
+    <!-- ৪টি স্ট্যাটাস কার্ড পাশাপাশি -->
+    <div class="row g-2 mb-3">
+        <div class="col-3"><div class="card card-stat bg-blue"><h6>মোট রোগী</h6><h2 id="statTotal">0</h2></div></div>
+        <div class="col-3"><div class="card card-stat bg-orange"><h6>অপেক্ষমাণ</h6><h2 id="statWaiting">0</h2></div></div>
+        <div class="col-3"><div class="card card-stat bg-green"><h6>সম্পন্ন</h6><h2 id="statCompleted">0</h2></div></div>
+        <div class="col-3"><div class="card card-stat bg-purple"><h6>কালেকশন</h6><h2 style="font-size: 15px;">৳ <span id="statIncome">0</span></h2></div></div>
+    </div>
+
+    <div class="table-container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+            <h5 class="fw-bold text-secondary fs-6 mb-0"><i class="fa-solid fa-list me-2"></i>আজকের রানিং রোগীদের তালিকা</h5>
+            <div class="d-flex gap-1">
+                <input type="text" id="tableSearchInput" class="form-control form-control-sm" placeholder="নাম বা মোবাইল...">
+                <button onclick="searchTable()" class="btn btn-sm btn-primary text-nowrap">সার্চ</button>
+                <button onclick="resetTable()" class="btn btn-sm btn-secondary text-nowrap">রিসেট</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle small">
+                <thead class="table-light">
+                    <tr>
+                        <th>আইডি</th><th>নাম</th><th>মোবাইল</th><th>ঠিকানা</th><th>ডাক্তার</th><th>ফি</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="patientTableBody">
+                    <tr><td colspan="8" class="text-center text-muted">ডাটা লোড হচ্ছে...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- All Modals -->
+<!-- নতুন রোগী এন্ট্রি / এডিট মডাল -->
+<div class="modal fade" id="addPatientModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="patientModalTitle">নতুন রোগীর অ্যাপয়েন্টমেন্ট</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="patientForm">
+                    <input type="hidden" id="editPatientId">
+                    <div class="mb-2"><label>রোগীর নাম</label><input type="text" id="pName" class="form-control" required></div>
+                    <div class="mb-2"><label>মোবাইল নম্বর</label><input type="text" id="pPhone" class="form-control" placeholder="017........" required></div>
+                    <div class="mb-2"><label>ঠিকানা</label><input type="text" id="pAddress" class="form-control" required></div>
+                    <div class="mb-2">
+                        <label>ডাক্তার নির্বাচন</label>
+                        <select id="pDoctorId" class="form-select" onchange="calculatePatientFee()" required></select>
+                    </div>
+                    <div class="row g-2 mb-2">
+                        <div class="col-6">
+                            <label class="small text-muted">মূল ফি (৳)</label>
+                            <input type="number" id="pStandardFee" class="form-control form-control-sm bg-light" readonly>
+                        </div>
+                        <div class="col-6">
+                            <label class="small">ছাড় (Discount ৳)</label>
+                            <input type="number" id="pDiscount" class="form-control form-control-sm" value="0" min="0" oninput="calculatePatientFee()">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="fw-bold text-success">পরিশোধযোগ্য ফি (Final Fee): ৳ <span id="pFinalFeeDisplay">0</span></label>
+                    </div>
+                    <button type="submit" id="patientSubmitBtn" class="btn btn-primary w-100">সংরক্ষণ করুন</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ইউজার ম্যানেজমেন্ট মডাল -->
+<div class="modal fade" id="userManagerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title fw-bold" id="userModalTitle">ইউজার ম্যানেজমেন্ট</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <form id="userForm" class="p-3 bg-light rounded mb-3">
+                    <input type="hidden" id="editUsernameOriginal">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label class="form-label small mb-1">ইউজারনেম</label>
+                            <input type="text" id="uNameInput" class="form-control form-control-sm" placeholder="ইউজারনেম" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small mb-1">পাসওয়ার্ড</label>
+                            <input type="password" id="uPassInput" class="form-control form-control-sm" placeholder="পাসওয়ার্ড" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small mb-1">রোল (Role)</label>
+                            <select id="uRoleInput" class="form-select form-select-sm" required>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-2 d-flex gap-2">
+                        <button type="submit" id="userSubmitBtn" class="btn btn-sm btn-success w-100">নতুন ইউজার যোগ করুন</button>
+                        <button type="button" id="userCancelBtn" class="btn btn-sm btn-secondary w-100" style="display:none;" onclick="resetUserForm()">এডিট বাতিল</button>
+                    </div>
+                </form>
+
+                <h6 class="fw-bold mb-2 text-secondary">বিদ্যমান ইউজারদের তালিকা</h6>
+                <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                    <table class="table table-sm table-bordered align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ইউজারনেম</th>
+                                <th>রোল</th>
+                                <th class="text-end">অ্যাকশন</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="3" class="text-center text-muted">ইউজার তালিকা লোড হচ্ছে...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ভিজিট স্লিপ মডাল -->
+<div class="modal fade" id="printSlipModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-3" id="printableSlip">
+            <div class="text-center">
+                <h4 class="fw-bold text-primary mb-0">গ্রামীণ চিকিৎসালয়</h4>
+                <p class="small text-muted mb-0">মতির মোড়,জনতা স্কুল রোড রহনপুর, চাঁপাইনবাবগঞ্জ। </p>
+                <p class="small text-muted mb-1"><i class="fa-solid fa-phone"></i> মোবাইল: 01700000000, 01800000000</p>
+            </div>
+            <hr class="my-1 border-dark">
+            <div class="d-flex justify-content-between small fw-bold my-1 px-1">
+                <span>ক্রমিক নং: ............</span>
+                <span>তারিখ: <span id="slipDate"></span></span>
+            </div>
+            <div class="text-center my-2"><span class="badge bg-secondary">রোগীর ভিজিট স্লিপ / টোকেন</span></div>
+            <div class="small px-1">
+                <p class="mb-1"><strong>আইডি:</strong> <span id="slipId"></span></p>
+                <p class="mb-1"><strong>নাম:</strong> <span id="slipName"></span></p>
+                <p class="mb-1"><strong>মোবাইল:</strong> <span id="slipPhone"></span></p>
+                <p class="mb-1"><strong>ঠিকানা:</strong> <span id="slipAddress"></span></p>
+                <p class="mb-1"><strong>ডাক্তার:</strong> <span id="slipDoctor"></span> (<span id="slipSpecialty"></span>)</p>
+                <p class="mb-2"><strong>ফি পরিশোধ:</strong> ৳ <span id="slipFee"></span></p>
+            </div>
+            <div class="modal-footer border-top pt-2 d-flex justify-content-between mt-2 no-print">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">বন্ধ করুন</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> প্রিন্ট</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ডাক্তার রিপোর্ট মডাল -->
+<div class="modal fade" id="docSummaryModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content p-3" id="docPadReport">
+            <div class="text-center">
+                <h4 class="fw-bold text-primary mb-0">গ্রামীণ চিকিৎসালয়</h4>
+                <p class="small text-muted mb-0">মতির মোড়,জনতা স্কুল রোড রহনপুর, চাঁপাইনবাবগঞ্জ।</p>
+                <p class="small text-muted mb-1"><i class="fa-solid fa-phone"></i> মোবাইল: 01700000000, 01800000000</p>
+            </div>
+            <hr class="my-1 border-dark">
+            <div class="d-flex justify-content-between small fw-bold my-1 px-1">
+                <span>ক্রমিক নং: ............</span>
+                <span>তারিখ: <span id="padCurrentDate"></span></span>
+            </div>
+            <div class="text-center my-2"><span class="badge bg-secondary">ডাক্তার ভিজিট সামারি প্যাড রিপোর্ট</span></div>
+            <div class="mb-2 text-center bg-light p-2 rounded">
+                <h5 class="fw-bold text-dark mb-0" id="padDocName">ডাক্তারের নাম</h5>
+                <p class="text-muted small mb-0" id="padDocSpecialty">বিশেষজ্ঞ</p>
+            </div>
+
+            <!-- তারিখ টু তারিখ ফিল্টার, সার্চ ও রিসেট বাটন (Print-এ hidde থাকবে) -->
+            <div class="date-filter-box d-flex flex-wrap justify-content-center align-items-center gap-1 mb-2 no-print">
+                <input type="date" id="docStartDate" class="form-control form-control-sm w-auto">
+                <span class="small fw-bold">হতে</span>
+                <input type="date" id="docEndDate" class="form-control form-control-sm w-auto">
+                <button class="btn btn-sm btn-primary" onclick="fetchDoctorReport()"><i class="fa-solid fa-magnifying-glass"></i> সার্চ</button>
+                <button class="btn btn-sm btn-secondary" onclick="resetDoctorReportFilter()"><i class="fa-solid fa-rotate-right"></i> রিসেট</button>
+            </div>
+
+            <div class="print-date-display text-center small fw-bold mb-2">সময়সীমা: <span id="printDateRange">আজকের রানিং দিন</span></div>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm small mb-2">
+                    <tr><td><strong>মোট রোগী দেখেছে:</strong></td><td class="text-end"><span id="padTotalPatients">0</span> জন</td></tr>
+                    <tr><td><strong>মোট ডিসকাউন্ট দেওয়া হয়েছে:</strong></td><td class="text-end">৳ <span id="padTotalDiscount">0</span></td></tr>
+                    <tr class="table-success"><td><strong>মোট ফি পেল:</strong></td><td class="text-end"><strong>৳ <span id="padTotalIncome">0</span></strong></td></tr>
+                </table>
+            </div>
+            <div class="modal-footer border-top pt-2 d-flex justify-content-between mt-2 no-print">
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">বন্ধ</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="window.print()"><i class="fa-solid fa-print"></i> প্যাড প্রিন্ট</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ইউজার অ্যাক্টিভিটি লগ মডাল -->
+<div class="modal fade" id="logsModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title fw-bold text-danger"><i class="fa-solid fa-shield-halved me-2"></i>ইউজার অ্যাক্টিভিটি লগ</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light"><tr><th>তারিখ ও সময়</th><th>ইউজারনেম</th><th>বিবরণ</th></tr></thead>
+                        <tbody id="logsTableBody"><tr><td colspan="3" class="text-center">লগ লোড হচ্ছে...</td></tr></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- পাসওয়ার্ড পরিবর্তন মডাল -->
+<div class="modal fade" id="changePassModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title fw-bold">পাসওয়ার্ড পরিবর্তন</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <div class="mb-3"><label>নতুন পাসওয়ার্ড</label><input type="password" id="newPassInput" class="form-control" required></div>
+                <button onclick="submitNewPassword()" class="btn btn-success w-100">পরিবর্তন করুন</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ডাক্তার ম্যানেজমেন্ট মডাল -->
+<div class="modal fade" id="doctorManagerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header"><h5 class="modal-title fw-bold" id="docModalTitle">ডাক্তার ম্যানেজমেন্ট</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
+            <div class="modal-body">
+                <form id="doctorForm" class="mb-3">
+                    <input type="hidden" id="editDocId">
+                    <input type="text" id="docName" class="form-control mb-1" placeholder="নাম" required>
+                    <input type="text" id="docSpecialty" class="form-control mb-1" placeholder="বিশেষজ্ঞ" required>
+                    <input type="text" id="docRoom" class="form-control mb-1" placeholder="রুম" required>
+                    <input type="number" id="docFee" class="form-control mb-2" placeholder="ফি" required>
+                    <button type="submit" id="docSubmitBtn" class="btn btn-success w-100">ডাক্তার যোগ করুন</button>
+                    <button type="button" id="docCancelBtn" class="btn btn-secondary w-100 mt-1" style="display:none;" onclick="resetDoctorForm()">এডিট বাতিল করুন</button>
+                </form>
+                <ul class="list-group" id="doctorManagerList" style="max-height: 250px; overflow-y: auto;"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- পূর্বের ডাটা ও সার্চ মডাল -->
+<div class="modal fade" id="searchHistoryModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" id="printableSearchHistory">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold">পূর্বের রোগীর রেকর্ড সার্চ</h5>
+                <button type="button" class="btn-close no-print" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <!-- সামারি কার্ড (টোটাল ফি ও মোট রোগী) -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <div class="card p-2 text-center bg-light border-primary">
+                            <small class="text-muted fw-bold">মোট রোগী</small>
+                            <h4 class="fw-bold text-primary mb-0"><span id="searchTotalPatients">0</span> জন</h4>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card p-2 text-center bg-light border-success">
+                            <small class="text-muted fw-bold">মোট ফি (কালেকশন)</small>
+                            <h4 class="fw-bold text-success mb-0">৳ <span id="searchTotalIncome">0</span></h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group mb-3 no-print">
+                    <input type="text" id="globalSearchInput" class="form-control" placeholder="নাম, মোবাইল বা তারিখ (YYYY-MM-DD)...">
+                    <button class="btn btn-primary" onclick="performGlobalSearch()">সার্চ</button>
+                    <button class="btn btn-secondary" onclick="resetGlobalSearch()">রিসেট</button>
+                    <button class="btn btn-outline-dark" onclick="window.print()"><i class="fa-solid fa-print"></i> প্রিন্ট</button>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-sm table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr><th>তারিখ</th><th>আইডি</th><th>নাম</th><th>মোবাইল</th><th>ডাক্তার</th><th>ফি</th><th class="no-print">অ্যাকশন</th></tr>
+                        </thead>
+                        <tbody id="globalSearchBody">
+                            <tr><td colspan="7" class="text-center text-muted">তথ্য দেখতে সার্চ করুন...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbwWTr_yhlRk8qOPq77zm_MaKsI0IX_vtHcvr2rRHU7Ov7FKG6ryQwrXMRoqh1gj2Dt-/exec";
+    let currentUser = null;
+    let globalAppointments = [];
+    let allDoctorsList = [];
+    let allUsersList = [];
+    let selectedDoctorName = "";
+
+    window.onload = function() {
+        let savedUser = sessionStorage.getItem("clinicUser");
+        if(savedUser) {
+            currentUser = JSON.parse(savedUser);
+            startDashboard();
+        }
+    }
+
+    /* ----------- Drag and Drop Category Menu (Only for Admin) ----------- */
+    function initDraggableMenu() {
+        if (!currentUser || currentUser.role !== 'admin') return;
+
+        // Enable draggable attribute only for admin
+        document.querySelectorAll('.draggable-menu-item').forEach(item => {
+            item.setAttribute('draggable', 'true');
+            item.classList.add('admin-draggable');
+        });
+
+        const container = document.getElementById('sidebarMenuWrapper');
+        let dragItem = null;
+
+        container.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('draggable-menu-item')) {
+                dragItem = e.target;
+                e.target.classList.add('dragging');
+            }
+        });
+
+        container.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('draggable-menu-item')) {
+                e.target.classList.remove('dragging');
+                dragItem = null;
+            }
+        });
+
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const afterElement = getDragAfterElement(container, e.clientY);
+            if (dragItem) {
+                if (afterElement == null) {
+                    container.appendChild(dragItem);
+                } else {
+                    container.insertBefore(dragItem, afterElement);
+                }
+            }
+        });
+    }
+
+    function getDragAfterElement(container, y) {
+        const draggableElements = [...container.querySelectorAll('.draggable-menu-item:not(.dragging)')];
+        return draggableElements.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = y - box.top - box.height / 2;
+            if (offset < 0 && offset > closest.offset) {
+                return { offset: offset, element: child };
+            } else {
+                return closest;
+            }
+        }, { offset: Number.NEGATIVE_INFINITY }).element;
+    }
+
+    function toggleMobileSidebar() {
+        let sidebar = document.getElementById('sidebarMenu');
+        sidebar.classList.toggle('mobile-show');
+    }
+
+    function checkMobileClose() {
+        if(window.innerWidth <= 992) {
+            document.getElementById('sidebarMenu').classList.remove('mobile-show');
+        }
+    }
+
+    async function handleLogin() {
+        let u = document.getElementById('loginUser').value.trim();
+        let p = document.getElementById('loginPass').value.trim();
+        if(!u || !p) return alert("ইউজারনেম ও পাসওয়ার্ড দিন!");
+
+        try {
+            let res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "login", username: u, password: p })
+            });
+            let data = await JSON.parse(await res.text());
+
+            if(data.status === "success") {
+                currentUser = data.user;
+                sessionStorage.setItem("clinicUser", JSON.stringify(currentUser));
+                startDashboard();
+            } else {
+                alert(data.message);
+            }
+        } catch(err) {
+            alert("লগইন ত্রুটি: " + err);
+        }
+    }
+
+    function startDashboard() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('sidebarMenu').style.display = 'block';
+        document.getElementById('mobileNavbar').style.display = 'flex';
+        document.getElementById('mainDashboard').style.display = 'block';
+        document.getElementById('displayUsername').innerText = `${currentUser.username} (${currentUser.role})`;
+
+        if(currentUser.role !== 'admin') {
+            document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
+        }
+        
+        initDraggableMenu();
+        loadData();
+    }
+
+    function handleLogout() {
+        sessionStorage.removeItem("clinicUser");
+        location.reload();
+    }
+
+    function toggleSubmenu(id) {
+        let menu = document.getElementById(id);
+        menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    async function loadData() {
+        try {
+            let res = await fetch(`${API_URL}?action=getDashboardData`);
+            let data = await JSON.parse(await res.text());
+            
+            if (data.status === "success") {
+                document.getElementById('statTotal').innerText = data.dashboard.total;
+                document.getElementById('statWaiting').innerText = data.dashboard.waiting;
+                document.getElementById('statCompleted').innerText = data.dashboard.completed;
+                document.getElementById('statIncome').innerText = data.dashboard.income;
+
+                allDoctorsList = data.doctors || [];
+                renderDoctorSubmenu(allDoctorsList);
+
+                let docSelect = document.getElementById('pDoctorId');
+                docSelect.innerHTML = "";
+                let docManager = document.getElementById('doctorManagerList');
+                docManager.innerHTML = "";
+
+                allDoctorsList.forEach(doc => {
+                    docSelect.innerHTML += `<option value="${doc.id}" data-fee="${doc.fee || 500}">${doc.name} (${doc.specialty})</option>`;
+                    
+                    let actionBtnsHtml = '';
+                    if (currentUser.role === 'admin') {
+                        actionBtnsHtml = `
+                            <div>
+                                <button onclick="editDoc('${doc.id}')" class="btn btn-sm btn-warning me-1" title="এডিট"><i class="fa-solid fa-pen-to-square"></i></button>
+                                <button onclick="deleteDoc('${doc.id}')" class="btn btn-sm btn-danger" title="ডিলিট"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        `;
+                    }
+                    docManager.innerHTML += `
+                        <li class="list-group-item d-flex justify-content-between align-items-center small">
+                            <div>
+                                <strong>${doc.name}</strong><br>
+                                <small class="text-muted">${doc.specialty} | রুম: ${doc.room || '-'} | ফি: ৳${doc.fee || 0}</small>
+                            </div>
+                            ${actionBtnsHtml}
+                        </li>`;
+                });
+
+                globalAppointments = data.appointments || [];
+                renderTable(globalAppointments);
+            }
+        } catch (e) {
+            console.error("Dashboard Load Error: ", e);
+        }
+    }
+
+    /* ----------- নতুন রোগী ও এডিট সংক্রান্ত লজিক ----------- */
+    function openAddPatientModal() {
+        document.getElementById('patientForm').reset();
+        document.getElementById('editPatientId').value = "";
+        document.getElementById('patientModalTitle').innerText = "নতুন রোগীর অ্যাপয়েন্টমেন্ট";
+        document.getElementById('patientSubmitBtn').innerText = "সংরক্ষণ করুন";
+        document.getElementById('patientSubmitBtn').className = "btn btn-primary w-100";
+        calculatePatientFee();
+        new bootstrap.Modal(document.getElementById('addPatientModal')).show();
+    }
+
+    function calculatePatientFee() {
+        let docSelect = document.getElementById('pDoctorId');
+        let selectedOption = docSelect.options[docSelect.selectedIndex];
+        let stdFee = selectedOption ? Number(selectedOption.getAttribute('data-fee')) || 500 : 500;
+        let discount = Number(document.getElementById('pDiscount').value) || 0;
+        
+        let finalFee = stdFee - discount;
+        if (finalFee < 0) finalFee = 0;
+
+        document.getElementById('pStandardFee').value = stdFee;
+        document.getElementById('pFinalFeeDisplay').innerText = finalFee;
+    }
+
+    function editPatient(id) {
+        let p = globalAppointments.find(x => x.id === id);
+        if (p) {
+            document.getElementById('editPatientId').value = p.id;
+            document.getElementById('pName').value = p.name;
+            document.getElementById('pPhone').value = p.phone;
+            document.getElementById('pAddress').value = p.address;
+            
+            let docSelect = document.getElementById('pDoctorId');
+            for (let i = 0; i < docSelect.options.length; i++) {
+                if (docSelect.options[i].text.includes(p.doctor)) {
+                    docSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            document.getElementById('pDiscount').value = p.discountValue || 0;
+            calculatePatientFee();
+
+            document.getElementById('patientModalTitle').innerText = "রোগীর তথ্য এডিট (Edit)";
+            document.getElementById('patientSubmitBtn').innerText = "আপডেট করুন";
+            document.getElementById('patientSubmitBtn').className = "btn btn-warning w-100";
+            new bootstrap.Modal(document.getElementById('addPatientModal')).show();
+        }
+    }
+
+    document.getElementById('patientForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let editId = document.getElementById('editPatientId').value;
+        let actionType = editId ? "updateAppointment" : "addAppointment";
+
+        let payload = {
+            action: actionType,
+            username: currentUser.username,
+            patientId: editId,
+            patientName: document.getElementById('pName').value.trim(),
+            phone: document.getElementById('pPhone').value.trim(),
+            address: document.getElementById('pAddress').value.trim(),
+            doctorId: document.getElementById('pDoctorId').value,
+            discount: Number(document.getElementById('pDiscount').value) || 0
+        };
+
+        try {
+            let res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+            let result = await JSON.parse(await res.text());
+
+            if (result.status === "success") {
+                alert(result.message);
+                bootstrap.Modal.getInstance(document.getElementById('addPatientModal')).hide();
+                loadData();
+                if (!editId) {
+                    showSlipModal(result);
+                }
+            } else {
+                alert(result.message);
+            }
+        } catch (err) {
+            alert("ত্রুটি: " + err);
+        }
+    });
+
+    /* ----------- ইউজার ম্যানেজমেন্ট (অ্যাডমিন) ----------- */
+    async function openUserManagerModal() {
+        resetUserForm();
+        new bootstrap.Modal(document.getElementById('userManagerModal')).show();
+        loadUsersList();
+    }
+
+    async function loadUsersList() {
+        let tbody = document.getElementById('usersTableBody');
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">ইউজার তালিকা লোড হচ্ছে...</td></tr>`;
+
+        try {
+            let res = await fetch(`${API_URL}?action=getUsers`);
+            let data = await JSON.parse(await res.text());
+            if (data.status === "success") {
+                allUsersList = data.users || [];
+                tbody.innerHTML = "";
+                
+                allUsersList.forEach(u => {
+                    let isSelf = u.username.toLowerCase() === currentUser.username.toLowerCase();
+                    let deleteBtn = isSelf ? `<button class="btn btn-sm btn-secondary" disabled title="নিজের অ্যাকাউন্ট ডিলিট করা যাবে না"><i class="fa-solid fa-trash"></i></button>` 
+                                           : `<button onclick="deleteUser('${u.username}')" class="btn btn-sm btn-danger" title="ডিলিট"><i class="fa-solid fa-trash"></i></button>`;
+
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><strong>${u.username}</strong> ${isSelf ? '<span class="badge bg-info text-dark">আপনি</span>' : ''}</td>
+                            <td><span class="badge ${u.role === 'admin' ? 'bg-danger' : 'bg-secondary'}">${u.role}</span></td>
+                            <td class="text-end">
+                                <button onclick="editUser('${u.username}')" class="btn btn-sm btn-warning me-1" title="এডিট"><i class="fa-solid fa-pen-to-square"></i></button>
+                                ${deleteBtn}
+                            </td>
+                        </tr>`;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">${data.message}</td></tr>`;
+            }
+        } catch (err) {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-danger">ত্রুটি: ${err}</td></tr>`;
+        }
+    }
+
+    function editUser(username) {
+        let u = allUsersList.find(x => x.username === username);
+        if (u) {
+            document.getElementById('editUsernameOriginal').value = u.username;
+            document.getElementById('uNameInput').value = u.username;
+            document.getElementById('uNameInput').readOnly = true;
+            document.getElementById('uPassInput').value = u.password || '';
+            document.getElementById('uRoleInput').value = u.role || 'user';
+
+            document.getElementById('userModalTitle').innerText = "ইউজার তথ্য সম্পাদনা (Edit)";
+            document.getElementById('userSubmitBtn').innerText = "ইউজার আপডেট করুন";
+            document.getElementById('userSubmitBtn').className = "btn btn-sm btn-warning w-100";
+            document.getElementById('userCancelBtn').style.display = "block";
+        }
+    }
+
+    function resetUserForm() {
+        document.getElementById('userForm').reset();
+        document.getElementById('editUsernameOriginal').value = "";
+        document.getElementById('uNameInput').readOnly = false;
+        document.getElementById('userModalTitle').innerText = "ইউজার ম্যানেজমেন্ট";
+        document.getElementById('userSubmitBtn').innerText = "নতুন ইউজার যোগ করুন";
+        document.getElementById('userSubmitBtn').className = "btn btn-sm btn-success w-100";
+        document.getElementById('userCancelBtn').style.display = "none";
+    }
+
+    document.getElementById('userForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let editOrig = document.getElementById('editUsernameOriginal').value;
+        let actionType = editOrig ? "updateUser" : "addUser";
+
+        let payload = {
+            action: actionType,
+            username: currentUser.username,
+            targetUsername: editOrig || document.getElementById('uNameInput').value.trim(),
+            newUsername: document.getElementById('uNameInput').value.trim(),
+            newPassword: document.getElementById('uPassInput').value.trim(),
+            newRole: document.getElementById('uRoleInput').value
+        };
+
+        try {
+            let res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+            let result = await JSON.parse(await res.text());
+            alert(result.message);
+
+            if (result.status === "success") {
+                resetUserForm();
+                loadUsersList();
+            }
+        } catch (err) {
+            alert("ইউজার তথ্য প্রসেস করতে ব্যর্থ হয়েছে: " + err);
+        }
+    });
+
+    async function deleteUser(targetUser) {
+        if (confirm(`আপনি কি নিশ্চিত যে ইউজার '${targetUser}' ডিলিট করতে চান?`)) {
+            try {
+                let res = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify({ action: "deleteUser", username: currentUser.username, targetUsername: targetUser })
+                });
+                let result = await JSON.parse(await res.text());
+                alert(result.message);
+                if (result.status === "success") loadUsersList();
+            } catch (err) {
+                alert("ইউজার ডিলিট করতে ব্যর্থ হয়েছে: " + err);
+            }
+        }
+    }
+
+    /* ------------------------------------------------ */
+
+    function renderDoctorSubmenu(list) {
+        let subList = document.getElementById('doctorSubmenuList');
+        subList.innerHTML = "";
+        list.forEach(doc => {
+            subList.innerHTML += `<li><a href="#" class="d-block py-1 px-2 text-decoration-none text-light" onclick="openDoctorPad('${doc.name}')">${doc.name} (${doc.specialty})</a></li>`;
+        });
+    }
+
+    function filterDoctorsMenu() {
+        let q = document.getElementById('docSearchBox').value.toLowerCase();
+        let filtered = allDoctorsList.filter(d => d.name.toLowerCase().includes(q) || d.specialty.toLowerCase().includes(q));
+        renderDoctorSubmenu(filtered);
+    }
+
+    function renderTable(list) {
+        let tbody = document.getElementById('patientTableBody');
+        tbody.innerHTML = "";
+        if(!list.length) { tbody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">আজকে রানিং দিনে কোনো রোগী নেই।</td></tr>`; return; }
+
+        list.forEach(p => {
+            let editBtnHtml = currentUser.role === 'admin' ? `<button onclick="editPatient('${p.id}')" class="btn btn-sm btn-outline-warning me-1" title="এডিট"><i class="fa-solid fa-pen-to-square"></i></button>` : '';
+            tbody.innerHTML += `
+                <tr>
+                    <td><strong>${p.id}</strong></td>
+                    <td>${p.name}</td>
+                    <td>${p.phone}</td>
+                    <td>${p.address || '-'}</td>
+                    <td>${p.doctor}</td>
+                    <td>৳ ${p.fee}</td>
+                    <td><span class="badge ${p.status === 'ওয়েটিং' ? 'bg-warning text-dark' : 'bg-success'}">${p.status}</span></td>
+                    <td>
+                        ${editBtnHtml}
+                        ${p.status === 'ওয়েটিং' ? `<button onclick="changeStatus('${p.id}', 'সম্পন্ন')" class="btn btn-sm btn-outline-success me-1">সম্পন্ন</button>` : `<i class="fa-solid fa-check text-success me-1"></i>`}
+                        <button onclick="printExistingSlip('${p.id}')" class="btn btn-sm btn-outline-dark" title="স্লিপ প্রিন্ট"><i class="fa-solid fa-print"></i></button>
+                    </td>
+                </tr>`;
+        });
+    }
+
+    function searchTable() {
+        let query = document.getElementById('tableSearchInput').value.toLowerCase();
+        let filtered = globalAppointments.filter(a => a.name.toLowerCase().includes(query) || a.phone.includes(query));
+        renderTable(filtered);
+    }
+    function resetTable() {
+        document.getElementById('tableSearchInput').value = "";
+        renderTable(globalAppointments);
+    }
+
+    function showSlipModal(data) {
+        document.getElementById('slipId').innerText = data.appointmentId;
+        document.getElementById('slipName').innerText = data.patientName;
+        document.getElementById('slipPhone').innerText = data.phone;
+        document.getElementById('slipAddress').innerText = data.address;
+        document.getElementById('slipDoctor').innerText = data.doctorName;
+        document.getElementById('slipSpecialty').innerText = data.specialty || '';
+        document.getElementById('slipFee').innerText = data.fee;
+        document.getElementById('slipDate').innerText = data.date;
+
+        new bootstrap.Modal(document.getElementById('printSlipModal')).show();
+    }
+
+    function printExistingSlip(id) {
+        let p = globalAppointments.find(x => x.id === id);
+        if(p) {
+            showSlipModal({
+                appointmentId: p.id,
+                patientName: p.name,
+                phone: p.phone,
+                address: p.address,
+                doctorName: p.doctor,
+                fee: p.fee,
+                date: p.date
+            });
+        }
+    }
+
+    /* ----------- ডাক্তার রানিং দিনের রিপোর্ট লজিক ----------- */
+    function openDoctorPad(docName) {
+        selectedDoctorName = docName;
+        let docObj = allDoctorsList.find(d => d.name === docName);
+        document.getElementById('padDocName').innerText = docName;
+        document.getElementById('padDocSpecialty').innerText = docObj ? docObj.specialty : '';
+        
+        // অটো আজকের রানিং তারিখ সেট করা
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById('docStartDate').value = today;
+        document.getElementById('docEndDate').value = today;
+        document.getElementById('padCurrentDate').innerText = today;
+        
+        fetchDoctorReport();
+        new bootstrap.Modal(document.getElementById('docSummaryModal')).show();
+    }
+
+    async function fetchDoctorReport() {
+        let start = document.getElementById('docStartDate').value;
+        let end = document.getElementById('docEndDate').value;
+        
+        if(start || end) {
+            document.getElementById('printDateRange').innerText = `${start || 'শুরু'} হতে ${end || 'বর্তমান'}`;
+        } else {
+            document.getElementById('printDateRange').innerText = "আজকের রানিং দিন";
+        }
+
+        document.getElementById('padTotalPatients').innerText = "...";
+        document.getElementById('padTotalDiscount').innerText = "...";
+        document.getElementById('padTotalIncome').innerText = "...";
+
+        let res = await fetch(`${API_URL}?action=getDoctorSummary&doctorName=${encodeURIComponent(selectedDoctorName)}&startDate=${start}&endDate=${end}`);
+        let data = await JSON.parse(await res.text());
+
+        if (data.status === "success") {
+            document.getElementById('padTotalPatients').innerText = data.totalPatients;
+            document.getElementById('padTotalDiscount').innerText = data.totalDiscount;
+            document.getElementById('padTotalIncome').innerText = data.totalIncome;
+        }
+    }
+
+    function resetDoctorReportFilter() {
+        let today = new Date().toISOString().split('T')[0];
+        document.getElementById('docStartDate').value = today;
+        document.getElementById('docEndDate').value = today;
+        fetchDoctorReport();
+    }
+
+    async function openLogsModal() {
+        let res = await fetch(`${API_URL}?action=getLogs`);
+        let data = await JSON.parse(await res.text());
+        let tbody = document.getElementById('logsTableBody');
+        tbody.innerHTML = "";
+
+        if(data.logs && data.logs.length > 0) {
+            data.logs.forEach(l => {
+                tbody.innerHTML += `<tr><td>${l.time}</td><td><strong>${l.user}</strong></td><td>${l.details}</td></tr>`;
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">কোনো লগ পাওয়া যায়নি।</td></tr>`;
+        }
+        new bootstrap.Modal(document.getElementById('logsModal')).show();
+    }
+
+    /* ----------- পূর্বের ডাটা সার্চ, টোটাল ক্যালকুলেশন ও রিসেট ----------- */
+    async function performGlobalSearch() {
+        let q = document.getElementById('globalSearchInput').value.trim();
+        if(!q) return alert("খোঁজার জন্য নাম, মোবাইল নম্বর বা তারিখ দিন!");
+
+        let tbody = document.getElementById('globalSearchBody');
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">ডাটা সার্চ করা হচ্ছে...</td></tr>`;
+
+        let res = await fetch(`${API_URL}?action=searchPatients&q=${encodeURIComponent(q)}`);
+        let data = await JSON.parse(await res.text());
+
+        tbody.innerHTML = "";
+        let totalPatients = 0;
+        let totalIncome = 0;
+
+        if (data.results && data.results.length > 0) {
+            totalPatients = data.results.length;
+            data.results.forEach(p => {
+                let feeVal = Number(p.fee) || 0;
+                totalIncome += feeVal;
+                tbody.innerHTML += `<tr><td>${p.date}</td><td>${p.id}</td><td>${p.name}</td><td>${p.phone}</td><td>${p.doctor}</td><td>৳ ${feeVal}</td><td class="no-print"><button onclick="printExistingSlip('${p.id}')" class="btn btn-sm btn-outline-primary"><i class="fa-solid fa-print"></i></button></td></tr>`;
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
+        }
+
+        document.getElementById('searchTotalPatients').innerText = totalPatients;
+        document.getElementById('searchTotalIncome').innerText = totalIncome;
+    }
+
+    function resetGlobalSearch() {
+        document.getElementById('globalSearchInput').value = "";
+        document.getElementById('searchTotalPatients').innerText = "0";
+        document.getElementById('searchTotalIncome').innerText = "0";
+        document.getElementById('globalSearchBody').innerHTML = `<tr><td colspan="7" class="text-center text-muted">তথ্য দেখতে সার্চ করুন...</td></tr>`;
+    }
+
+    function editDoc(id) {
+        let doc = allDoctorsList.find(d => d.id === id);
+        if(doc) {
+            document.getElementById('editDocId').value = doc.id;
+            document.getElementById('docName').value = doc.name;
+            document.getElementById('docSpecialty').value = doc.specialty;
+            document.getElementById('docRoom').value = doc.room || '';
+            document.getElementById('docFee').value = doc.fee || '';
+            
+            document.getElementById('docModalTitle').innerText = "ডাক্তার তথ্য সম্পাদনা (Edit)";
+            document.getElementById('docSubmitBtn').innerText = "আপডেট করুন";
+            document.getElementById('docSubmitBtn').className = "btn btn-warning w-100";
+            document.getElementById('docCancelBtn').style.display = "block";
+        }
+    }
+
+    function resetDoctorForm() {
+        document.getElementById('doctorForm').reset();
+        document.getElementById('editDocId').value = "";
+        document.getElementById('docModalTitle').innerText = "ডাক্তার ম্যানেজমেন্ট";
+        document.getElementById('docSubmitBtn').innerText = "ডাক্তার যোগ করুন";
+        document.getElementById('docSubmitBtn').className = "btn btn-success w-100";
+        document.getElementById('docCancelBtn').style.display = "none";
+    }
+
+    document.getElementById('doctorForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        let editId = document.getElementById('editDocId').value;
+        let actionType = editId ? "updateDoctor" : "addDoctor";
+
+        let payload = {
+            action: actionType,
+            username: currentUser.username,
+            doctorId: editId,
+            doctorName: document.getElementById('docName').value,
+            specialty: document.getElementById('docSpecialty').value,
+            roomNo: document.getElementById('docRoom').value,
+            standardFee: document.getElementById('docFee').value
+        };
+
+        try {
+            let res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify(payload)
+            });
+            let result = await JSON.parse(await res.text());
+            alert(result.message);
+            
+            resetDoctorForm();
+            loadData();
+        } catch(err) {
+            alert("আপডেট করতে ব্যর্থ হয়েছে: " + err);
+        }
+    });
+
+    async function deleteDoc(id) {
+        if(confirm("ডাক্তার ডিলিট করতে চান?")) {
+            let res = await fetch(API_URL, {
+                method: 'POST',
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ action: "deleteDoctor", doctorId: id, username: currentUser.username })
+            });
+            let result = await JSON.parse(await res.text());
+            alert(result.message);
+            loadData();
+        }
+    }
+
+    async function submitNewPassword() {
+        let newPass = document.getElementById('newPassInput').value.trim();
+        if(!newPass) return alert("পাসওয়ার্ড দিন!");
+        let res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "changePassword", username: currentUser.username, newPassword: newPass })
+        });
+        let result = await JSON.parse(await res.text());
+        alert(result.message);
+        bootstrap.Modal.getInstance(document.getElementById('changePassModal')).hide();
+    }
+
+    async function changeStatus(id, status) {
+        let res = await fetch(API_URL, {
+            method: 'POST',
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "updateStatus", patientId: id, newStatus: status })
+        });
+        let result = await JSON.parse(await res.text());
+        loadData();
+    }
+</script>
+</body>
+</html>
