@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ইলেকট্রনিক্স দোকান ও সার্ভিসিং পয়েন্ট</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #eef2f5; margin: 0; padding: 10px; }
+        .container { max-width: 950px; margin: auto; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        h2, h3 { text-align: center; color: #2c3e50; margin: 3px 0 10px 0; }
+        .form-group { margin-bottom: 8px; }
+        label { display: block; margin-bottom: 2px; font-weight: bold; color: #34495e; font-size: 13px; }
+        input, select { width: 100%; padding: 6px 8px; box-sizing: border-box; border: 1px solid #bdc3c7; border-radius: 4px; font-size: 13px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 13px; }
+        th, td { border: 1px solid #444; padding: 6px 8px; text-align: center; }
+        th { background-color: #f2f2f2; color: #000; font-weight: bold; }
+        
+        .text-left { text-align: left !important; }
+        
+        button { background: #28a745; color: white; border: none; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 13px; font-weight: bold; }
+        button:hover { opacity: 0.9; }
+        .btn-danger { background: #dc3545; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn-warning { background: #ffc107; color: #000; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        .btn-info { background: #17a2b8; color: white; border: none; padding: 4px 8px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .btn-secondary { background: #6c757d; }
+        
+        .total-section { text-align: right; font-size: 16px; font-weight: bold; margin-top: 10px; color: #2c3e50; }
+        .actions { margin-top: 12px; display: flex; justify-content: space-between; gap: 10px; }
+        .hidden { display: none !important; }
+        
+        .nav-bar { display: flex; justify-content: space-between; background: #2c3e50; color: white; padding: 8px 12px; border-radius: 5px; margin-bottom: 12px; font-size: 13px; }
+        .nav-bar span { cursor: pointer; color: #f1c40f; margin: 0 4px; font-weight: bold; }
+        .box-section { background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #e9ecef; margin-bottom: 10px; }
+        
+        .memo-header { text-align: center; margin-bottom: 8px; border-bottom: 2px dashed #000; padding-bottom: 4px; }
+        .memo-header h2 { margin: 0; font-size: 22px; color: #000; font-weight: bold; }
+        .memo-header p { margin: 2px 0; font-size: 13px; color: #000; }
+
+        .signature-section { display: flex; justify-content: space-between; margin-top: 40px; font-size: 13px; font-weight: bold; color: #000; }
+        .signature-box { border-top: 1px dashed #000; padding-top: 3px; text-align: center; width: 140px; }
+
+        #previewModal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center; z-index: 1000; }
+        .preview-content { background: white; padding: 20px; width: 500px; max-width: 90%; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto; }
+
+        .badge-low { background: #dc3545; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+        .badge-ok { background: #28a745; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+
+        @media print {
+            .nav-bar, .actions, .add-box, .no-print, #loginSection, #passSection, #adminSection, #searchSection, #previewModal { display: none !important; }
+            body { background: white; padding: 0; margin: 0; }
+            .container { box-shadow: none; padding: 0; border: none; margin: 0 auto; width: 100%; max-width: 100%; }
+            #posSection { margin: 0 auto; width: 80%; padding: 10px; border: none !important; box-shadow: none !important; display: block !important; }
+            .action-col { display: none !important; }
+            table { font-size: 16px; }
+            th, td { padding: 8px; border: 1px solid #000; }
+            .memo-header h2 { font-size: 26px; }
+            .memo-header p { font-size: 15px; }
+            .total-section { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- ১. লগইন সেকশন -->
+    <div id="loginSection">
+        <h2>🔐 শপ ম্যানেজমেন্ট লগইন</h2>
+        <div class="form-group">
+            <label>ইউজারনেম:</label>
+            <input type="text" id="loginUser" placeholder="ইউজারনেম দিন">
+        </div>
+        <div class="form-group">
+            <label>পাসওয়ার্ড:</label>
+            <input type="password" id="loginPass" placeholder="পাসওয়ার্ড দিন">
+        </div>
+        <button onclick="login()" style="width: 100%;">লগইন করুন</button>
+    </div>
+
+    <!-- ২. মূল অ্যাপ্লিকেশন ড্যাশবোর্ড -->
+    <div id="appSection" class="hidden">
+        <div class="nav-bar no-print">
+            <div>👤 ইউজার: <span id="currentUserDisplay"></span> (<span id="currentRoleDisplay"></span>)</div>
+            <div>
+                <span onclick="showSection('posSection')">🛒 সেলস মেমো</span> | 
+                <span onclick="showSection('searchSection')">🔍 হিসাব সার্চ</span> | 
+                <span onclick="showSection('passSection')">🔑 পাসওয়ার্ড</span>
+                <span id="adminMenuTab" class="hidden"> | <span onclick="showSection('adminSection')">⚙️ অ্যাডমিন & স্টক</span></span>
+                | <span onclick="logout()" style="color: #ff6b6b;">🚪 লগআউট</span>
+            </div>
+        </div>
+
+        <!-- POS মেমো সেকশন -->
+        <div id="posSection">
+            <div class="memo-header">
+                <h2>⚡ ভাই ভাই ইলেকট্রনিক্স & সার্ভিসিং ⚡</h2>
+                <p>সকল প্রকার ইলেকট্রনিক্স মালামাল ও সার্ভিসিং সেন্টার</p>
+                <p style="font-size: 13px;">মোবাইল: ০১XXXXXXXXX</p>
+            </div>
+
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>গ্রাহকের নাম:</label>
+                    <input type="text" id="custName" placeholder="গ্রাহকের নাম">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>মোবাইল নম্বর:</label>
+                    <input type="text" id="custPhone" placeholder="মোবাইল নম্বর">
+                </div>
+            </div>
+
+            <!-- ক্যাটাগরি ফিল্টার সহ প্রডাক্ট সিলেক্টর -->
+            <div class="box-section add-box no-print">
+                <div style="display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 140px; margin-bottom: 0;">
+                        <label>ক্যাটাগরি:</label>
+                        <select id="categorySelect" onchange="filterProductsByCategory()">
+                            <option value="">-- ক্যাটাগরি বাছুন --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 2; min-width: 180px; margin-bottom: 0;">
+                        <label>পণ্য / পার্টস:</label>
+                        <select id="productSelect" onchange="handleProductSelect()">
+                            <option value="">-- আগে ক্যাটাগরি বাছুন --</option>
+                        </select>
+                        <input type="text" id="customProdName" placeholder="পণ্যের নাম লিখুন..." class="hidden" style="margin-top: 5px;">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 90px; margin-bottom: 0;">
+                        <label>দর (৳):</label>
+                        <input type="number" id="prodPrice" placeholder="দাম">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 70px; margin-bottom: 0;">
+                        <label>পরিমাণ:</label>
+                        <input type="number" id="prodQty" value="1" min="1">
+                    </div>
+                    <div>
+                        <button type="button" id="addBtn" onclick="addItem()" style="height: 31px; padding: 2px 10px;">+ যোগ</button>
+                        <button type="button" id="cancelEditBtn" onclick="resetForm()" class="btn-secondary hidden" style="height: 31px; padding: 2px 8px;">বাতিল</button>
+                    </div>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 8%;">ক্র:</th>
+                        <th class="text-left" style="width: 40%;">পণ্যের বিবরণ</th>
+                        <th style="width: 15%;">দর</th>
+                        <th style="width: 10%;">পরিমাণ</th>
+                        <th style="width: 15%;">মোট (৳)</th>
+                        <th class="action-col no-print" style="width: 12%;">অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="cartTable">
+                    <tr><td colspan="6" style="color: #888; padding: 6px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>
+                </tbody>
+            </table>
+
+            <div class="total-section">সর্বমোট: <span id="grandTotal">0.00</span> ৳</div>
+
+            <div class="signature-section">
+                <div class="signature-box">গ্রাহকের স্বাক্ষর</div>
+                <div class="signature-box">বিক্রেতার স্বাক্ষর</div>
+            </div>
+
+            <div class="actions no-print">
+                <button type="button" onclick="openPreview()" class="btn-info" style="font-size: 14px; padding: 8px 15px;">👁️ প্রিভিউ</button>
+                <button type="button" onclick="saveAndPrintSheet()" style="background: #007bff; font-size: 15px; padding: 8px 18px;">🖨️ প্রিন্ট ও সেভ করুন</button>
+            </div>
+        </div>
+
+        <!-- প্রিভিউ পপআপ -->
+        <div id="previewModal" class="hidden">
+            <div class="preview-content">
+                <h3>📋 ক্যাশ মেমো প্রিভিউ</h3>
+                <div id="previewBody" style="border: 1px dashed #333; padding: 10px; margin-top: 10px;"></div>
+                <div style="text-align: right; margin-top: 15px;">
+                    <button type="button" onclick="closePreview()" class="btn-secondary">বন্ধ করুন</button>
+                    <button type="button" onclick="closePreview(); saveAndPrintSheet();" style="background: #007bff;">প্রিন্ট ও সেভ করুন</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- মেমো ও হিসাব সার্চ -->
+        <div id="searchSection" class="hidden">
+            <h3>🔍 মেমো ও বিক্রয় হিসাব সার্চ</h3>
+            <div class="box-section">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>তারিখ (YYYY-MM-DD):</label>
+                        <input type="date" id="searchDate">
+                    </div>
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>মাস (YYYY-MM):</label>
+                        <input type="month" id="searchMonth">
+                    </div>
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>বছর (YYYY):</label>
+                        <input type="text" id="searchYear" placeholder="2026">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>গ্রাহকের নাম:</label>
+                        <input type="text" id="searchName" placeholder="নাম">
+                    </div>
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>মোবাইল নম্বর:</label>
+                        <input type="text" id="searchPhone" placeholder="ফোন">
+                    </div>
+                    <div style="flex: 1; min-width: 130px;">
+                        <label>ইউজার / ক্যাশিয়ার:</label>
+                        <input type="text" id="searchUser" placeholder="ইউজারনেম">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button onclick="searchSales()" style="flex: 2;">সার্চ করুন</button>
+                    <button onclick="resetSearchForm()" class="btn-secondary" style="flex: 1;">🔄 রিসেট</button>
+                </div>
+            </div>
+
+            <div id="searchSummary" style="font-weight: bold; font-size: 14px; margin: 8px 0; color: #2c3e50;"></div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>তারিখ ও সময়</th>
+                        <th>ইউজার</th>
+                        <th>গ্রাহক</th>
+                        <th class="text-left">পণ্য</th>
+                        <th>দর</th>
+                        <th>পরিমাণ</th>
+                        <th>মোট (৳)</th>
+                        <th class="no-print">অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="searchTableResult">
+                    <tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- পাসওয়ার্ড পরিবর্তন -->
+        <div id="passSection" class="hidden">
+            <h3>🔑 পাসওয়ার্ড পরিবর্তন</h3>
+            <div class="form-group">
+                <label>পুরাতন পাসওয়ার্ড:</label>
+                <input type="password" id="oldPass">
+            </div>
+            <div class="form-group">
+                <label>নতুন পাসওয়ার্ড:</label>
+                <input type="password" id="newPass">
+            </div>
+            <button onclick="changePassword()">পাসওয়ার্ড আপডেট করুন</button>
+        </div>
+
+        <!-- অ্যাডমিন কন্ট্রোল ও অ্যাডভান্সড স্টক সেকশন -->
+        <div id="adminSection" class="hidden">
+            <h3>⚙️ অ্যাডমিন প্যানেল & স্টক ম্যানেজমেন্ট</h3>
+            
+            <!-- ১. নতুন প্রডাক্ট এন্ট্রি -->
+            <div class="box-section">
+                <h4 style="margin-top:0; color: #007bff;">➕ নতুন প্রডাক্ট ও প্রাথমিক স্টক যোগ</h4>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 140px;">
+                        <label>ক্যাটাগরির নাম:</label>
+                        <input type="text" id="newProdCategory" placeholder="যেমন: লাইট, ফ্যান, ক্যাবল">
+                    </div>
+                    <div class="form-group" style="flex: 2; min-width: 180px;">
+                        <label>প্রোডাক্টের নাম:</label>
+                        <input type="text" id="newProdName" placeholder="প্রোডাক্ট নাম">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                        <label>দাম (৳):</label>
+                        <input type="number" id="newProdPrice" placeholder="দাম">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                        <label>প্রাথমিক স্টক:</label>
+                        <input type="number" id="newProdStock" value="0">
+                    </div>
+                </div>
+                <button onclick="addNewProductWeb()">প্রডাক্ট ও স্টক সেভ করুন</button>
+            </div>
+
+            <!-- ২. ক্যাটাগরিভিত্তিক স্টক বাড়ানো ও কমানো -->
+            <div class="box-section">
+                <h4 style="margin-top:0; color: #17a2b8;">📦 ক্যাটাগরিভিত্তিক স্টক যোগ (Stock In) বা কমান (Stock Out)</h4>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 140px;">
+                        <label>ক্যাটাগরি সিলেক্ট করুন:</label>
+                        <select id="admCatSelect" onchange="filterAdmStockProducts()">
+                            <option value="">-- ক্যাটাগরি বাছুন --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 2; min-width: 180px;">
+                        <label>প্রোডাক্ট সিলেক্ট করুন:</label>
+                        <select id="admProdSelect">
+                            <option value="">-- আগে ক্যাটাগরি বাছুন --</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                        <label>পরিমাণ (পিস):</label>
+                        <input type="number" id="admStockQty" placeholder="পরিমাণ" min="1">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 5px;">
+                    <button onclick="updateStockWeb('ADD')" style="background: #28a745; flex: 1;">➕ স্টক বাড়ান (Stock In)</button>
+                    <button onclick="updateStockWeb('REDUCE')" style="background: #dc3545; flex: 1;">➖ স্টক কমান (Stock Out)</button>
+                </div>
+            </div>
+
+            <!-- ৩. ক্যাটাগরি অনুযায়ী প্রডাক্ট স্টক চেক ও রিপোর্ট -->
+            <div class="box-section">
+                <h4 style="margin-top:0; color: #2c3e50;">📊 ক্যাটাগরি অনুযায়ী বর্তমান স্টক রিপোর্ট ও চেক</h4>
+                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 8px;">
+                    <div style="flex: 1;">
+                        <label>ক্যাটাগরি ফিল্টার:</label>
+                        <select id="reportCatFilter" onchange="renderStockReportTable()">
+                            <option value="ALL">-- সব ক্যাটাগরি দেখান --</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>খুঁজুন (নাম দিয়ে):</label>
+                        <input type="text" id="reportSearchKey" onkeyup="renderStockReportTable()" placeholder="প্রডাক্ট নাম লিখুন...">
+                    </div>
+                </div>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ক্যাটাগরি</th>
+                            <th class="text-left">প্রডাক্টের নাম</th>
+                            <th>দর (৳)</th>
+                            <th>মোট ইন (Stock In)</th>
+                            <th>মোট বিক্রি (Sold)</th>
+                            <th>বর্তমান স্টক (Stock)</th>
+                            <th>স্ট্যাটাস</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stockReportTableBody">
+                        <tr><td colspan="7" style="color:#888;">ডাটা লোড হচ্ছে...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- ৪. ইউজার ম্যানেজমেন্ট -->
+            <div class="box-section">
+                <h4 style="margin-top:0; color: #6c757d;">👤 ইউজার ম্যানেজমেন্ট</h4>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <div class="form-group" style="flex: 1; min-width: 130px;">
+                        <label>ইউজারনেম:</label>
+                        <input type="text" id="admTargetUser" placeholder="ইউজারনেম">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 130px;">
+                        <label>নতুন পাসওয়ার্ড:</label>
+                        <input type="text" id="admNewPass" placeholder="পাসওয়ার্ড">
+                    </div>
+                    <div class="form-group" style="flex: 1; min-width: 100px;">
+                        <label>রোল:</label>
+                        <select id="admNewRole">
+                            <option value="User">User</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="saveUserByAdmin()">ইউজার সেভ / আপডেট</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwFRUccmr0EetumcdmPQk7DDYjSK_fr3M5oytLZcZM1JvYHmWJlokNKiGIK9k26gvqH/exec";
+
+    let loggedInUser = null;
+    let loggedInRole = null;
+    let productList = [];
+    let cart = [];
+    let editIndex = -1;
+
+    const AUTO_LOGOUT_TIME = 20 * 60 * 1000; 
+    let idleTimer = null;
+
+    function resetIdleTimer() {
+        if(idleTimer) clearTimeout(idleTimer);
+        if(loggedInUser) {
+            idleTimer = setTimeout(function() {
+                alert("নিষ্ক্রিয়তার কারণে (২০ মিনিট) সিকিউরিটির জন্য অটো লগআউট করা হলো!");
+                logout();
+            }, AUTO_LOGOUT_TIME);
+        }
+    }
+
+    window.onload = function() {
+        document.onmousemove = resetIdleTimer;
+        document.onkeypress = resetIdleTimer;
+        
+        let savedUser = sessionStorage.getItem("loggedInUser");
+        let savedRole = sessionStorage.getItem("loggedInRole");
+        if(savedUser && savedRole) {
+            loggedInUser = savedUser;
+            loggedInRole = savedRole;
+            document.getElementById("currentUserDisplay").innerText = loggedInUser;
+            document.getElementById("currentRoleDisplay").innerText = loggedInRole;
+            document.getElementById("loginSection").classList.add("hidden");
+            document.getElementById("appSection").classList.remove("hidden");
+            if(loggedInRole === "Admin") {
+                document.getElementById("adminMenuTab").classList.remove("hidden");
+            }
+            fetchProducts();
+            resetIdleTimer();
+        }
+    };
+
+    function sendAPIRequest(payload, callback) {
+        fetch(WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        })
+        .then(res => res.json())
+        .then(data => callback(data))
+        .catch(err => alert("নেটওয়ার্ক বা API এরর: " + err));
+    }
+
+    function login() {
+        let user = document.getElementById("loginUser").value;
+        let pass = document.getElementById("loginPass").value;
+        if(!user || !pass) return alert("ইউজারনেম ও পাসওয়ার্ড দিন!");
+
+        sendAPIRequest({ action: "login", username: user, password: pass }, function(data) {
+            if(data.status === "success") {
+                loggedInUser = data.username;
+                loggedInRole = data.role;
+
+                sessionStorage.setItem("loggedInUser", loggedInUser);
+                sessionStorage.setItem("loggedInRole", loggedInRole);
+
+                document.getElementById("currentUserDisplay").innerText = loggedInUser;
+                document.getElementById("currentRoleDisplay").innerText = loggedInRole;
+
+                document.getElementById("loginSection").classList.add("hidden");
+                document.getElementById("appSection").classList.remove("hidden");
+
+                if(loggedInRole === "Admin") {
+                    document.getElementById("adminMenuTab").classList.remove("hidden");
+                }
+                fetchProducts();
+                resetIdleTimer();
+            } else {
+                alert(data.message);
+            }
+        });
+    }
+
+    function logout() {
+        if(idleTimer) clearTimeout(idleTimer);
+        sessionStorage.clear();
+        loggedInUser = null;
+        loggedInRole = null;
+        cart = [];
+        document.getElementById("appSection").classList.add("hidden");
+        document.getElementById("loginSection").classList.remove("hidden");
+        document.getElementById("loginUser").value = "";
+        document.getElementById("loginPass").value = "";
+    }
+
+    function showSection(secId) {
+        document.getElementById("posSection").classList.add("hidden");
+        document.getElementById("searchSection").classList.add("hidden");
+        document.getElementById("passSection").classList.add("hidden");
+        document.getElementById("adminSection").classList.add("hidden");
+        document.getElementById(secId).classList.remove("hidden");
+    }
+
+    function fetchProducts() {
+        fetch(WEB_APP_URL + "?action=getData")
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === "success") {
+                productList = data.products;
+                
+                // ১. POS ক্যাটাগরি ড্রপডাউন
+                let categories = [...new Set(productList.map(p => p.category))];
+                let catSelect = document.getElementById("categorySelect");
+                catSelect.innerHTML = '<option value="">-- ক্যাটাগরি বাছুন --</option>';
+                
+                // ২. অ্যাডমিন ক্যাটাগরি ড্রপডাউন (স্টক আপডেট ও রিপোর্ট)
+                let admCatSelect = document.getElementById("admCatSelect");
+                if(admCatSelect) admCatSelect.innerHTML = '<option value="">-- ক্যাটাগরি বাছুন --</option>';
+
+                let reportCatFilter = document.getElementById("reportCatFilter");
+                if(reportCatFilter) reportCatFilter.innerHTML = '<option value="ALL">-- সব ক্যাটাগরি দেখান --</option>';
+
+                categories.forEach(cat => {
+                    let opt1 = document.createElement("option");
+                    opt1.value = cat; opt1.innerText = cat;
+                    catSelect.appendChild(opt1);
+
+                    if(admCatSelect) {
+                        let opt2 = document.createElement("option");
+                        opt2.value = cat; opt2.innerText = cat;
+                        admCatSelect.appendChild(opt2);
+                    }
+
+                    if(reportCatFilter) {
+                        let opt3 = document.createElement("option");
+                        opt3.value = cat; opt3.innerText = cat;
+                        reportCatFilter.appendChild(opt3);
+                    }
+                });
+
+                // স্টক রিপোর্ট টেবিল রেন্ডার করা
+                renderStockReportTable();
+            }
+        });
+    }
+
+    // POS ক্যাটাগরি ফিল্টার
+    function filterProductsByCategory() {
+        let selectedCat = document.getElementById("categorySelect").value;
+        let prodSelect = document.getElementById("productSelect");
+        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট বাছুন --</option>';
+
+        if(selectedCat === "") {
+            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+            return;
+        }
+
+        productList.forEach((prod, idx) => {
+            if(prod.category === selectedCat) {
+                let opt = document.createElement("option");
+                opt.value = idx;
+                opt.innerText = `${prod.name} (${prod.price} ৳) - [স্টক: ${prod.stock} টি]`;
+                prodSelect.appendChild(opt);
+            }
+        });
+
+        let customOpt = document.createElement("option");
+        customOpt.value = "CUSTOM";
+        customOpt.innerText = "➕ নতুন / অন্যান্য (ম্যানুয়ালি লিখুন)";
+        prodSelect.appendChild(customOpt);
+    }
+
+    // অ্যাডমিন স্টক আপডেট ক্যাটাগরি ফিল্টার
+    function filterAdmStockProducts() {
+        let selectedCat = document.getElementById("admCatSelect").value;
+        let prodSelect = document.getElementById("admProdSelect");
+        prodSelect.innerHTML = '<option value="">-- প্রডাক্ট বাছুন --</option>';
+
+        if(selectedCat === "") {
+            prodSelect.innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+            return;
+        }
+
+        productList.forEach(prod => {
+            if(prod.category === selectedCat) {
+                let opt = document.createElement("option");
+                opt.value = prod.name;
+                opt.innerText = `${prod.name} [বর্তমান স্টক: ${prod.stock} টি]`;
+                prodSelect.appendChild(opt);
+            }
+        });
+    }
+
+    // স্টক রিপোর্ট টেবিল রেন্ডার
+    function renderStockReportTable() {
+        let tbody = document.getElementById("stockReportTableBody");
+        if(!tbody) return;
+        tbody.innerHTML = "";
+
+        let selectedCat = document.getElementById("reportCatFilter").value;
+        let searchKey = document.getElementById("reportSearchKey").value.toLowerCase().trim();
+
+        let filtered = productList.filter(prod => {
+            let matchCat = (selectedCat === "ALL" || prod.category === selectedCat);
+            let matchKey = (prod.name.toLowerCase().indexOf(searchKey) !== -1 || prod.category.toLowerCase().indexOf(searchKey) !== -1);
+            return matchCat && matchKey;
+        });
+
+        if(filtered.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="color:#888;">কোনো প্রডাক্ট পাওয়া যায়নি</td></tr>`;
+            return;
+        }
+
+        filtered.forEach(prod => {
+            let statusBadge = prod.stock <= 5 
+                ? `<span class="badge-low">স্টক কম (${prod.stock})</span>` 
+                : `<span class="badge-ok">পর্যাপ্ত (${prod.stock})</span>`;
+
+            tbody.innerHTML += `<tr>
+                <td><b>${prod.category}</b></td>
+                <td class="text-left">${prod.name}</td>
+                <td>${prod.price}</td>
+                <td>${prod.totalIn}</td>
+                <td>${prod.sold}</td>
+                <td><b>${prod.stock}</b></td>
+                <td>${statusBadge}</td>
+            </tr>`;
+        });
+    }
+
+    function handleProductSelect() {
+        let val = document.getElementById("productSelect").value;
+        let customInput = document.getElementById("customProdName");
+
+        if (val === "CUSTOM") {
+            customInput.classList.remove("hidden");
+            document.getElementById("prodPrice").value = "";
+        } else {
+            customInput.classList.add("hidden");
+            if (val !== "") {
+                document.getElementById("prodPrice").value = productList[val].price;
+            } else {
+                document.getElementById("prodPrice").value = "";
+            }
+        }
+    }
+
+    function addItem() {
+        let selectVal = document.getElementById("productSelect").value;
+        let name = "";
+
+        if (selectVal === "CUSTOM") {
+            name = document.getElementById("customProdName").value.trim();
+        } else if (selectVal !== "") {
+            name = productList[selectVal].name;
+        }
+
+        let price = parseFloat(document.getElementById("prodPrice").value);
+        let qty = parseInt(document.getElementById("prodQty").value);
+
+        if(!name) return alert("পণ্যের নাম নির্ধারণ করুন!");
+        if(isNaN(price) || isNaN(qty) || qty <= 0) return alert("সঠিক দাম ও পরিমাণ দিন!");
+
+        if (editIndex === -1) {
+            cart.push({ name: name, price: price, qty: qty, total: price * qty });
+        } else {
+            cart[editIndex] = { name: name, price: price, qty: qty, total: price * qty };
+        }
+
+        updateCart();
+        resetForm();
+    }
+
+    function updateCart() {
+        let tbody = document.getElementById("cartTable");
+        tbody.innerHTML = "";
+        let grandTotal = 0;
+
+        if (cart.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" style="color: #888; padding: 6px;">মেমোতে কোনো পণ্য যোগ করা হয়নি</td></tr>`;
+            document.getElementById("grandTotal").innerText = "0.00";
+            return;
+        }
+
+        cart.forEach((item, index) => {
+            grandTotal += item.total;
+            tbody.innerHTML += `<tr>
+                <td>${index + 1}</td>
+                <td class="text-left">${item.name}</td>
+                <td>${item.price}</td>
+                <td>${item.qty}</td>
+                <td>${item.total.toFixed(2)}</td>
+                <td class="action-col" style="white-space: nowrap;">
+                    <button class="btn-warning" onclick="editItemForm(${index})">এডিট</button>
+                    <button class="btn-danger" onclick="removeItem(${index})">ডিলিট</button>
+                </td>
+            </tr>`;
+        });
+
+        document.getElementById("grandTotal").innerText = grandTotal.toFixed(2);
+    }
+
+    function editItemForm(index) {
+        editIndex = index;
+        let item = cart[index];
+
+        document.getElementById("categorySelect").value = "";
+        document.getElementById("productSelect").innerHTML = '<option value="CUSTOM">ম্যানুয়াল প্রডাক্ট</option>';
+        document.getElementById("productSelect").value = "CUSTOM";
+        document.getElementById("customProdName").classList.remove("hidden");
+        document.getElementById("customProdName").value = item.name;
+        document.getElementById("prodPrice").value = item.price;
+        document.getElementById("prodQty").value = item.qty;
+
+        document.getElementById("addBtn").innerText = "✓ আপডেট";
+        document.getElementById("cancelEditBtn").classList.remove("hidden");
+    }
+
+    function resetForm() {
+        editIndex = -1;
+        document.getElementById("categorySelect").value = "";
+        document.getElementById("productSelect").innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+        document.getElementById("customProdName").value = "";
+        document.getElementById("customProdName").classList.add("hidden");
+        document.getElementById("prodPrice").value = "";
+        document.getElementById("prodQty").value = "1";
+
+        document.getElementById("addBtn").innerText = "+ যোগ";
+        document.getElementById("cancelEditBtn").classList.add("hidden");
+    }
+
+    function removeItem(index) {
+        cart.splice(index, 1);
+        updateCart();
+        resetForm();
+    }
+
+    function openPreview() {
+        if(cart.length === 0) return alert("মেমো ফাঁকা! আগে পণ্য যোগ করুন।");
+        
+        let cName = document.getElementById("custName").value || "সাধারণ কাস্টমার";
+        let cPhone = document.getElementById("custPhone").value || "N/A";
+        let grandTotal = cart.reduce((sum, item) => sum + item.total, 0);
+
+        let html = `<div style="text-align:center;">
+            <h3 style="margin:0;">ভাই ভাই ইলেকট্রনিক্স & সার্ভিসিং</h3>
+            <p style="margin:2px 0; font-size:12px;">মোবাইল: ০১XXXXXXXXX</p>
+            <hr style="border:1px dashed #000;">
+        </div>
+        <p style="margin:4px 0; font-size:13px;"><b>গ্রাহক:</b> ${cName} | <b>ফোন:</b> ${cPhone}</p>
+        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-top:5px;">
+            <thead>
+                <tr>
+                    <th style="border:1px solid #000; padding:4px;">পণ্যের বিবরণ</th>
+                    <th style="border:1px solid #000; padding:4px;">দর</th>
+                    <th style="border:1px solid #000; padding:4px;">পরিমাণ</th>
+                    <th style="border:1px solid #000; padding:4px;">মোট</th>
+                </tr>
+            </thead>
+            <tbody>`;
+
+        cart.forEach(item => {
+            html += `<tr>
+                <td style="border:1px solid #000; padding:4px; text-align:left;">${item.name}</td>
+                <td style="border:1px solid #000; padding:4px; text-align:center;">${item.price}</td>
+                <td style="border:1px solid #000; padding:4px; text-align:center;">${item.qty}</td>
+                <td style="border:1px solid #000; padding:4px; text-align:center;">${item.total.toFixed(2)}</td>
+            </tr>`;
+        });
+
+        html += `</tbody></table>
+        <p style="text-align:right; font-weight:bold; margin-top:8px; font-size:14px;">সর্বমোট: ${grandTotal.toFixed(2)} ৳</p>
+        <div style="display:flex; justify-content:space-between; margin-top:30px; font-size:12px; font-weight:bold;">
+            <div style="border-top:1px dashed #000; width:100px; text-align:center;">গ্রাহকের স্বাক্ষর</div>
+            <div style="border-top:1px dashed #000; width:100px; text-align:center;">বিক্রেতার স্বাক্ষর</div>
+        </div>`;
+
+        document.getElementById("previewBody").innerHTML = html;
+        document.getElementById("previewModal").classList.remove("hidden");
+    }
+
+    function closePreview() {
+        document.getElementById("previewModal").classList.add("hidden");
+    }
+
+    function saveAndPrintSheet() {
+        if(cart.length === 0) return alert("মেমো ফাঁকা! আগে পণ্য যোগ করুন।");
+
+        let payload = {
+            action: "saveSale",
+            cashier: loggedInUser,
+            customerName: document.getElementById("custName").value || "Walk-in Customer",
+            customerPhone: document.getElementById("custPhone").value || "",
+            items: cart
+        };
+
+        sendAPIRequest(payload, function(data) {
+            if(data.status === "success") {
+                window.print();
+                cart = [];
+                updateCart();
+                document.getElementById("custName").value = "";
+                document.getElementById("custPhone").value = "";
+                resetForm();
+                fetchProducts();
+            } else {
+                alert("মেমো সেভ করতে সমস্যা হয়েছে: " + data.message);
+            }
+        });
+    }
+
+    function addNewProductWeb() {
+        let cat = document.getElementById("newProdCategory").value;
+        let name = document.getElementById("newProdName").value;
+        let price = document.getElementById("newProdPrice").value;
+        let stock = document.getElementById("newProdStock").value;
+        if(!cat || !name || !price) return alert("সবগুলি ঘর পূরণ করুন!");
+
+        let payload = {
+            action: "addProduct",
+            role: loggedInRole,
+            cashier: loggedInUser,
+            productCategory: cat,
+            productName: name,
+            productPrice: price,
+            initialStock: stock
+        };
+
+        sendAPIRequest(payload, function(data) {
+            alert(data.message);
+            if(data.status === "success") {
+                document.getElementById("newProdCategory").value = "";
+                document.getElementById("newProdName").value = "";
+                document.getElementById("newProdPrice").value = "";
+                document.getElementById("newProdStock").value = "0";
+                fetchProducts();
+            }
+        });
+    }
+
+    // স্টক বাড়ানো বা কমানোর ওয়েব রিকোয়েস্ট ফাংশন
+    function updateStockWeb(mode) {
+        let prodName = document.getElementById("admProdSelect").value;
+        let qty = document.getElementById("admStockQty").value;
+        if(!prodName || !qty) return alert("প্রোডাক্ট সিলেক্ট করুন এবং পরিমাণ দিন!");
+
+        let payload = {
+            action: "updateStock",
+            role: loggedInRole,
+            cashier: loggedInUser,
+            productName: prodName,
+            qty: qty,
+            mode: mode // ADD or REDUCE
+        };
+
+        sendAPIRequest(payload, function(data) {
+            alert(data.message);
+            if(data.status === "success") {
+                document.getElementById("admCatSelect").value = "";
+                document.getElementById("admProdSelect").innerHTML = '<option value="">-- আগে ক্যাটাগরি বাছুন --</option>';
+                document.getElementById("admStockQty").value = "";
+                fetchProducts();
+            }
+        });
+    }
+
+    function searchSales() {
+        let payload = {
+            action: "searchSales",
+            date: document.getElementById("searchDate").value,
+            month: document.getElementById("searchMonth").value,
+            year: document.getElementById("searchYear").value,
+            name: document.getElementById("searchName").value,
+            phone: document.getElementById("searchPhone").value,
+            user: document.getElementById("searchUser").value
+        };
+
+        sendAPIRequest(payload, function(res) {
+            if(res.status === "success") {
+                let tbody = document.getElementById("searchTableResult");
+                tbody.innerHTML = "";
+                let totalAmount = 0;
+
+                if(res.data.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
+                    document.getElementById("searchSummary").innerText = "মোট বিক্রি: 0.00 ৳";
+                    return;
+                }
+
+                res.data.forEach((row) => {
+                    totalAmount += parseFloat(row.total);
+                    tbody.innerHTML += `<tr>
+                        <td>${row.date}</td>
+                        <td>${row.cashier}</td>
+                        <td>${row.customerName}</td>
+                        <td class="text-left">${row.productName}</td>
+                        <td>${row.unitPrice}</td>
+                        <td>${row.qty}</td>
+                        <td>${row.total}</td>
+                        <td class="no-print">
+                            <button class="btn-info" onclick="reprintMemo('${row.customerName}', '${row.customerPhone}', '${row.productName}', ${row.unitPrice}, ${row.qty})">🖨️ রি-প্রিন্ট</button>
+                        </td>
+                    </tr>`;
+                });
+
+                document.getElementById("searchSummary").innerText = `🔍 মোট মেমো/আইটেম: ${res.data.length} টি | 💰 মোট বিক্রির পরিমাণ: ${totalAmount.toFixed(2)} ৳`;
+            }
+        });
+    }
+
+    function resetSearchForm() {
+        document.getElementById("searchDate").value = "";
+        document.getElementById("searchMonth").value = "";
+        document.getElementById("searchYear").value = "";
+        document.getElementById("searchName").value = "";
+        document.getElementById("searchPhone").value = "";
+        document.getElementById("searchUser").value = "";
+        
+        document.getElementById("searchTableResult").innerHTML = `<tr><td colspan="8" style="color: #888;">কোনো রেকর্ড পাওয়া যায়নি</td></tr>`;
+        document.getElementById("searchSummary").innerText = "";
+    }
+
+    function reprintMemo(custName, custPhone, prodName, price, qty) {
+        document.getElementById("custName").value = custName;
+        document.getElementById("custPhone").value = custPhone;
+        cart = [{ name: prodName, price: parseFloat(price), qty: parseInt(qty), total: parseFloat(price) * parseInt(qty) }];
+        updateCart();
+        showSection('posSection');
+        alert("মেমোটি রি-প্রিন্ট করার জন্য লোড করা হয়েছে। 'প্রিন্ট ও সেভ করুন' বা 'প্রিভিউ' বাটনে ক্লিক করুন।");
+    }
+
+    function changePassword() {
+        let oldP = document.getElementById("oldPass").value;
+        let newP = document.getElementById("newPass").value;
+        if(!oldP || !newP) return alert("সব ঘর পূরণ করুন!");
+
+        sendAPIRequest({ action: "changePassword", username: loggedInUser, oldPassword: oldP, newPassword: newP }, function(data) {
+            alert(data.message);
+            if(data.status === "success") {
+                document.getElementById("oldPass").value = "";
+                document.getElementById("newPass").value = "";
+            }
+        });
+    }
+
+    function saveUserByAdmin() {
+        let payload = {
+            action: "updateUser",
+            adminRole: loggedInRole,
+            targetUser: document.getElementById("admTargetUser").value,
+            newPassword: document.getElementById("admNewPass").value,
+            newRole: document.getElementById("admNewRole").value,
+            newPermissions: "all"
+        };
+        sendAPIRequest(payload, function(data) { alert(data.message); });
+    }
+</script>
+
+</body>
+</html>
