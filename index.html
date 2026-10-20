@@ -13,34 +13,50 @@
 
     <!-- হেডার সেকশন -->
     <header class="main-header">
-        <!-- বড় স্ক্রিনের বাম পাশে ক্যাটাগরি ও পেজ ড্রপডাউন -->
-        <div class="left-menu-container desktop-category-btn">
-            <div class="dropdown">
-                <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
-                    <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
-                </button>
-                <div id="categoryDropdown" class="dropdown-content">
-                    <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
-                    <div class="dropdown-submenu">
-                        <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
-                        <div class="submenu-content">
-                            <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
-                            <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
-                            <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
+        
+        <!-- ================================================================= -->
+        <!-- 📁 [ডেস্কটপ ভিউ] ক্যাটাগরি ও পেজ ড্রপডাউন বক্স (সহজে পরিবর্তনযোগ্য) -->
+        <!-- ================================================================= -->
+        <div class="category-edit-box-desktop" style="border: 2px dashed var(--accent-color); padding: 5px; border-radius: 8px; display: inline-block;">
+            <div class="left-menu-container desktop-category-btn">
+                <div class="dropdown">
+                    <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
+                        <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
+                    </button>
+                    
+                    <!-- 👇 কাটাগরি লিষ্ট -->
+                    <div id="categoryDropdown" class="dropdown-content">
+                        <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                        <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i>মেমো</a>
+                        
+
+                        <!-- 👇 সাব-ড্রপডাউন কাটাগরির -->
+                        <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                            <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
+                            <div class="submenu-content">
+                                <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
+                                <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
+                                <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
+                            </div>
                         </div>
+                        <!-- 👆 সাব-ড্রপডাউন সমাপ্ত -->
+
+                        <!-- 👇 কাটাগরি লিষ্ট--- -->
+                        <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i>মেমো</a>
+                        <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
+                        <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
+                        <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
+                        <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
+                        <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
+                        <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
+                        <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                     </div>
-                    <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
-                    <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
-                    <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
-                    <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
-                    <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
-                    <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
-                    <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                 </div>
             </div>
         </div>
+        <!-- ================================================================= -->
 
-        <!-- ডান দিকের ইউটিলিটি: থিম চেঞ্জার ও লাইভ ঘড়ি -->
+        <!-- ডান দিকের ইউটিলিটি: থিম চেঞ্জার ও লাইভ ঘড়ি -->
         <div class="right-utility desktop-utility">
             <div class="live-clock"><i class="fa-regular fa-clock"></i> <span id="clockDesktop">10:35 AM</span></div>
             <div class="theme-switcher">
@@ -64,32 +80,42 @@
 
             <!-- ছোট স্ক্রিনের জন্য টাইটেলের নিচে বামে ক্যাটাগরি পেজ ও ডানে হ্যামবার্গার মেনু -->
             <div class="mobile-header-row">
-                <!-- বামে ক্যাটাগরি -->
-                <div class="left-menu-container mobile-category-btn">
-                    <div class="dropdown">
-                        <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
-                            <i class="fa-solid fa-list"></i> ক্যাটাগরি <i class="fa-solid fa-angle-down"></i>
-                        </button>
-                        <div id="categoryDropdownMobile" class="dropdown-content">
-                            <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
-                            <div class="dropdown-submenu">
-                                <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
-                                <div class="submenu-content">
-                                    <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
-                                    <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
-                                    <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
+                
+                <!-- ================================================================= -->
+                <!-- 📁 [মোবাইল ভিউ] ক্যাটাগরি ড্রপডাউন বক্স (সহজে পরিবর্তনযোগ্য) -->
+                <!-- ================================================================= -->
+                <div class="category-edit-box-mobile" style="border: 2px dashed var(--accent-color); padding: 3px; border-radius: 8px; display: inline-block;">
+                    <div class="left-menu-container mobile-category-btn">
+                        <div class="dropdown">
+                            <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
+                                <i class="fa-solid fa-list"></i> ক্যাটাগরি <i class="fa-solid fa-angle-down"></i>
+                            </button>
+                            <div id="categoryDropdownMobile" class="dropdown-content">
+                                <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                                
+                                <!-- 👇 মোবাইল সাব-ড্রপডাউন ডিপ বক্স -->
+                                <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                                    <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
+                                    <div class="submenu-content">
+                                        <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
+                                        <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
+                                        <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
+                                    </div>
                                 </div>
+                                <!-- 👆 সাব-ড্রপডাউন সমাপ্ত -->
+
+                                <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
+                                <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
+                                <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
+                                <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
+                                <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
+                                <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
+                                <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                             </div>
-                            <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
-                            <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
-                            <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
-                            <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
-                            <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
-                            <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
-                            <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                         </div>
                     </div>
                 </div>
+                <!-- ================================================================= -->
 
                 <!-- ডানে মেইন মেনু লিস্টের জন্য হ্যামবার্গার বাটন -->
                 <div class="hamburger-menu-container">
@@ -123,7 +149,7 @@
         </div>
     </header>
 
-    <!-- নিচের মূল মেনু বার (বড় স্ক্রিনে দেখাবে) -->
+    <!-- নিচের মূল মেনু বার (বড় স্ক্রিনে দেখাবে) -->
     <nav class="sub-navbar desktop-menu">
         <ul>
             <li><a href="#home" class="active"><i class="fa-solid fa-house"></i> হোম</a></li>
@@ -136,10 +162,9 @@
         </ul>
     </nav>
 
-    <!-- স্লাইডার সেকশন (৭৫% ও ২৫% অনুপাত, এরো চিহ্ন নিচে ডানে) -->
+    <!-- স্লাইডার সেকশন -->
     <section class="slider-section">
         <div class="slider-grid-wrapper">
-            <!-- বাম দিক: ৭৫% জায়গা (লেখা ও টেক্সট স্লাইড) -->
             <div class="left-text-slider">
                 <div class="slide fade active">
                     <div class="slide-content">
@@ -164,7 +189,6 @@
                 </div>
             </div>
 
-            <!-- ডান দিক: ২৫% জায়গা (মানুষের ছবি স্লাইড) -->
             <div class="right-person-slider">
                 <div class="person-slide fade-person active">
                     <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ১">
@@ -181,7 +205,6 @@
             </div>
         </div>
 
-        <!-- স্লাইডারের নিচে ডট ইন্ডিকেটর ও এরো বাটন একসাথে -->
         <div class="slider-controls-row">
             <div class="dot-container">
                 <span class="dot" onclick="currentSlide(1)"></span> 
@@ -195,7 +218,7 @@
         </div>
     </section>
 
-    <!-- ১. ওএলটি ও নেটওয়ার্ক ওভারভিউ সেকশন -->
+    <!-- ওএলটি ও নেটওয়ার্ক ওভারভিউ সেকশন -->
     <main class="main-content" id="olt">
         <div class="section-title">
             <h2>আমাদের সার্ভিস সমূহঃ-</h2>
@@ -242,7 +265,7 @@
         </div>
     </main>
 
-    <!-- ২. ইন্টারনেট প্যাকেজ সেকশন -->
+    <!-- ইন্টারনেট প্যাকেজ সেকশন -->
     <section class="main-content" id="packages">
         <div class="section-title">
             <h2>জনপ্রিয় ইন্টারনেট প্যাকেজসমূহ</h2>
@@ -289,7 +312,7 @@
         </div>
     </section>
 
-    <!-- ৩. যোগাযোগ ও সাপোর্ট সেকশন -->
+    <!-- যোগাযোগ ও সাপোর্ট সেকশন -->
     <section class="main-content" id="contact">
         <div class="section-title">
             <h2>যোগাযোগ ও হেল্পলাইন</h2>
@@ -318,7 +341,7 @@
         <div class="footer-container">
             <div class="footer-col">
                 <h3><i class="fa-solid fa-network-wired"></i> রিয়াদ কম্পিউটার সেন্টার</h3>
-                <p>আমরা রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ এলাকার নির্ভরযোগ্য ইন্টারনেট সার্ভিস প্রোভাইডার এবং কম্পিউটার সেবা কেন্দ্র।</p>
+                <p>আমরা রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ এলাকার নির্ভরযোগ্য ইন্টারনেট সার্ভিস প্রোভাইডার এবং কম্পিউটার সেবা কেন্দ্র।</p>
                 <div class="footer-link-grid">
                     <a href="#home"><i class="fa-solid fa-angle-right"></i> হোম পেজ</a>
                     <a href="#packages"><i class="fa-solid fa-angle-right"></i> প্যাকেজ</a>
@@ -328,11 +351,11 @@
             </div>
 
             <div class="footer-col">
-                <h3>প্রয়োজনীয় লিংক</h3>
+                <h3>প্রয়োজনীয় লিংক</h3>
                 <div class="footer-link-grid">
                     <a href="#home"><i class="fa-solid fa-angle-right"></i> হোম পেজ</a>
                     <a href="#packages"><i class="fa-solid fa-angle-right"></i> ইন্টারনেট প্যাকেজ</a>
-                    <a href="#olt"><i class="fa-solid fa-angle-right"></i> ওএলটি ও নেটওয়ার্ক</a>
+                    <a href="#olt"><i class="fa-solid fa-angle-right"></i> ওএলটি ও নেটওয়ার্ক</a>
                     <a href="#mikrotik"><i class="fa-solid fa-angle-right"></i> মাইক্রোটিক</a>
                     <a href="#iptv"><i class="fa-solid fa-angle-right"></i> আইপিটিভি</a>
                     <a href="#support"><i class="fa-solid fa-angle-right"></i> টেকনিক্যাল সাপোর্ট</a>
@@ -341,8 +364,8 @@
             </div>
 
             <div class="footer-col">
-                <h3>যোগাযোগ ও সোশ্যাল মিডিয়া</h3>
-                <p><i class="fa-solid fa-location-dot"></i> রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ।</p>
+                <h3>যোগাযোগ ও সোশ্যাল মিডিয়া</h3>
+                <p><i class="fa-solid fa-location-dot"></i> রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ।</p>
                 <p><i class="fa-solid fa-phone"></i> ০১৭১৮১৬৭৬৭১</p>
                 <div class="footer-social-icons">
                     <a href="https://facebook.com" target="_blank" title="ফেসবুক"><i class="fa-brands fa-facebook-f"></i></a>
