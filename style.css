@@ -1,4 +1,7 @@
-/* --- থিম কালার ভেরিয়েবলস (Themes Configuration) --- */
+/* ================================================================= */
+/* 📁 [থিম কালার ভেরিয়েবলসমূহ] ডার্ক, লাইট, ব্লু ও গ্রিন থিম কালার */
+/* ================================================================= */
+
 body.dark-theme {
     --bg-main: #0b0f19;
     --bg-header: linear-gradient(135deg, #0f172a, #1e1b4b);
@@ -59,6 +62,9 @@ body.green-theme {
     --text-3d: 0 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(52, 211, 153, 0.5);
 }
 
+/* ================================================================= */
+/* 📁 [গ্লোবাল স্টাইল] মার্জিন, প্যাডিং ও ফন্ট সেটআপ */
+/* ================================================================= */
 * {
     margin: 0;
     padding: 0;
@@ -78,7 +84,9 @@ body {
     line-height: 1.6;
 }
 
-/* --- হেডার সেকশন --- */
+/* ================================================================= */
+/* 📁 [হেডার ও ড্রপডাউন মেনু সেকশন] */
+/* ================================================================= */
 .main-header {
     background: var(--bg-header);
     padding: 15px 25px;
@@ -94,66 +102,6 @@ body {
     top: 50%;
     transform: translateY(-50%);
     display: inline-block;
-}
-
-.right-utility.desktop-utility {
-    position: absolute;
-    right: 25px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.live-clock {
-    background: var(--bg-main);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    color: var(--accent-color);
-    border: 1px solid var(--card-border);
-    font-weight: 700;
-}
-
-.theme-switcher select {
-    background: var(--card-bg);
-    color: var(--text-color);
-    border: 1px solid var(--card-border);
-    padding: 7px 12px;
-    border-radius: 10px;
-    font-size: 13px;
-    cursor: pointer;
-    font-weight: 700;
-}
-
-.center-title-container {
-    text-align: center;
-    max-width: 700px;
-    margin: 0 auto;
-}
-
-.center-title h1 {
-    font-size: 26px;
-    font-weight: 800;
-    color: var(--accent-color);
-    text-shadow: var(--text-3d);
-}
-
-.center-title .address-line {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-top: 2px;
-    display: block;
-}
-
-.mobile-header-row {
-    display: none;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    padding: 0 5px;
 }
 
 .left-menu-container.mobile-category-btn, .hamburger-menu-container {
@@ -251,6 +199,66 @@ body {
     align-items: center;
 }
 
+.right-utility.desktop-utility {
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.live-clock {
+    background: var(--bg-main);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--accent-color);
+    border: 1px solid var(--card-border);
+    font-weight: 700;
+}
+
+.theme-switcher select {
+    background: var(--card-bg);
+    color: var(--text-color);
+    border: 1px solid var(--card-border);
+    padding: 7px 12px;
+    border-radius: 10px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.center-title-container {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.center-title h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent-color);
+    text-shadow: var(--text-3d);
+}
+
+.center-title .address-line {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 2px;
+    display: block;
+}
+
+.mobile-header-row {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    padding: 0 5px;
+}
+
 .mobile-theme-switch {
     display: none;
     margin-top: 10px;
@@ -258,7 +266,9 @@ body {
     padding-top: 8px;
 }
 
-/* --- ডেস্কটপ মেনু বার --- */
+/* ================================================================= */
+/* 📁 [সাব-নেভবার সেকশন] ডেস্কটপ মেনু বার ডিজাইন */
+/* ================================================================= */
 .sub-navbar {
     background-color: var(--card-bg);
     margin: 12px auto 5px auto;
@@ -301,28 +311,87 @@ body {
     transform: translateY(-3px) scale(1.05);
 }
 
-/* --- স্লাইডার সেকশন --- */
+/* ================================================================= */
+/* 📁 [স্লাইডার সেকশন] ফিক্সড বক্স মাপের স্লাইডার লেআউট */
+/* ================================================================= */
 .slider-section {
     max-width: 1200px;
     margin: 20px auto;
     padding: 0 15px;
 }
 
+/* মূল স্লাইডার বক্সের মাপ একদম ফিক্সড করা হলো (উচ্চতা ও চওড়া লকড) */
 .slider-grid-wrapper {
     display: grid;
-    grid-template-columns: 75% 25%;
+    grid-template-columns: 280px 1fr; /* বামের ছবির ঘরের ফিক্সড চওড়া 280px */
+    height: 220px;                     /* মূল বক্সের উচ্চতা একদম ফিক্সড 220px */
     background: var(--card-bg);
     border-radius: 16px;
-    overflow: hidden;
+    overflow: hidden;                  /* বক্সের বাইরে কোনো কিছু যেতে দেবে না */
     box-shadow: var(--shadow-pop);
     border: 1px solid var(--card-border);
-    min-height: 180px;
     align-items: center;
 }
 
+/* 🖼️ বাম পাশের ছবির ফিক্সড ঘর বা ডিপ */
+.right-person-slider {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.15);
+    border-right: 1px solid var(--card-border);
+    border-left: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    overflow: hidden; /* ছবির সাইজ বড় হলেও এই ঘরের বাইরে যাবে না */
+}
+
+.person-slide {
+    display: none;
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 🌟 [ছবির সাইজ কন্ট্রোল] এই মাপ পরিবর্তন করলে কেবল ছবি ছোট-বড় হবে, ডিপ ফিক্সড থাকবে */
+.person-slide img {
+    width: 120px;          /* ছবির চওড়া (আপনার ইচ্ছামতো বাড়াতে বা কমাতে পারেন) */
+    height: 120px;         /* ছবির উচ্চতা (চওড়ার সমান রাখলে গোল শেপ পারফেক্ট থাকবে) */
+    max-width: 100%;
+    max-height: 130px;
+    
+    /* গোল বা চারকোনা করার নিয়ম: গোল চাইলে 50%, চারকোনা চাইলে 10px বা 0px দিন */
+    border-radius: 50%;    
+    
+    object-fit: cover;     /* ছবি কেটে না গিয়ে ডিপের ভেতরে সুন্দরভাবে ফিট থাকবে */
+    border: 2px solid var(--accent-color);
+    margin-bottom: 6px;
+}
+
+.person-caption {
+    font-size: 13px;
+    color: var(--accent-color);
+    font-weight: 700;
+}
+
+/* 📝 ডান পাশের লেখার ফিক্সড বক্স */
 .left-text-slider {
     position: relative;
-    padding: 20px 25px;
+    padding: 25px 30px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    overflow: hidden;      /* লেখা বেশি হলেও বক্সের বাইরে যাবে না */
+    word-wrap: break-word;
 }
 
 .slide {
@@ -360,7 +429,6 @@ body {
     font-size: 13px;
 }
 
-/* স্লাইডারের নিচের কন্ট্রোল রো (ডট ও এরো একসাথে নিচে ডানে) */
 .slider-controls-row {
     display: flex;
     justify-content: space-between;
@@ -391,40 +459,6 @@ body {
     background-color: var(--primary-color);
 }
 
-/* ডান দিকের মানুষের ছবি স্লাইডার (২৫%) */
-.right-person-slider {
-    position: relative;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.15);
-    border-left: 1px solid var(--card-border);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-}
-
-.person-slide {
-    display: none;
-    text-align: center;
-    width: 100%;
-}
-
-.person-slide img {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent-color);
-    margin-bottom: 6px;
-}
-
-.person-caption {
-    font-size: 11px;
-    color: var(--accent-color);
-    font-weight: 700;
-}
-
 .dot-container {
     text-align: left;
 }
@@ -445,7 +479,9 @@ body {
     border-radius: 6px;
 }
 
-/* --- মেইন কন্টেন্ট ও কার্ডস --- */
+/* ================================================================= */
+/* 📁 [মেইন কন্টেন্ট ও কার্ডস সেকশন] সার্ভিস ও প্যাকেজ কার্ড ডিজাইন */
+/* ================================================================= */
 .main-content {
     max-width: 1200px;
     margin: 30px auto 40px auto;
@@ -561,7 +597,9 @@ body {
     font-size: 14px;
 }
 
-/* --- ফুটার ডিজাইন --- */
+/* ================================================================= */
+/* 📁 [ফুটার সেকশন] ফুটার, লিংক ও সোশ্যাল আইকন ডিজাইন */
+/* ================================================================= */
 .main-footer-section {
     background: var(--footer-bg);
     color: var(--text-color);
@@ -649,7 +687,9 @@ body {
     font-size: 13px;
 }
 
-/* হোয়াটসঅ্যাপ ফ্লোটিং বাটন */
+/* ================================================================= */
+/* 📁 [হোয়াটসঅ্যাপ ফ্লোটিং বাটন সেকশন] */
+/* ================================================================= */
 .whatsapp-float {
     position: fixed;
     bottom: 25px;
@@ -673,7 +713,9 @@ body {
     transform: scale(1.15) rotate(8deg);
 }
 
-/* --- মোবাইল ও ছোট স্ক্রিন রেসপন্সিভ ডিজাইন --- */
+/* ================================================================= */
+/* 📁 [রেসপন্সিভ ডিজাইন সেকশন] মোবাইল ও ছোট ডিভাইসের জন্য */
+/* ================================================================= */
 @media screen and (max-width: 768px) {
     .desktop-menu {
         display: none !important;
@@ -727,11 +769,13 @@ body {
     }
 
     .slider-grid-wrapper {
-        min-height: 150px;
+        min-height: auto;
+        height: auto;
+        grid-template-columns: 1fr;
     }
 
     .person-slide img {
-        width: 55px;
-        height: 55px;
+        width: 100px;
+        height: 100px;
     }
 }
