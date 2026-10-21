@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>রিয়াদ কম্পিউটার সেন্টার</title>
+    <title>রিয়াদ কম্পিউটার সেন্টার | রহনপুর, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ</title>
     <!-- CSS ফাইল লিংক -->
     <link rel="stylesheet" href="style.css">
     <!-- ফন্ট অসম আইকন -->
@@ -11,12 +11,12 @@
 </head>
 <body class="dark-theme"> <!-- ডিফল্ট ডার্ক থিম -->
 
-    <!-- হেডার সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [হেডার সেকশন] ক্যাটাগরি, লোগো, ঘড়ি ও থিম চেঞ্জার -->
+    <!-- ================================================================= -->
     <header class="main-header">
         
-        <!-- ================================================================= -->
-        <!-- 📁 [ডেস্কটপ ভিউ] ক্যাটাগরি ও পেজ ড্রপডাউন বক্স (সহজে পরিবর্তনযোগ্য) -->
-        <!-- ================================================================= -->
+        <!-- [ডেস্কটপ ভিউ] ক্যাটাগরি ও পেজ ড্রপডাউন বক্স -->
         <div class="category-edit-box-desktop" style="border: 2px dashed var(--accent-color); padding: 5px; border-radius: 8px; display: inline-block;">
             <div class="left-menu-container desktop-category-btn">
                 <div class="dropdown">
@@ -24,13 +24,12 @@
                         <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
                     </button>
                     
-                    <!-- 👇 কাটাগরি লিষ্ট -->
+                    <!-- ক্যাটাগরি লিষ্ট -->
                     <div id="categoryDropdown" class="dropdown-content">
                         <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
-                        <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i>মেমো</a>
-                        
+                        <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
 
-                        <!-- 👇 সাব-ড্রপডাউন কাটাগরির -->
+                        <!-- সাব-ড্রপডাউন ক্যাটাগরির -->
                         <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
                             <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
                             <div class="submenu-content">
@@ -39,10 +38,7 @@
                                 <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
                             </div>
                         </div>
-                        <!-- 👆 সাব-ড্রপডাউন সমাপ্ত -->
 
-                        <!-- 👇 কাটাগরি লিষ্ট--- -->
-                        <a href="Clinic.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i>ক্লিনিক</a>
                         <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
                         <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
                         <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
@@ -54,7 +50,6 @@
                 </div>
             </div>
         </div>
-        <!-- ================================================================= -->
 
         <!-- ডান দিকের ইউটিলিটি: থিম চেঞ্জার ও লাইভ ঘড়ি -->
         <div class="right-utility desktop-utility">
@@ -78,12 +73,10 @@
                 </p>
             </div>
 
-            <!-- ছোট স্ক্রিনের জন্য টাইটেলের নিচে বামে ক্যাটাগরি পেজ ও ডানে হ্যামবার্গার মেনু -->
+            <!-- ছোট স্ক্রিনের জন্য মোবাইল হেডার রো -->
             <div class="mobile-header-row">
                 
-                <!-- ================================================================= -->
-                <!-- 📁 [মোবাইল ভিউ] ক্যাটাগরি ড্রপডাউন বক্স (সহজে পরিবর্তনযোগ্য) -->
-                <!-- ================================================================= -->
+                <!-- [মোবাইল ভিউ] ক্যাটাগরি ড্রপডাউন বক্স -->
                 <div class="category-edit-box-mobile" style="border: 2px dashed var(--accent-color); padding: 3px; border-radius: 8px; display: inline-block;">
                     <div class="left-menu-container mobile-category-btn">
                         <div class="dropdown">
@@ -92,8 +85,8 @@
                             </button>
                             <div id="categoryDropdownMobile" class="dropdown-content">
                                 <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                                <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
                                 
-                                <!-- 👇 মোবাইল সাব-ড্রপডাউন ডিপ বক্স -->
                                 <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
                                     <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
                                     <div class="submenu-content">
@@ -102,7 +95,6 @@
                                         <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
                                     </div>
                                 </div>
-                                <!-- 👆 সাব-ড্রপডাউন সমাপ্ত -->
 
                                 <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
                                 <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
@@ -115,7 +107,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- ================================================================= -->
 
                 <!-- ডানে মেইন মেনু লিস্টের জন্য হ্যামবার্গার বাটন -->
                 <div class="hamburger-menu-container">
@@ -149,7 +140,9 @@
         </div>
     </header>
 
-    <!-- নিচের মূল মেনু বার (বড় স্ক্রিনে দেখাবে) -->
+    <!-- ================================================================= -->
+    <!-- 📁 [সাব-নেভবার সেকশন] ডেস্কটপ মূল নেভিগেশন বার -->
+    <!-- ================================================================= -->
     <nav class="sub-navbar desktop-menu">
         <ul>
             <li><a href="#home" class="active"><i class="fa-solid fa-house"></i> হোম</a></li>
@@ -162,9 +155,29 @@
         </ul>
     </nav>
 
-    <!-- স্লাইডার সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [স্লাইডার সেকশন] বামে ছবি ও ডানে লেখা (সংশোধিত পজিশন) -->
+    <!-- ================================================================= -->
     <section class="slider-section">
         <div class="slider-grid-wrapper">
+            
+            <!-- ১. ছবির অংশ (বাম দিকে থাকবে) -->
+            <div class="right-person-slider">
+                <div class="person-slide fade-person active">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ১">
+                    <div class="person-caption">সাপোর্ট টিম</div>
+                </div>
+                <div class="person-slide fade-person">
+                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ২">
+                    <div class="person-caption">টেকনিক্যাল এক্সপার্ট</div>
+                </div>
+                <div class="person-slide fade-person">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ৩">
+                    <div class="person-caption">কাস্টমার কেয়ার</div>
+                </div>
+            </div>
+
+            <!-- ২. লেখার অংশ (ডান দিকে থাকবে) -->
             <div class="left-text-slider">
                 <div class="slide fade active">
                     <div class="slide-content">
@@ -189,20 +202,6 @@
                 </div>
             </div>
 
-            <div class="right-person-slider">
-                <div class="person-slide fade-person active">
-                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ১">
-                    <div class="person-caption">সাপোর্ট টিম</div>
-                </div>
-                <div class="person-slide fade-person">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ২">
-                    <div class="person-caption">টেকনিক্যাল এক্সপার্ট</div>
-                </div>
-                <div class="person-slide fade-person">
-                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" alt="সাপোর্ট প্রতিনিধি ৩">
-                    <div class="person-caption">কাস্টমার কেয়ার</div>
-                </div>
-            </div>
         </div>
 
         <div class="slider-controls-row">
@@ -218,7 +217,9 @@
         </div>
     </section>
 
-    <!-- ওএলটি ও নেটওয়ার্ক ওভারভিউ সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [সার্ভিস ও ওভারভিউ সেকশন] কম্পিউটারের ও নেটওয়ার্ক সার্ভিস কার্ড -->
+    <!-- ================================================================= -->
     <main class="main-content" id="olt">
         <div class="section-title">
             <h2>আমাদের সার্ভিস সমূহঃ-</h2>
@@ -231,9 +232,9 @@
                 <h3>মোবাইল ও কম্পিউটার সার্ভিস</h3>
                 <p class="price" style="color: var(--accent-color);">সকাল 8 থেকে রাত 8টা</p>
                 <ul>
-                    <li><i class="fa-solid fa-check"></i> কম্পিউটার ইউনডোজ সেটআপ</li>
+                    <li><i class="fa-solid fa-check"></i> কম্পিউটার উইন্ডোজ সেটআপ</li>
                     <li><i class="fa-solid fa-check"></i> মোবাইল ফোন আনলক</li>
-                    <li><i class="fa-solid fa-check"></i> মোবাইল ফ্লাস ও গান ডাউনলোড</li>
+                    <li><i class="fa-solid fa-check"></i> মোবাইল ফ্ল্যাশ ও সফটওয়্যার কাজ</li>
                 </ul>
                 <a href="#" class="card-btn">স্ট্যাটাস চেক</a>
             </div>
@@ -244,7 +245,7 @@
                 <h3>মাইক্রোটিক রাউটার সার্ভিস</h3>
                 <p class="price" style="color: #34d399;">সক্রিয় ও সুরক্ষিত</p>
                 <ul>
-                    <li><i class="fa-solid fa-check"></i> রিয়েল-টাইপ ব্যান্ডউইথ ম্যানেজমেন্ট</li>
+                    <li><i class="fa-solid fa-check"></i> রিয়েল-টাইম ব্যান্ডউইথ ম্যানেজমেন্ট</li>
                     <li><i class="fa-solid fa-check"></i> সিকিউর ফায়ারওয়াল ও কিউ ম্যানেজমেন্ট</li>
                     <li><i class="fa-solid fa-check"></i> হাই স্পিড রাউটিং কোর</li>
                 </ul>
@@ -253,7 +254,7 @@
 
             <div class="feature-card">
                 <div class="card-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                <h3>নিরাপদ বিডিআই হাব</h3>
+                <h3>নিরাপদ বিডিআইএক্স হাব</h3>
                 <p class="price" style="color: var(--accent-color);">1 Gbps লোকাল স্পিড</p>
                 <ul>
                     <li><i class="fa-solid fa-check"></i> সুপার ফাস্ট লোকাল মুভি ও সার্ভার</li>
@@ -265,7 +266,9 @@
         </div>
     </main>
 
-    <!-- ইন্টারনেট প্যাকেজ সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [ইন্টারনেট প্যাকেজ সেকশন] বিভিন্ন গতির ব্রডব্যান্ড প্যাকেজ মূল্য -->
+    <!-- ================================================================= -->
     <section class="main-content" id="packages">
         <div class="section-title">
             <h2>জনপ্রিয় ইন্টারনেট প্যাকেজসমূহ</h2>
@@ -297,6 +300,7 @@
                 </ul>
                 <a href="#contact" class="card-btn">সংযুক্ত হন</a>
             </div>
+            
             <div class="feature-card">
                 <div class="card-icon"><i class="fa-solid fa-crown"></i></div>
                 <h3>100 Mbps Speed</h3>
@@ -312,7 +316,9 @@
         </div>
     </section>
 
-    <!-- যোগাযোগ ও সাপোর্ট সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [যোগাযোগ ও সাপোর্ট সেকশন] হটলাইন ও টেকনিক্যাল হেল্পলাইন -->
+    <!-- ================================================================= -->
     <section class="main-content" id="contact">
         <div class="section-title">
             <h2>যোগাযোগ ও হেল্পলাইন</h2>
@@ -336,7 +342,9 @@
         </div>
     </section>
 
-    <!-- ফুটার সেকশন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [ফুটার সেকশন] প্রতিষ্ঠানের বিবরণ, লিংক ও সোশ্যাল মিডিয়া -->
+    <!-- ================================================================= -->
     <footer class="main-footer-section">
         <div class="footer-container">
             <div class="footer-col">
@@ -381,12 +389,16 @@
         </div>
     </footer>
 
-    <!-- হোয়াটসঅ্যাপ ফ্লোটিং চ্যাট বাটন -->
+    <!-- ================================================================= -->
+    <!-- 📁 [হোয়াটসঅ্যাপ ফ্লোটিং চ্যাট] ফিক্সড চ্যাট বাটন -->
+    <!-- ================================================================= -->
     <a href="https://wa.me/8801718167671?text=হ্যালো,%20আমি%20ইন্টারনেট%20কানেকশন%20সম্পর্কে জানতে চাই." class="whatsapp-float" target="_blank" title="হোয়াটসঅ্যাপে যোগাযোগ করুন">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- জাভাস্ক্রিপ্ট স্ক্রিপ্ট -->
+    <!-- ================================================================= -->
+    <!-- 📁 [জাভাস্ক্রিপ্ট স্ক্রিপ্ট] ড্রপডাউন, স্লাইডার, ঘড়ি ও থিম চেঞ্জার লজিক -->
+    <!-- ================================================================= -->
     <script>
         function toggleCategoryDropdown(event) {
             event.stopPropagation();
