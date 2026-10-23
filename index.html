@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>রিয়াদ কম্পিউটার সেন্টার | রহনপুর, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ</title>
-    <!-- CSS ফাইল লিংক -->
+    <meta name="description" content=" রিয়াদ কম্পিউটার সেন্টার, রহনপুর বড় বাজার, 01718167671 ">
+    <meta name="google-site-verification" content="t1ttRUMXMSkD7EcAg_cVj__SGWdK2ysP-ZI23_Ig0HU" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta name="google-site-verification" content="VH37tu1PBtT0NsAFXMqt-8V4x_Rs6K8vwy34L_CSt8o" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
+    <meta http-equiv="cache-control" content="max-age=0"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="keywords" content="NGB টেকনিসিয়ান সমিতি 01718167671 "/>
+    <link href="https://rokysite.github.io/mobileservice/" rel="icon" type="image/x-icon">
+    <!-- StyleSheets -- CSS ফাইল লিংক -->
+    <link rel="stylesheet" href="css file/main.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="package.css">
     <!-- ফন্ট অসম আইকন -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body class="dark-theme"> <!-- ডিফল্ট ডার্ক থিম -->
 
     <!-- ================================================================= -->
@@ -17,36 +31,60 @@
     <header class="main-header">
         
         <!-- [ডেস্কটপ ভিউ] ক্যাটাগরি ও পেজ ড্রপডাউন বক্স -->
-        <div class="category-edit-box-desktop" style="border: 2px dashed var(--accent-color); padding: 5px; border-radius: 8px; display: inline-block;">
-            <div class="left-menu-container desktop-category-btn">
-                <div class="dropdown">
-                    <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
-                        <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
-                    </button>
-                    
-                    <!-- ক্যাটাগরি লিষ্ট -->
-                    <div id="categoryDropdown" class="dropdown-content">
-                        <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
-                        <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
+        <div class="left-menu-container desktop-category-btn">
+            <div class="dropdown">
+                <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
+                    <i class="fa-solid fa-bars"></i> ক্যাটাগরি ও পেজ <i class="fa-solid fa-angle-down"></i>
+                </button>
+                
+                <!-- ক্যাটাগরি লিষ্ট -->
+                <div id="categoryDropdown" class="dropdown-content">
+                    <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                    <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
 
-                        <!-- সাব-ড্রপডাউন ক্যাটাগরির -->
-                        <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
-                            <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
-                            <div class="submenu-content">
-                                <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
-                                <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
-                                <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
-                            </div>
+                    <!-- সাব-ড্রপডাউন ক্যাটাগরি ১ (প্যাকেজ) -->
+                    <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                        <a href="javascript:void(0)" class="submenu-toggle" onclick="toggleSubmenu(event)">
+                            <i class="fa-solid fa-wifi"></i> প্যাকেজ <i class="fa-solid fa-angle-right"></i>
+                        </a>
+                        <div class="submenu-content">
+                            <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
+                            <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
+                            <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
                         </div>
-
-                        <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
-                        <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
-                        <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
-                        <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
-                        <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
-                        <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
-                        <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                     </div>
+
+                    <!-- সাব-ড্রপডাউন ক্যাটাগরি ২ (NGB) -->
+                    <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                        <a href="javascript:void(0)" class="submenu-toggle" onclick="toggleSubmenu(event)">
+                            <i class="fa-solid fa-wifi"></i> NGB <i class="fa-solid fa-angle-right"></i>
+                        </a>
+                        <div class="submenu-content">
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/link.html" onclick="closeDropdowns()">NGB হিসাব</a>
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/balance.html" onclick="closeDropdowns()">NGB নেটওয়াক হিসাব</a>
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/cable.html" onclick="closeDropdowns()">NGB কেবল তথ্য</a>
+                        </div>
+                    </div>
+
+                     <!-- সাব-ড্রপডাউন ক্যাটাগরি 3 (NGB) -->
+                    <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                        <a href="javascript:void(0)" class="submenu-toggle" onclick="toggleSubmenu(event)">
+                            <i class="fa-solid fa-wifi"></i> NGB <i class="fa-solid fa-angle-right"></i>
+                        </a>
+                        <div class="submenu-content">
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/link.html" onclick="closeDropdowns()">NGB হিসাব</a>
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/balance.html" onclick="closeDropdowns()">NGB নেটওয়াক হিসাব</a>
+                            <a target="_blank" href="https://ngbtechnician.kesug.com/cable.html" onclick="closeDropdowns()">NGB কেবল তথ্য</a>
+                        </div>
+                    </div>
+
+                    <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
+                    <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
+                    <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
+                    <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
+                    <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
+                    <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
+                    <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                 </div>
             </div>
         </div>
@@ -77,33 +115,33 @@
             <div class="mobile-header-row">
                 
                 <!-- [মোবাইল ভিউ] ক্যাটাগরি ড্রপডাউন বক্স -->
-                <div class="category-edit-box-mobile" style="border: 2px dashed var(--accent-color); padding: 3px; border-radius: 8px; display: inline-block;">
-                    <div class="left-menu-container mobile-category-btn">
-                        <div class="dropdown">
-                            <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
-                                <i class="fa-solid fa-list"></i> ক্যাটাগরি <i class="fa-solid fa-angle-down"></i>
-                            </button>
-                            <div id="categoryDropdownMobile" class="dropdown-content">
-                                <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
-                                <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
-                                
-                                <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
-                                    <a href="#packages" class="submenu-toggle"><i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i></a>
-                                    <div class="submenu-content">
-                                        <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
-                                        <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
-                                        <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
-                                    </div>
+                <div class="left-menu-container mobile-category-btn">
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleCategoryDropdown(event)">
+                            <i class="fa-solid fa-list"></i> ক্যাটাগরি <i class="fa-solid fa-angle-down"></i>
+                        </button>
+                        <div id="categoryDropdownMobile" class="dropdown-content">
+                            <a href="#home" onclick="closeDropdowns()"><i class="fa-solid fa-house"></i> হোম পেজ</a>
+                            <a href="sales.html" target="_blank" onclick="closeDropdowns()"><i class="fa-solid fa-file-invoice"></i> মেমো</a>
+                            
+                            <div class="dropdown-submenu" style="border-left: 3px solid var(--accent-color); margin: 3px 0;">
+                                <a href="javascript:void(0)" class="submenu-toggle" onclick="toggleSubmenu(event)">
+                                    <i class="fa-solid fa-wifi"></i> ইন্টারনেট প্যাকেজ <i class="fa-solid fa-angle-right"></i>
+                                </a>
+                                <div class="submenu-content">
+                                    <a href="#packages" onclick="closeDropdowns()">30 Mbps প্যাকেজ</a>
+                                    <a href="#packages" onclick="closeDropdowns()">50 Mbps প্যাকেজ</a>
+                                    <a href="#packages" onclick="closeDropdowns()">100 Mbps প্যাকেজ</a>
                                 </div>
-
-                                <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
-                                <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
-                                <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
-                                <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
-                                <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
-                                <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
-                                <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                             </div>
+
+                            <a href="#olt" onclick="closeDropdowns()"><i class="fa-solid fa-server"></i> ওএলটি ও রাউটার</a>
+                            <a href="#mikrotik" onclick="closeDropdowns()"><i class="fa-solid fa-microchip"></i> মাইক্রোটিক সার্ভার</a>
+                            <a href="#iptv" onclick="closeDropdowns()"><i class="fa-solid fa-tv"></i> বিডিআইএক্স ও আইপিটিভি</a>
+                            <a href="#speedtest" onclick="closeDropdowns()"><i class="fa-solid fa-gauge"></i> স্পিড টেস্ট</a>
+                            <a href="#realip" onclick="closeDropdowns()"><i class="fa-solid fa-globe"></i> রিয়েল আইপি</a>
+                            <a href="#notice" onclick="closeDropdowns()"><i class="fa-solid fa-bullhorn"></i> নোটিশ বোর্ড</a>
+                            <a href="#contact" onclick="closeDropdowns()"><i class="fa-solid fa-phone"></i> যোগাযোগ</a>
                         </div>
                     </div>
                 </div>
@@ -156,7 +194,7 @@
     </nav>
 
     <!-- ================================================================= -->
-    <!-- 📁 [স্লাইডার সেকশন] বামে ছবি ও ডানে লেখা (সংশোধিত পজিশন) -->
+    <!-- 📁 [স্লাইডার সেকশন] বামে ছবি ও ডানে লেখা -->
     <!-- ================================================================= -->
     <section class="slider-section">
         <div class="slider-grid-wrapper">
@@ -218,7 +256,7 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- 📁 [সার্ভিস ও ওভারভিউ সেকশন] কম্পিউটারের ও নেটওয়ার্ক সার্ভিস কার্ড -->
+    <!-- 📁 [সার্ভিস ও ওভারভিউ সেকশন] -->
     <!-- ================================================================= -->
     <main class="main-content" id="olt">
         <div class="section-title">
@@ -234,7 +272,7 @@
                 <ul>
                     <li><i class="fa-solid fa-check"></i> কম্পিউটার উইন্ডোজ সেটআপ</li>
                     <li><i class="fa-solid fa-check"></i> মোবাইল ফোন আনলক</li>
-                    <li><i class="fa-solid fa-check"></i> মোবাইল ফ্ল্যাশ ও সফটওয়্যার কাজ</li>
+                    <li><i class="fa-solid fa-check"></i> মোবাইল ফ্ল্যাশ ও সফটওয়্যার কাজ</li>
                 </ul>
                 <a href="#" class="card-btn">স্ট্যাটাস চেক</a>
             </div>
@@ -267,13 +305,14 @@
     </main>
 
     <!-- ================================================================= -->
-    <!-- 📁 [ইন্টারনেট প্যাকেজ সেকশন] বিভিন্ন গতির ব্রডব্যান্ড প্যাকেজ মূল্য -->
+    <!-- 📁 [ইন্টারনেট প্যাকেজ সেকশন] -->
     <!-- ================================================================= -->
     <section class="main-content" id="packages">
         <div class="section-title">
             <h2>জনপ্রিয় ইন্টারনেট প্যাকেজসমূহ</h2>
             <p>আপনার বাজেট ও গতির চাহিদা অনুযায়ী সেরা অফার বেছে নিন</p>
         </div>
+         <!--প্যাকেজ -->
         <div class="card-grid">
             <div class="feature-card">
                 <div class="card-icon"><i class="fa-solid fa-gauge-high"></i></div>
@@ -317,7 +356,7 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- 📁 [যোগাযোগ ও সাপোর্ট সেকশন] হটলাইন ও টেকনিক্যাল হেল্পলাইন -->
+    <!-- 📁 [যোগাযোগ ও সাপোর্ট সেকশন] -->
     <!-- ================================================================= -->
     <section class="main-content" id="contact">
         <div class="section-title">
@@ -343,13 +382,13 @@
     </section>
 
     <!-- ================================================================= -->
-    <!-- 📁 [ফুটার সেকশন] প্রতিষ্ঠানের বিবরণ, লিংক ও সোশ্যাল মিডিয়া -->
+    <!-- 📁 [ফুটার সেকশন] -->
     <!-- ================================================================= -->
     <footer class="main-footer-section">
         <div class="footer-container">
             <div class="footer-col">
                 <h3><i class="fa-solid fa-network-wired"></i> রিয়াদ কম্পিউটার সেন্টার</h3>
-                <p>আমরা রহনপুর বড় বাজার, গোমস্তাপুর, চাঁপাইনবাবগঞ্জ এলাকার নির্ভরযোগ্য ইন্টারনেট সার্ভিস প্রোভাইডার এবং কম্পিউটার সেবা কেন্দ্র।</p>
+                <p>রহনপুর বড় বাজার।</p>
                 <div class="footer-link-grid">
                     <a href="#home"><i class="fa-solid fa-angle-right"></i> হোম পেজ</a>
                     <a href="#packages"><i class="fa-solid fa-angle-right"></i> প্যাকেজ</a>
@@ -390,14 +429,14 @@
     </footer>
 
     <!-- ================================================================= -->
-    <!-- 📁 [হোয়াটসঅ্যাপ ফ্লোটিং চ্যাট] ফিক্সড চ্যাট বাটন -->
+    <!-- 📁 [হোয়াটসঅ্যাপ ফ্লোটিং চ্যাট] -->
     <!-- ================================================================= -->
     <a href="https://wa.me/8801718167671?text=হ্যালো,%20আমি%20ইন্টারনেট%20কানেকশন%20সম্পর্কে জানতে চাই." class="whatsapp-float" target="_blank" title="হোয়াটসঅ্যাপে যোগাযোগ করুন">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
     <!-- ================================================================= -->
-    <!-- 📁 [জাভাস্ক্রিপ্ট স্ক্রিপ্ট] ড্রপডাউন, স্লাইডার, ঘড়ি ও থিম চেঞ্জার লজিক -->
+    <!-- 📁 [জাভাস্ক্রিপ্ট স্ক্রিপ্ট] -->
     <!-- ================================================================= -->
     <script>
         function toggleCategoryDropdown(event) {
@@ -418,6 +457,14 @@
             let d2 = document.getElementById("categoryDropdownMobile");
             if(d1) d1.classList.remove("show");
             if(d2) d2.classList.remove("show");
+        }
+
+        /* সাব-ড্রপডাউন ক্লিক করে খোলার ফাংশন */
+        function toggleSubmenu(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            let parentSubmenu = event.currentTarget.parentElement;
+            parentSubmenu.classList.toggle('open');
         }
 
         function closeDropdowns() {
