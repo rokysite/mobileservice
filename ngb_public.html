@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NGB হিসাব বিবরণী সিস্টেম</title>
+<style>
+/* ===== Body & Container ===== */
+body { margin:0; font-family: Arial, sans-serif; background: linear-gradient(135deg,#74ebd5,#ACB6E5); color: #333; }
+.container { max-width: 1100px; margin: auto; padding: 20px; text-align: center; }
+.card { background: #fff; padding: 25px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); position: relative; margin-bottom: 20px; }
+h2, h3 { text-align: center; margin: 15px 0; }
+
+/* ===== Inputs & Selects ===== */
+input, select { width: 90%; max-width: 400px; padding: 10px; margin: 5px auto 10px; border-radius: 6px; border: 1px solid #ccc; text-align: center; display: block; font-size: 14px; }
+
+/* ===== Buttons ===== */
+button { padding: 12px 20px; margin: 10px 5px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 14px; }
+button:hover { opacity: 0.9; }
+button.cancel { background: #9ca3af; color: #fff; }
+button.view { background: #2196F3; color: #fff; }
+button.save { background: #4CAF50; color: #fff; }
+
+/* ===== Pages Styling ===== */
+#loginPage { max-width: 400px; margin: 50px auto; padding: 30px; }
+#homePage { padding: 40px 20px; }
+#homePage button { font-size: 16px; padding: 15px 30px; margin: 10px; display: inline-block; width: 220px; }
+
+/* ===== Tables ===== */
+table { width: 100%; border-collapse: collapse; margin-top: 15px; text-align: center; }
+th, td { border: 1px solid #000; padding: 6px 8px; text-align: center; font-size: 14px; vertical-align: middle; }
+#workTable thead th, #incomeTable thead th { background:#009688; color:#ffffff; font-weight:bold; cursor: pointer; }
+
+/* ===== Stats & Filter Layout (Centered) ===== */
+.stats { text-align: center; margin: 15px 0; font-weight: bold; line-height: 1.6; font-size: 14px; background: #fff0f3; padding: 10px; border-radius: 8px; border: 1px solid #f5c2c7; }
+.flex-row { display: flex; flex-direction: column; width: 100%; margin-bottom: 10px; align-items: center; justify-content: center; }
+.filter-inputs { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; width: 100%; align-items: center; }
+.filter-inputs input, .filter-inputs select { width: 140px; padding: 8px; font-size: 14px; margin: 3px; }
+
+.filter-buttons { display: flex; justify-content: center; gap: 6px; width: 100%; margin-top: 8px; align-items: center; flex-wrap: wrap; }
+.filter-buttons button { padding: 8px 12px; font-size: 14px; margin: 3px; }
+
+/* ===== Responsive ===== */
+@media(max-width:768px) {
+  input, select, button { width: 95%; font-size: 14px; }
+  
+  .filter-inputs { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; width: 95%; margin: 0 auto; box-sizing: border-box; }
+  .filter-inputs input, .filter-inputs select { width: 48%; max-width: none; margin: 2px 0; padding: 8px 4px; font-size: 14px; box-sizing: border-box; }
+  
+  .filter-inputs > *:nth-child(7) { width: 48%; margin: 2px 0; }
+
+  .filter-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; width: 95%; margin: 6px auto 0; box-sizing: border-box; }
+  .filter-buttons button { width: 30%; max-width: none; margin: 2px; padding: 8px 2px; font-size: 13px; box-sizing: border-box; white-space: nowrap; }
+
+  table, th, td { font-size: 13px; padding: 5px 6px; }
+}
+.print-area { width:100%; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.print-area table { min-width:900px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LOGIN PAGE -->
+  <div id="loginPage" class="card">
+    <h2>লগইন করুন</h2>
+    <label>ইউজারনেম</label>
+    <input type="text" id="loginUser" placeholder="Username দিতে হবে">
+    <label>পাসওয়ার্ড</label>
+    <input type="password" id="loginPass" placeholder="Password দিতে হবে">
+    <button class="save" onclick="doLogin()">Login</button>
+  </div>
+
+  <!-- HOME / MAIN SELECTION PAGE -->
+  <div id="homePage" class="card" style="display:none;">
+    <h2>NGB হিসাব বিবরণী</h2>
+    <p>দয়া করে নিচের যেকোনো একটি অপশন বেছে নিন:</p>
+    
+    <button class="view" onclick="showSection('workViewSection')">খরচ ভিউ</button>
+    <button class="save" onclick="showSection('incomeViewSection')">আয় ভিউ</button>
+    <br><br>
+    <button class="cancel" onclick="logout()" style="width: 100px; padding: 8px; font-size: 13px;">লগআউট</button>
+  </div>
+
+  <!-- WORK VIEW SECTION (খরচ ভিউ) -->
+  <div id="workViewSection" class="card" style="display:none;">
+    <h3>প্রতিদিনের খরচ হিসাব (ভিউ)</h3>
+    <div class="flex-row">
+      <div class="filter-inputs">
+        <input type="date" id="workFrom" onchange="filterWorkRange()">
+        <input type="date" id="workTo" onchange="filterWorkRange()">
+        <select id="workMonth" onchange="onWorkMonthYearChange()">
+          <option value="">মাস নির্বাচন করুন</option>
+          <option value="01">জানুয়ারি</option><option value="02">ফেব্রুয়ারি</option><option value="03">মার্চ</option><option value="04">এপ্রিল</option><option value="05">মে</option><option value="06">জুন</option>
+          <option value="07">জুলাই</option><option value="08">আগস্ট</option><option value="09">সেপ্টেম্বর</option><option value="10">অক্টোবর</option><option value="11">নভেম্বর</option><option value="12">ডিসেম্বর</option>
+        </select>
+        <select id="workYear" onchange="onWorkMonthYearChange()">
+          <option value="">বছর নির্বাচন করুন</option>
+          <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option>
+        </select>
+        <select id="workMethodSearch" onchange="filterWorkRange()"><option value="">খাত নির্বাচন</option></select>
+        <select id="workReceiverSearch" onchange="filterWorkRange()"><option value="">গ্রহণকারী নির্বাচন</option></select>
+        <select id="workProviderSearch" onchange="filterWorkRange()"><option value="">প্রদানকারী নির্বাচন</option></select>
+      </div>
+      <div class="filter-buttons">
+        <button class="view" onclick="filterWorkRange()">Search</button>
+        <button class="cancel" onclick="resetWorkFilter()">Reset</button>
+        <button class="cancel" onclick="goHome()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="stats" id="workStatsBox">
+      মোট মাসিক আয়: 0 টাকা | মোট মাসিক ব্যয়: 0 টাকা | পার্থক্য (নেট): 0 টাকা
+    </div>
+
+    <div class="print-area">
+      <table id="workTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable('workTable', 0)">তারিখ</th>
+            <th onclick="sortTable('workTable', 1)">প্রদানকারী</th>
+            <th onclick="sortTable('workTable', 2)">খরচের খাত</th>
+            <th onclick="sortTable('workTable', 3)">গ্রহণকারী</th>
+            <th onclick="sortTable('workTable', 4)">খরচের বিবরণ</th>
+            <th onclick="sortTable('workTable', 5)">পরিমাণ</th>
+            <th onclick="sortTable('workTable', 6)">দর</th>
+            <th onclick="sortTable('workTable', 7)">মোট খরচ</th>
+            <th onclick="sortTable('workTable', 8)">ইউজার</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7"><b>Total</b></td>
+            <td id="wTotal">0</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+  <!-- INCOME VIEW SECTION (আয় ভিউ) -->
+  <div id="incomeViewSection" class="card" style="display:none;">
+    <h3>প্রতিদিনের আয় হিসাব (ভিউ)</h3>
+    <div class="flex-row">
+      <div class="filter-inputs">
+        <input type="date" id="incomeFrom" onchange="filterIncomeRange()">
+        <input type="date" id="incomeTo" onchange="filterIncomeRange()">
+        <select id="incomeMonth" onchange="onIncomeMonthYearChange()">
+          <option value="">মাস নির্বাচন করুন</option>
+          <option value="01">জানুয়ারি</option><option value="02">ফেব্রুয়ারি</option><option value="03">মার্চ</option><option value="04">এপ্রিল</option><option value="05">মে</option><option value="06">জুন</option>
+          <option value="07">জুলাই</option><option value="08">আগস্ট</option><option value="09">সেপ্টেম্বর</option><option value="10">অক্টোবর</option><option value="11">নভেম্বর</option><option value="12">ডিসেম্বর</option>
+        </select>
+        <select id="incomeYear" onchange="onIncomeMonthYearChange()">
+          <option value="">বছর নির্বাচন করুন</option>
+          <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option><option value="2027">2027</option><option value="2028">2028</option><option value="2029">2029</option><option value="2030">2030</option>
+        </select>
+        <select id="incomeProviderSearch" onchange="filterIncomeRange()"><option value="">প্রদানকারী নির্বাচন</option></select>
+        <select id="incomeMethodSearch" onchange="filterIncomeRange()"><option value="">খাত নির্বাচন</option></select>
+        <select id="incomeReceiverSearch" onchange="filterIncomeRange()"><option value="">গ্রহণকারী নির্বাচন</option></select>
+      </div>
+      <div class="filter-buttons">
+        <button class="view" onclick="filterIncomeRange()">Search</button>
+        <button class="cancel" onclick="resetIncomeFilter()">Reset</button>
+        <button class="cancel" onclick="goHome()">Cancel</button>
+      </div>
+    </div>
+
+    <div class="stats" id="incomeStatsBox">
+      মোট মাসিক আয়: 0 টাকা | মোট মাসিক ব্যয়: 0 টাকা | পার্থক্য (নেট): 0 টাকা
+    </div>
+
+    <div class="print-area">
+      <table id="incomeTable">
+        <thead>
+          <tr>
+            <th onclick="sortTable('incomeTable', 0)">তারিখ</th>
+            <th onclick="sortTable('incomeTable', 1)">প্রদানকারী</th>
+            <th onclick="sortTable('incomeTable', 2)">আয়ের খাত</th>
+            <th onclick="sortTable('incomeTable', 3)">গ্রহণকারী</th>
+            <th onclick="sortTable('incomeTable', 4)">আয়ের বিবরণ</th>
+            <th onclick="sortTable('incomeTable', 5)">পরিমাণ</th>
+            <th onclick="sortTable('incomeTable', 6)">দর</th>
+            <th onclick="sortTable('incomeTable', 7)">মোট আয়</th>
+            <th onclick="sortTable('incomeTable', 8)">ইউজার</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <td colspan="7"><b>Total</b></td>
+            <td id="iTotal">0</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbwoQMlF-fpmP_uFTiAAfgH1bO8dIZjPVIxSB1nQqS4bdBByg7ZikX6uzrTmVgflL6ys/exec";
+let workData = [], incomeData = [];
+let isLoggedIn = false;
+let idleTimeout;
+
+// ১০ মিনিটের স্বয়ংক্রিয় লগআউট টাইমার (10 Minutes Idle Timer)
+function resetIdleTimer() {
+  clearTimeout(idleTimeout);
+  if (isLoggedIn) {
+    idleTimeout = setTimeout(() => {
+      alert("১০ মিনিট কোনো কার্যক্রম না থাকায় স্বয়ংক্রিয়ভাবে লগআউট করা হয়েছে।");
+      logout();
+    }, 10 * 60 * 1000); // ১০ মিনিট
+  }
+}
+
+// পেজ লোড হওয়ার সময় চেক করা আগের লগইন স্ট্যাটাস
+window.onload = function() {
+  ['mousemove', 'keypress', 'click', 'scroll', 'touchstart'].forEach(evt => {
+    document.addEventListener(evt, resetIdleTimer, true);
+  });
+
+  if (localStorage.getItem("ngb_logged_in") === "true") {
+    isLoggedIn = true;
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+    resetIdleTimer();
+    fetchAllData();
+  }
+};
+
+function cleanName(str) {
+  if(!str) return "";
+  let trimmed = str.trim().replace(/\s+/g, ' ');
+  return trimmed.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
+
+// লগইন ভ্যালিডেশন
+function doLogin() {
+  let u = document.getElementById("loginUser").value.trim();
+  let p = document.getElementById("loginPass").value.trim();
+  
+  if(u === "ngb" && p === "ngb") {
+    isLoggedIn = true;
+    localStorage.setItem("ngb_logged_in", "true");
+    document.getElementById("loginPage").style.display = "none";
+    document.getElementById("homePage").style.display = "block";
+    resetIdleTimer();
+    fetchAllData();
+  } else {
+    alert("ইউজারনেম অথবা পাসওয়ার্ড ভুল হয়েছে! সঠিক তথ্য দিন।");
+  }
+}
+
+// ম্যানুয়াল বা অটো লগআউট ফাংশন
+function logout() {
+  isLoggedIn = false;
+  localStorage.removeItem("ngb_logged_in");
+  clearTimeout(idleTimeout);
+  document.getElementById("loginUser").value = "";
+  document.getElementById("loginPass").value = "";
+  document.getElementById("homePage").style.display = "none";
+  document.getElementById("workViewSection").style.display = "none";
+  document.getElementById("incomeViewSection").style.display = "none";
+  document.getElementById("loginPage").style.display = "block";
+}
+
+// পেজ নেভিগেশন
+function showSection(sectionId) {
+  document.getElementById("homePage").style.display = "none";
+  document.getElementById("workViewSection").style.display = "none";
+  document.getElementById("incomeViewSection").style.display = "none";
+  document.getElementById(sectionId).style.display = "block";
+}
+
+function goHome() {
+  document.getElementById("workViewSection").style.display = "none";
+  document.getElementById("incomeViewSection").style.display = "none";
+  document.getElementById("homePage").style.display = "block";
+}
+
+function fetchAllData() {
+  Promise.all([
+    fetch(API + "?action=getWork").then(r => r.json()),
+    fetch(API + "?action=getIncome").then(r => r.json())
+  ]).then(([wRes, iRes]) => {
+    workData = wRes.slice(1).map((r, i) => {
+      r[1] = cleanName(r[1]);
+      r[3] = cleanName(r[3]);
+      const dt = new Date(r[0]);
+      r[0] = ("0"+dt.getDate()).slice(-2) + "/" + ("0"+(dt.getMonth()+1)).slice(-2) + "/" + dt.getFullYear();
+      r._index = i;
+      return r;
+    });
+
+    incomeData = iRes.slice(1).map((r, i) => {
+      r[1] = cleanName(r[1]);
+      r[3] = cleanName(r[3]);
+      const dt = new Date(r[0]);
+      r[0] = ("0"+dt.getDate()).slice(-2) + "/" + ("0"+(dt.getMonth()+1)).slice(-2) + "/" + dt.getFullYear();
+      r._index = i;
+      return r;
+    });
+
+    updateWorkDropdowns(workData);
+    renderWork(workData);
+
+    updateIncomeDropdowns(incomeData);
+    renderIncome(incomeData);
+  });
+}
+
+// ড্রপডাউন আপডেট লজিক
+function updateWorkDropdowns(data) {
+  const pMap = new Map(), rMap = new Map();
+  data.forEach(r => {
+    if(r[1]) pMap.set(r[1].toLowerCase(), r[1]);
+    if(r[3]) rMap.set(r[3].toLowerCase(), r[3]);
+  });
+  const providers = Array.from(pMap.values());
+  const methods = [...new Set(data.map(r => r[2]).filter(Boolean))];
+  const receivers = Array.from(rMap.values());
+
+  const pSel = document.getElementById("workProviderSearch");
+  const metSel = document.getElementById("workMethodSearch");
+  const rSel = document.getElementById("workReceiverSearch");
+
+  let curP = pSel.value, curM = metSel.value, curR = rSel.value;
+
+  pSel.innerHTML = '<option value="">প্রদানকারী নির্বাচন</option>' + providers.map(p => `<option value="${p}">${p}</option>`).join('');
+  metSel.innerHTML = '<option value="">খাত নির্বাচন</option>' + methods.map(m => `<option value="${m}">${m}</option>`).join('');
+  rSel.innerHTML = '<option value="">গ্রহণকারী নির্বাচন</option>' + receivers.map(r => `<option value="${r}">${r}</option>`).join('');
+
+  if(providers.includes(curP)) pSel.value = curP;
+  if(methods.includes(curM)) metSel.value = curM;
+  if(receivers.includes(curR)) rSel.value = curR;
+}
+
+function updateIncomeDropdowns(data) {
+  const pMap = new Map(), rMap = new Map();
+  data.forEach(r => {
+    if(r[1]) pMap.set(r[1].toLowerCase(), r[1]);
+    if(r[3]) rMap.set(r[3].toLowerCase(), r[3]);
+  });
+  const providers = Array.from(pMap.values());
+  const methods = [...new Set(data.map(r => r[2]).filter(Boolean))];
+  const receivers = Array.from(rMap.values());
+
+  const pSel = document.getElementById("incomeProviderSearch");
+  const metSel = document.getElementById("incomeMethodSearch");
+  const rSel = document.getElementById("incomeReceiverSearch");
+
+  let curP = pSel.value, curM = metSel.value, curR = rSel.value;
+
+  pSel.innerHTML = '<option value="">প্রদানকারী নির্বাচন</option>' + providers.map(p => `<option value="${p}">${p}</option>`).join('');
+  metSel.innerHTML = '<option value="">খাত নির্বাচন</option>' + methods.map(m => `<option value="${m}">${m}</option>`).join('');
+  rSel.innerHTML = '<option value="">গ্রহণকারী নির্বাচন</option>' + receivers.map(r => `<option value="${r}">${r}</option>`).join('');
+
+  if(providers.includes(curP)) pSel.value = curP;
+  if(methods.includes(curM)) metSel.value = curM;
+  if(receivers.includes(curR)) rSel.value = curR;
+}
+
+// রেন্ডার ও সামারি স্ট্যাটস
+function renderWork(data) {
+  let tb = document.querySelector("#workTable tbody");
+  tb.innerHTML = "";
+  let total = 0;
+  data.forEach(r => {
+    let tr = tb.insertRow();
+    for(let i=0; i<9; i++) {
+      tr.insertCell().innerText = r[i] || "";
+    }
+    total += Number(r[7]) || 0;
+  });
+  document.getElementById("wTotal").innerText = total;
+  updateSummaryStats('work', data);
+}
+
+function renderIncome(data) {
+  let tb = document.querySelector("#incomeTable tbody");
+  tb.innerHTML = "";
+  let total = 0;
+  data.forEach(r => {
+    let tr = tb.insertRow();
+    for(let i=0; i<9; i++) {
+      tr.insertCell().innerText = r[i] || "";
+    }
+    total += Number(r[7]) || 0;
+  });
+  document.getElementById("iTotal").innerText = total;
+  updateSummaryStats('income', data);
+}
+
+function updateSummaryStats(type, currentFilteredData) {
+  let f = document.getElementById(type + "From").value;
+  let t = document.getElementById(type + "To").value;
+  let m = document.getElementById(type + "Month").value;
+  let y = document.getElementById(type + "Year").value;
+  let selectedReceiver = document.getElementById(type + "ReceiverSearch").value;
+  let selectedProvider = document.getElementById(type + "ProviderSearch").value;
+
+  let targetIncomeList = incomeData;
+  let targetExpenseList = workData;
+
+  if(f && !t) t = f;
+  if(t && !f) f = t;
+
+  if (f || t) {
+    targetIncomeList = targetIncomeList.filter(r => {
+      const dt = r[0].split("/");
+      const rDate = dt[2]+"-"+dt[1]+"-"+dt[0];
+      if(f && rDate < f) return false;
+      if(t && rDate > t) return false;
+      return true;
+    });
+    targetExpenseList = targetExpenseList.filter(r => {
+      const dt = r[0].split("/");
+      const rDate = dt[2]+"-"+dt[1]+"-"+dt[0];
+      if(f && rDate < f) return false;
+      if(t && rDate > t) return false;
+      return true;
+    });
+  }
+
+  if (m) {
+    targetIncomeList = targetIncomeList.filter(r => r[0].split("/")[1] === m);
+    targetExpenseList = targetExpenseList.filter(r => r[0].split("/")[1] === m);
+  }
+  if (y) {
+    targetIncomeList = targetIncomeList.filter(r => r[0].split("/")[2] === y);
+    targetExpenseList = targetExpenseList.filter(r => r[0].split("/")[2] === y);
+  }
+
+  let totalIncome = targetIncomeList.reduce((sum, r) => sum + (Number(r[7]) || 0), 0);
+  let totalExpense = targetExpenseList.reduce((sum, r) => sum + (Number(r[7]) || 0), 0);
+  let diff = totalIncome - totalExpense;
+
+  let statsHTML = "";
+  if (type === 'income' && selectedReceiver) {
+    let receiverTotalAsReceiver = currentFilteredData.reduce((sum, r) => sum + (Number(r[7]) || 0), 0);
+    statsHTML = `গ্রহণকারী (${selectedReceiver}) মোট গ্রহণ: <span>${receiverTotalAsReceiver}</span> টাকা`;
+  } else if (type === 'work' && (selectedProvider || selectedReceiver)) {
+    let filterPerson = selectedProvider || selectedReceiver;
+    let personTotalExpense = currentFilteredData.reduce((sum, r) => sum + (Number(r[7]) || 0), 0);
+    statsHTML = `ব্যক্তি/প্রতিষ্ঠান (${filterPerson}) মোট ব্যয়: <span>${personTotalExpense}</span> টাকা`;
+  } else {
+    statsHTML = `মোট মাসিক আয়: <span>${totalIncome}</span> টাকা | মোট মাসিক ব্যয়: <span>${totalExpense}</span> টাকা | পার্থক্য (নেট): <span>${diff}</span> টাকা`;
+  }
+
+  document.getElementById(type === 'work' ? "workStatsBox" : "incomeStatsBox").innerHTML = statsHTML;
+}
+
+// ফিল্টার ফাংশনসমূহ
+function onWorkMonthYearChange() { filterWorkRange(); }
+function filterWorkRange() {
+  let f = document.getElementById("workFrom").value;
+  let t = document.getElementById("workTo").value;
+  let m = document.getElementById("workMonth").value;
+  let y = document.getElementById("workYear").value;
+  let p = document.getElementById("workProviderSearch").value;
+  let meth = document.getElementById("workMethodSearch").value;
+  let r = document.getElementById("workReceiverSearch").value;
+
+  let filtered = workData;
+  if(f && !t) t = f; if(t && !f) f = t;
+
+  filtered = filtered.filter(row => {
+    const dt = row[0].split("/");
+    const rDate = dt[2]+"-"+dt[1]+"-"+dt[0];
+    if(f && rDate < f) return false;
+    if(t && rDate > t) return false;
+    return true;
+  });
+
+  if(m) filtered = filtered.filter(row => row[0].split("/")[1] === m);
+  if(y) filtered = filtered.filter(row => row[0].split("/")[2] === y);
+  updateWorkDropdowns(filtered);
+
+  if(p) filtered = filtered.filter(row => row[1] === p);
+  if(meth) filtered = filtered.filter(row => row[2] === meth);
+  if(r) filtered = filtered.filter(row => row[3] === r);
+
+  renderWork(filtered);
+}
+
+function resetWorkFilter() {
+  document.getElementById("workFrom").value = "";
+  document.getElementById("workTo").value = "";
+  document.getElementById("workMonth").value = "";
+  document.getElementById("workYear").value = "";
+  updateWorkDropdowns(workData);
+  document.getElementById("workProviderSearch").value = "";
+  document.getElementById("workMethodSearch").value = "";
+  document.getElementById("workReceiverSearch").value = "";
+  renderWork(workData);
+}
+
+function onIncomeMonthYearChange() { filterIncomeRange(); }
+function filterIncomeRange() {
+  let f = document.getElementById("incomeFrom").value;
+  let t = document.getElementById("incomeTo").value;
+  let m = document.getElementById("incomeMonth").value;
+  let y = document.getElementById("incomeYear").value;
+  let p = document.getElementById("incomeProviderSearch").value;
+  let meth = document.getElementById("incomeMethodSearch").value;
+  let r = document.getElementById("incomeReceiverSearch").value;
+
+  let filtered = incomeData;
+  if(f && !t) t = f; if(t && !f) f = t;
+
+  filtered = filtered.filter(row => {
+    const dt = row[0].split("/");
+    const rDate = dt[2]+"-"+dt[1]+"-"+dt[0];
+    if(f && rDate < f) return false;
+    if(t && rDate > t) return false;
+    return true;
+  });
+
+  if(m) filtered = filtered.filter(row => row[0].split("/")[1] === m);
+  if(y) filtered = filtered.filter(row => row[0].split("/")[2] === y);
+  updateIncomeDropdowns(filtered);
+
+  if(p) filtered = filtered.filter(row => row[1] === p);
+  if(meth) filtered = filtered.filter(row => row[2] === meth);
+  if(r) filtered = filtered.filter(row => row[3] === r);
+
+  renderIncome(filtered);
+}
+
+function resetIncomeFilter() {
+  document.getElementById("incomeFrom").value = "";
+  document.getElementById("incomeTo").value = "";
+  document.getElementById("incomeMonth").value = "";
+  document.getElementById("incomeYear").value = "";
+  updateIncomeDropdowns(incomeData);
+  document.getElementById("incomeProviderSearch").value = "";
+  document.getElementById("incomeMethodSearch").value = "";
+  document.getElementById("incomeReceiverSearch").value = "";
+  renderIncome(incomeData);
+}
+
+// টেবিল হেডার সর্টিং
+let sortDirections = {};
+function sortTable(tableId, colIndex) {
+  let table = document.getElementById(tableId);
+  let tbody = table.querySelector("tbody");
+  let rows = Array.from(tbody.rows);
+  let currentDir = sortDirections[tableId + "_" + colIndex] || 'asc';
+  sortDirections[tableId + "_" + colIndex] = (currentDir === 'asc') ? 'desc' : 'asc';
+
+  rows.sort((a, b) => {
+    let cellA = a.cells[colIndex].innerText.trim();
+    let cellB = b.cells[colIndex].innerText.trim();
+    let numA = parseFloat(cellA), numB = parseFloat(cellB);
+    if (!isNaN(numA) && !isNaN(numB)) {
+      return (currentDir === 'asc') ? (numA - numB) : (numB - numA);
+    } else {
+      return (currentDir === 'asc') ? cellA.localeCompare(cellB, 'bn') : cellB.localeCompare(cellA, 'bn');
+    }
+  });
+  tbody.innerHTML = "";
+  rows.forEach(row => tbody.appendChild(row));
+}
+</script>
+
+</body>
+</html>
