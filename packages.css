@@ -1,0 +1,121 @@
+..pakge-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5px 0 5px 0; /* ওপরের ও নিচের প্যাডিং একেবারে কমিয়ে দেওয়া হলো */
+  background-color: var(--card-bg);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden; 
+}
+
+    .pakge-title {
+      text-align: center;
+      color: var(--accent-color); /* থিম কালার */
+      font-size: 22px; /* 🔴 ফন্ট সাইজ একটু ছোট করা হলো */
+      margin-bottom: 5px; /* 🔴 নিচের গ্যাপ কমানো হলো */
+      margin-top: 2px;
+    }
+
+    .pakge {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding: 0 10px;
+      cursor: grab;
+    }
+
+    .pakge::-webkit-scrollbar {
+      display: none; 
+    }
+
+    .pakge-card {
+      flex: 0 0 280px;
+      background: #F5A393;
+      border-radius: 8px;
+      padding: 8px; /* 🔴 কার্ডের ভেতরের প্যাডিং কমানো হলো */
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+      text-align: center;
+      user-select: none;
+    }
+
+    .pakge-card h3 {
+      background-color: #001f4d;
+      color: white;
+      padding: 6px; /* 🔴 হেডিংয়ের প্যাডিং কমানো হলো */
+      margin-bottom: 6px; /* 🔴 নিচের গ্যাপ কমানো হলো */
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .pakge-card p {
+      font-size: 13px;
+      margin-bottom: 6px; /* 🔴 লেখার নিচের ফাঁকা জায়গা কমানো হলো */
+    }
+
+    .pakge-card .price {
+      font-size: 18px; /* 🔴 প্রাইসের সাইজ সামান্য কমানো হলো */
+      color: #0056ff;
+      font-weight: bold;
+    }
+
+    .pakge-btn {
+      position: absolute;
+      top: 50%; /* 🔴 একদম মাঝ বরাবর রাখা হলো */
+      transform: translateY(-50%);
+      font-size: 24px;
+      background-color: rgba(0,0,0,0.4);
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+      z-index: 10;
+      user-select: none;
+    }
+
+    .pakge-btn.left {
+      left: 5px;
+    }
+
+    .pakge-btn.right {
+      right: 5px;
+    }
+
+    .pakge-btn:hover {
+      background-color: rgba(0,0,0,0.6);
+    }
+
+  /* থিম অনুযায়ী কালার ভেরিয়েবল */
+  body.dark-theme {
+    --bg-main: #0b0f19;
+    --card-bg: #1e293b;
+    --text-color: #f1f5f9;
+    --accent-color: #38bdf8;
+  }
+  body.light-theme {
+    --bg-main: #f1f5f9;
+    --card-bg: #ffffff;
+    --text-color: #0f172a;
+    --accent-color: #0284c7;
+  }
+  body.blue-theme {
+    --bg-main: #020617;
+    --card-bg: #0f172a;
+    --text-color: #e0f2fe;
+    --accent-color: #38bdf8;
+  }
+  body.green-theme {
+    --bg-main: #022c22;
+    --card-bg: #065f46;
+    --text-color: #ecfdf5;
+    --accent-color: #34d399;
+  }
+
+  body {
+    background-color: var(--bg-main, transparent);
+    color: var(--text-color, #ffffff);
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+ /* থিম অনুযায়ী কালার ভেরিয়েবল */

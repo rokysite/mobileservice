@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner Slider</title>
+    <style>
+        /* স্লাইডার স্টাইল যা আপনার থিম ভেরিয়েবলের সাথে কাজ করবে */
+        .main-slider-container {
+            width: 85%;
+            max-width: 1000px;
+            margin: 20px auto;
+            height: 2.5in;
+            overflow: hidden;
+            position: relative;
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--card-border) !important;
+            box-shadow: var(--shadow-pop);
+            border-radius: 12px;
+        }
+
+        .slider-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .slide-item {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            background-color: var(--card-bg) !important;
+        }
+
+        .left-box-image {
+            height: 100%;
+            flex: 0 0 auto;
+            max-width: 35%;
+            background-color: rgba(0, 0, 0, 0.05) !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-right: 1px solid var(--card-border) !important;
+        }
+
+        .left-box-image img {
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .right-box-text {
+            flex: 1;
+            height: 100%;
+            overflow-y: auto;
+            padding: 15px 22px;
+            background-color: var(--card-bg) !important;
+        }
+
+        .right-box-text h3 {
+            font-size: 18px;
+            color: var(--accent-color) !important;
+            margin-bottom: 6px;
+            font-weight: 800;
+            text-shadow: var(--text-3d);
+        }
+
+        .right-box-text p {
+            font-size: 13.5px;
+            line-height: 1.5;
+            color: var(--text-color) !important;
+        }
+
+        .right-box-text::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .right-box-text::-webkit-scrollbar-thumb {
+            background: var(--card-border);
+            border-radius: 3px;
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: var(--card-bg) !important;
+            color: var(--accent-color) !important;
+            border: 1px solid var(--card-border) !important;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-pop);
+            z-index: 5;
+            transition: all 0.3s ease;
+        }
+
+        .slider-btn:hover {
+            background-color: var(--primary-color) !important;
+            color: #ffffff !important;
+        }
+
+        .prev-btn { left: 8px; }
+        .next-btn { right: 8px; }
+    </style>
+</head>
+<body>
+
+    <!-- মূল স্লাইডার সেকশন -->
+    <div class="main-slider-container">
+        
+        <div class="slider-track" id="sliderTrack">
+
+            <!-- স্লাইড ১ -->
+            <div class="slide-item">
+                <div class="left-box-image">
+                    <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Model 1">
+                </div>
+                <div class="right-box-text">
+                    <h3>স্টাইলিশ ফ্যাশন কালেকশন</h3>
+                    <p>
+                        আমাদের নতুন সামার কালেকশনে পাচ্ছেন এক্সক্লুসিভ ডিজাইন ও সেরা কোয়ালিটির পোশাক। দাঁড়িয়ে থাকা মডেলের ছবির ক্ষেত্রে দুই পাশে কোনো অতিরিক্ত ফাঁকা জায়গা থাকবে না। লেখা বড় হলে নির্দিষ্ট উচ্চতার ভেতরে স্ক্রল হবে।
+                    </p>
+                </div>
+            </div>
+
+            <!-- স্লাইড ২ -->
+            <div class="slide-item">
+                <div class="left-box-image">
+                    <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Model 2">
+                </div>
+                <div class="right-box-text">
+                    <h3>আধুনিক ট্রেন্ডি আউটফিট</h3>
+                    <p>
+                        আপনার পছন্দের ট্রেন্ডি ড্রেস পেয়ে যাবেন খুব সহজেই। ছবি ও লেখা একসাথে চমৎকার স্লাইড অ্যানিমেশন দিয়ে পরিবর্তিত হবে।
+                    </p>
+                </div>
+            </div>
+
+            <!-- স্লাইড ৩ -->
+            <div class="slide-item">
+                <div class="left-box-image">
+                    <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Model 3">
+                </div>
+                <div class="right-box-text">
+                    <h3>বিশেষ অফার ও ডিসকাউন্ট</h3>
+                    <p>
+                        আজই অর্ডার করুন এবং উপভোগ করুন ৫০% পর্যন্ত মূল্যছাড়। যেকোনো ডিভাইস বা স্ক্রিনে ছবি ও লেখা সুন্দরভাবে মানিয়ে যাবে।
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- নেভিগেশন বাটন -->
+        <button class="slider-btn prev-btn" onclick="moveSlide(-1)">❮</button>
+        <button class="slider-btn next-btn" onclick="moveSlide(1)">❯</button>
+
+    </div>
+
+    <!-- জাভাস্ক্রিপ্ট লজিক -->
+    <script>
+        let currentIndex = 0;
+        const track = document.getElementById('sliderTrack');
+        const slides = document.querySelectorAll('.slide-item');
+        const totalSlides = slides.length;
+
+        function updateSlidePosition() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        }
+
+        function moveSlide(direction) {
+            currentIndex += direction;
+            if (currentIndex < 0) {
+                currentIndex = totalSlides - 1;
+            } else if (currentIndex >= totalSlides) {
+                currentIndex = 0;
+            }
+            updateSlidePosition();
+        }
+
+        let autoSlideInterval = setInterval(() => {
+            moveSlide(1);
+        }, 4000);
+
+        const container = document.querySelector('.main-slider-container');
+        container.addEventListener('mouseenter', () => clearInterval(autoSlideInterval));
+        container.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(() => moveSlide(1), 4000);
+        });
+    </script>
+</body>
+</html>
