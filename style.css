@@ -1,7 +1,9 @@
 /* ================================================================= */
-/* 📁 [থিম কালার ভেরিয়েবলসমূহ] ডার্ক, লাইট, ব্লু ও গ্রিন থিম কালার */
+/* 📁 [থিম কালার ভেরিয়েবলসমূহ] ডার্ক, লাইট, ব্লু ও গ্রিন থিম কালার */
 /* ================================================================= */
-
+#contact {
+    margin-top: -10px !important; 
+}
 body.dark-theme {
     --bg-main: #0b0f19;
     --bg-header: linear-gradient(135deg, #0f172a, #1e1b4b);
@@ -134,9 +136,9 @@ body {
     left: 0;
     top: calc(100% + 8px);
     background-color: var(--card-bg);
-    min-width: 250px;
-    max-height: 400px;
-    overflow-y: auto;
+    min-width: 260px;
+    max-height: 80vh; 
+    overflow-y: auto; 
     box-shadow: var(--shadow-hover);
     border-radius: 14px;
     z-index: 9999;
@@ -189,14 +191,29 @@ body {
     border-left: 3px solid var(--accent-color);
 }
 
-.dropdown-submenu:hover .submenu-content {
+.dropdown-submenu.open .submenu-content {
     display: block;
 }
 
 .submenu-toggle {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: flex-start; 
+    gap: 10px;                 
+    width: 100%;
+}
+
+.submenu-toggle .fa-angle-right {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+.dropdown-submenu.open .submenu-toggle .fa-angle-right {
+    transform: rotate(90deg);
+}
+
+.dropdown-submenu a.submenu-toggle {
+    padding-left: 16px;
 }
 
 .right-utility.desktop-utility {
@@ -320,20 +337,18 @@ body {
     padding: 0 15px;
 }
 
-/* মূল স্লাইডার বক্সের মাপ একদম ফিক্সড করা হলো (উচ্চতা ও চওড়া লকড) */
 .slider-grid-wrapper {
     display: grid;
-    grid-template-columns: 280px 1fr; /* বামের ছবির ঘরের ফিক্সড চওড়া 280px */
-    height: 220px;                     /* মূল বক্সের উচ্চতা একদম ফিক্সড 220px */
+    grid-template-columns: 280px 1fr;
+    height: 220px;
     background: var(--card-bg);
     border-radius: 16px;
-    overflow: hidden;                  /* বক্সের বাইরে কোনো কিছু যেতে দেবে না */
+    overflow: hidden;
     box-shadow: var(--shadow-pop);
     border: 1px solid var(--card-border);
     align-items: center;
 }
 
-/* 🖼️ বাম পাশের ছবির ফিক্সড ঘর বা ডিপ */
 .right-person-slider {
     position: relative;
     height: 100%;
@@ -346,7 +361,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 15px;
-    overflow: hidden; /* ছবির সাইজ বড় হলেও এই ঘরের বাইরে যাবে না */
+    overflow: hidden;
 }
 
 .person-slide {
@@ -354,23 +369,18 @@ body {
     text-align: center;
     width: 100%;
     height: 100%;
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
-/* 🌟 [ছবির সাইজ কন্ট্রোল] এই মাপ পরিবর্তন করলে কেবল ছবি ছোট-বড় হবে, ডিপ ফিক্সড থাকবে */
 .person-slide img {
-    width: 120px;          /* ছবির চওড়া (আপনার ইচ্ছামতো বাড়াতে বা কমাতে পারেন) */
-    height: 120px;         /* ছবির উচ্চতা (চওড়ার সমান রাখলে গোল শেপ পারফেক্ট থাকবে) */
+    width: 120px;
+    height: 120px;
     max-width: 100%;
     max-height: 130px;
-    
-    /* গোল বা চারকোনা করার নিয়ম: গোল চাইলে 50%, চারকোনা চাইলে 10px বা 0px দিন */
-    border-radius: 50%;    
-    
-    object-fit: cover;     /* ছবি কেটে না গিয়ে ডিপের ভেতরে সুন্দরভাবে ফিট থাকবে */
+    border-radius: 50%;
+    object-fit: cover;
     border: 2px solid var(--accent-color);
     margin-bottom: 6px;
 }
@@ -381,7 +391,6 @@ body {
     font-weight: 700;
 }
 
-/* 📝 ডান পাশের লেখার ফিক্সড বক্স */
 .left-text-slider {
     position: relative;
     padding: 25px 30px;
@@ -390,7 +399,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    overflow: hidden;      /* লেখা বেশি হলেও বক্সের বাইরে যাবে না */
+    overflow: hidden;
     word-wrap: break-word;
 }
 
