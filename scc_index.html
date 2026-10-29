@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ব্যবসা ব্যবস্থাপনা সিস্টেম - মূল পেজ</title>
+    <link rel="stylesheet" href="scc_style.css">
+    <style>
+        .compact-table th, .compact-table td { text-align: left !important; }
+        .product-item, .sub-product-item { text-align: left !important; display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+        .product-item input[type="checkbox"], .sub-product-item input[type="checkbox"] { width: 14px; height: 14px; margin: 0; }
+        #priceQtyBody input { text-align: left !important; padding-left: 6px; }
+
+        /* প্রিন্ট প্যাড স্টাইল (শুধু প্রিন্ট করার সময় দৃশ্যমান হবে) */
+        #officialPrintPad { display: none; }
+
+        @media print {
+            body * { visibility: hidden; }
+            #officialPrintPad, #officialPrintPad * { visibility: visible; }
+            #officialPrintPad {
+                display: block !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: #fff;
+                font-family: 'Segoe UI', system-ui, sans-serif;
+                color: #000;
+                padding: 10px;
+                font-size: 11px;
+            }
+            @page { size: A4; margin: 8mm; }
+            .print-pad-header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 6px; margin-bottom: 10px; }
+            .print-pad-header h2 { margin: 0 0 3px 0; font-size: 16px; font-weight: 700; }
+            .print-pad-header p { margin: 2px 0; font-size: 10px; }
+            .print-summary-bar { display: flex; justify-content: space-around; background: #f1f5f9 !important; border: 1px solid #cbd5e1; padding: 4px; margin-bottom: 8px; border-radius: 4px; }
+            .print-summary-item { text-align: center; }
+            .print-summary-title { font-size: 9px; font-weight: bold; color: #475569; }
+            .print-summary-value { font-size: 12px; font-weight: bold; color: #0f172a; }
+            
+            .print-memo-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+            .print-memo-table th, .print-memo-table td { border: 1px solid #000; padding: 4px 5px; font-size: 10px; text-align: left; word-break: break-word; }
+            .print-memo-table th { background-color: #e2e8f0 !important; color: #000; font-weight: bold; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    if(!localStorage.getItem("loggedInUser")) { window.location.href = "scc_login.html"; }
+
+    // ১০ মিনিট (৬০০০০০ মিলিগ্রাম) ইনঅ্যাক্টিভিটি অটো লগআউট সিস্টেম
+    let idleTimer;
+    function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(() => {
+            alert("দীর্ঘক্ষণ কোনো কার্যকলাপ না থাকায় আপনাকে স্বয়ংক্রিয়ভাবে লগআউট করা হলো।");
+            logout();
+        }, 10 * 60 * 1000); // ১০ মিনিট
+    }
+    window.onload = function() {
+        loadDataFromSheet();
+        ['mousemove', 'keydown', 'click', 'scroll'].forEach(evt => {
+            window.addEventListener(evt, resetIdleTimer);
+        });
+        resetIdleTimer();
+    };
+</script>
+
+<div class="container">
+    <div class="header-flex">
+        <h3>ব্যবসা ব্যবস্থাপনা সিস্টেম (মূল পেজ)</h3>
+        <div>
+            <span id="userInfoDisplay" style="font-size: 11px; font-weight: 600; margin-right: 10px; color: var(--slate);"></span>
+            <span id="adminLinkContainer"></span>
+            <button type="button" class="btn-logout" onclick="logout()">লগআউট</button>
+        </div>
+    </div>
+
+    <form id="compactForm">
+        <div class="main-form-flex">
+            <div class="col-form-narrow">
+                <div class="form-group">
+                    <label>তারিখ</label>
+                    <input type="date" id="transactionDate">
+                </div>
+                <div class="form-group">
+                    <label>ব্রাঞ্চের নাম</label>
+                    <input type="text" id="branchSelect" list="branchDatalist" placeholder="-- ব্রাঞ্চ লিখুন --">
+                    <datalist id="branchDatalist"></datalist>
+                </div>
+                <div class="form-group">
+                    <label>01. লেনদেনের ধরন</label>
+                    <select id="transactionType">
+                        <option value="">-- ধরন সিলেক্ট (ঐচ্ছিক) --</option>
+                        <option value="ক্রয়">ক্রয়</option>
+                        <option value="বিক্রয়">বিক্রয়</option>
+                        <option value="ইনকাম">ইনকাম</option>
+                        <option value="ব্যয়">ব্যয়</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>02. ভেন্ডর / উৎস (লিখুন বা বাছুন)</label>
+                    <input type="text" id="vendorSearchInput" list="vendorDatalist" placeholder="-- ভেন্ডর লিখুন বা বাছুন --" oninput="handleVendorChange()">
+                    <datalist id="vendorDatalist"></datalist>
+                </div>
+            </div>
+
+            <div class="col-prod-narrow">
+                <label>03. প্রডাক্ট (টিক দিন / খুঁজুন)</label>
+                <div style="margin-bottom: 4px; display: flex; gap: 4px;">
+                    <input type="text" id="productSearchInput" list="productDatalist" placeholder="🔍 প্রডাক্ট খুঁজুন বা লিখুন..." oninput="filterProductList()" style="height: 28px;">
+                    <button type="button" class="action-btn btn-edit" style="height: 28px; padding: 0 8px;" onclick="addManualProduct()">+</button>
+                    <datalist id="productDatalist"></datalist>
+                </div>
+                <div id="productList" class="product-list-box">
+                    <span style="color: #64748b; font-size: 12px; padding: 6px; text-align: left; display: block;">আগে ভেন্ডর সিলেক্ট বা লিখুন</span>
+                </div>
+            </div>
+
+            <div class="col-details-wide">
+                <label>04. সাব-প্রডাক্ট, পরিমাণ ও দর (ম্যানুয়ালি টিক দিন)</label>
+                <div class="price-qty-container">
+                    <table class="compact-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 45%;">প্রোডাক্ট ও সাব-প্রডাক্ট (মডেল)</th>
+                                <th style="width: 20%;">পরিমাণ</th>
+                                <th style="width: 35%;">দর</th>
+                            </tr>
+                        </thead>
+                        <tbody id="priceQtyBody">
+                            <tr><td colspan="3" style="color: #64748b; padding: 25px 0; text-align: left;">প্রথমে 03 নম্বর ঘর থেকে প্রডাক্ট সিলেক্ট করুন</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn-add-cart" onclick="addToCart()">🛒 কার্টে যোগ করুন</button>
+            </div>
+
+            <div class="extra-space-col">
+                <label style="color: var(--primary); border-bottom: 1px solid var(--border); padding-bottom: 2px; font-weight: 700; text-align: left;">📦 কার্ট লিস্ট (<span id="cartCount">0</span>)</label>
+                <div id="cartListBox" class="cart-list-box">
+                    <span style="color: #64748b; font-size: 12px; padding-top: 6px; display: block; text-align: left;">কার্ট খালি আছে</span>
+                </div>
+                <div id="cartSummaryBar" style="font-size: 11px; font-weight: bold; border-top: 1px solid var(--border); padding-top: 4px; margin-top: 4px; display: none; text-align: left;">
+                    সর্বমোট: <span id="cartTotalQty">0</span> টি, <span id="cartTotalAmt" style="color: var(--success);">0</span>
+                </div>
+                <div style="display: flex; gap: 4px; margin-top: 4px;">
+                    <button type="button" class="btn-submit" id="submitBtn" onclick="submitFinalCart()" style="flex: 1;">চূড়ান্ত সাবমিট</button>
+                    <button type="button" class="btn-reset" id="cancelEditBtn" onclick="cancelEditMode()" style="display: none; flex: 1; background: #64748b; color: #fff;">বাতিল</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="summary-cards-bar">
+        <div class="summary-card"><span class="summary-card-title">মোট লেনদেন</span><span class="summary-card-value" id="sumTotalCount">0</span></div>
+        <div class="summary-card"><span class="summary-card-title">মোট পরিমাণ</span><span class="summary-card-value" id="sumTotalQty">0</span></div>
+        <div class="summary-card"><span class="summary-card-title">মোট টাকা</span><span class="summary-card-value" id="sumTotalAmount" style="color: var(--success);">0</span></div>
+    </div>
+
+    <div id="printableTableSection">
+        <div class="report-header">
+            <h4>হিসাব বিবরণী (মেমো ফরম্যাট)</h4>
+            <div class="search-print-box">
+                <label>তারিখ:</label>
+                <input type="date" id="startDate" onchange="renderTable()">
+                <label>থেকে</label>
+                <input type="date" id="endDate" onchange="renderTable()">
+                <select id="filterBranch" onchange="renderTable()"><option value="all">সকল ব্রাঞ্চ</option></select>
+                <select id="filterType" onchange="renderTable()">
+                    <option value="all">সকল ধরন</option>
+                    <option value="ক্রয়">ক্রয়</option>
+                    <option value="বিক্রয়">বিক্রয়</option>
+                    <option value="ইনকাম">ইনকাম</option>
+                    <option value="ব্যয়">ব্যয়</option>
+                </select>
+                <input type="text" id="filterVendorInput" oninput="renderTable()" placeholder="উৎস খুঁজুন...">
+                <button type="button" class="btn-reset" onclick="resetSearchFilters()">রিসেট</button>
+                <button type="button" class="btn-print" onclick="triggerCustomPrint()">🖨️ প্রিন্ট</button>
+            </div>
+        </div>
+
+        <div class="table-responsive">
+            <table class="memo-table">
+                <thead>
+                    <tr>
+                        <th style="width: 4%;">ক্র.মি.</th>
+                        <th style="width: 7%;">তারিখ</th>
+                        <th style="width: 12%;">ব্রাঞ্চ</th>
+                        <th style="width: 5%;">ধরন</th>
+                        <th style="width: 14%;">ভেন্ডর/উৎস</th>
+                        <th style="width: 13%;">প্রোডাক্টের নাম</th>
+                        <th style="width: 18%;">সাব-প্রডাক্টের নাম</th>
+                        <th style="width: 5%;">পরিমাণ</th>
+                        <th style="width: 6%;">দর</th>
+                        <th style="width: 7%;">মোট টাকা</th>
+                        <th style="width: 6%;">সর্বমোট টাকা</th>
+                        <th style="width: 5%;" id="actionHeaderTh">অ্যাকশন</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"><tr><td colspan="12" style="text-align: left; padding: 15px;">ডাটা লোড হচ্ছে...</td></tr></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- হুবহু ছবির মতো প্যাড স্টাইলের প্রিন্ট সেকশন -->
+<div id="officialPrintPad">
+    <div class="print-pad-header">
+        <h2 id="printBranchTitle">ব্যবস্থাপনা সিস্টেম - হিসাব বিবরণী</h2>
+        <p>ঠিকানা: রহনপুর, চাঁপাইনবাবগঞ্জ</p>
+        <p>মোবাইল: ০১৭০০-০০০০০০</p>
+    </div>
+    <div class="print-summary-bar">
+        <div class="print-summary-item">
+            <div class="print-summary-title">মোট লেনদেন</div>
+            <div class="print-summary-value" id="printTotalCount">0</div>
+        </div>
+        <div class="print-summary-item">
+            <div class="print-summary-title">মোট পরিমাণ</div>
+            <div class="print-summary-value" id="printTotalQty">0</div>
+        </div>
+        <div class="print-summary-item">
+            <div class="print-summary-title">মোট টাকা</div>
+            <div class="print-summary-value" id="printTotalAmount">0</div>
+        </div>
+    </div>
+    <table class="print-memo-table">
+        <thead>
+            <tr>
+                <th style="width: 9%;">তারিখ</th>
+                <th style="width: 11%;">ব্রাঞ্চ</th>
+                <th style="width: 7%;">ধরন</th>
+                <th style="width: 16%;">ভেন্ডর/উৎস</th>
+                <th style="width: 14%;">প্রোডাক্টের নাম</th>
+                <th style="width: 22%;">সাব-প্রডাক্টের নাম</th>
+                <th style="width: 6%;">পরিমাণ</th>
+                <th style="width: 7%;">দর</th>
+                <th style="width: 8%;">মোট টাকা</th>
+            </tr>
+        </thead>
+        <tbody id="printTableBody"></tbody>
+    </table>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzOVT9HsUIwAZU0ra6uehs9GfAPnJfbfRtdMA2FDawKn-0he-H6gJKKGpHxboEnxg3M6w/exec";
+let userRole = localStorage.getItem("userRole") || "User";
+let loggedUser = localStorage.getItem("loggedInUser") || "";
+document.getElementById("userInfoDisplay").innerText = `👤 ${loggedUser} (${userRole})`;
+
+if(userRole === "Viewer") { document.getElementById("compactForm").style.display = "none"; }
+document.getElementById('transactionDate').valueAsDate = new Date();
+document.getElementById('startDate').valueAsDate = new Date();
+document.getElementById('endDate').valueAsDate = new Date();
+
+if(userRole === "Admin") {
+    document.getElementById("adminLinkContainer").innerHTML = `<a href="scc_vendor.html" class="btn-admin-link" style="margin-right: 8px;">⚙️ ভেন্ডর ক্যাটালগ</a>`;
+}
+
+function logout() { localStorage.clear(); window.location.href = "scc_login.html"; }
+
+let tempCart = [], allTransactions = [], masterDataList = [], editingCartIndex = null;
+let isEditingFromTable = false, currentEditRowIndex = null;
+
+function formatToDDMMYYYY(dStr) { let p = dStr.split('-'); return p.length === 3 ? `${p[2]}-${p[1]}-${p[0]}` : dStr; }
+function formatToYYYYMMDD(dStr) { let p = dStr.split('-'); return p.length === 3 ? (p[0].length === 4 ? dStr : `${p[2]}-${p[1]}-${p[0]}`) : dStr; }
+
+function loadDataFromSheet() {
+    fetch(SCRIPT_URL).then(res => res.json()).then(data => {
+        allTransactions = data.transactions || [];
+        masterDataList = data.masterData || [];
+        populateBranches();
+        populateVendors();
+        renderTable();
+    }).catch(err => {
+        console.error("ডাটা লোড করতে সমস্যা হয়েছে:", err);
+        document.getElementById("tableBody").innerHTML = `<tr><td colspan="12" style="text-align: left; padding: 15px; color: red;">ডাটা লোড করতে সমস্যা হয়েছে।</td></tr>`;
+    });
+}
+
+function populateBranches() {
+    let branches = [...new Set(allTransactions.map(i => i.branch))].filter(Boolean);
+    let bDatalist = document.getElementById("branchDatalist"), fSel = document.getElementById("filterBranch");
+    bDatalist.innerHTML = ""; fSel.innerHTML = '<option value="all">সকল ব্রাঞ্চ</option>';
+    branches.forEach(b => {
+        let opt = document.createElement("option"); opt.value = b; bDatalist.appendChild(opt);
+        fSel.innerHTML += `<option value="${b}">${b}</option>`;
+    });
+}
+
+function populateVendors() {
+    let vDatalist = document.getElementById("vendorDatalist");
+    vDatalist.innerHTML = "";
+    let vendors = [...new Set(masterDataList.map(i => i.vendor))].filter(Boolean);
+    vendors.forEach(v => {
+        let opt = document.createElement("option"); opt.value = v; vDatalist.appendChild(opt);
+    });
+}
+
+function handleVendorChange() { renderProductList(); }
+
+function renderProductList() {
+    let vVal = document.getElementById("vendorSearchInput").value.trim().toLowerCase();
+    let container = document.getElementById("productList"), kw = document.getElementById("productSearchInput").value.toLowerCase();
+    let datalist = document.getElementById("productDatalist");
+    container.innerHTML = ""; datalist.innerHTML = "";
+
+    let prods = [...new Set(masterDataList.filter(i => (!vVal || i.vendor.toLowerCase() === vVal)).map(i => i.product))].filter(Boolean);
+    let has = false;
+
+    prods.forEach(prod => {
+        let opt = document.createElement("option"); opt.value = prod; datalist.appendChild(opt);
+        if(prod.toLowerCase().includes(kw)) {
+            has = true;
+            container.innerHTML += `<label class="product-item"><input type="checkbox" value="${prod}" onchange="updatePriceQtyInputs()"> <span>${prod}</span></label>`;
+        }
+    });
+
+    if(!has) {
+        container.innerHTML = '<span style="color: #64748b; font-size: 12px; padding: 6px; text-align: left; display: block;">প্রোডাক্ট পাওয়া যায়নি। নতুন লিখে [+] চাপুন।</span>';
+    }
+}
+
+function filterProductList() { renderProductList(); }
+
+function addManualProduct() {
+    let typedVal = document.getElementById("productSearchInput").value.trim();
+    if(!typedVal) { alert("প্রথমে প্রডাক্টের নাম লিখুন।"); return; }
+    let container = document.getElementById("productList"), exists = false;
+    document.querySelectorAll('#productList input[type="checkbox"]').forEach(cb => {
+        if(cb.value.toLowerCase() === typedVal.toLowerCase()) { cb.checked = true; exists = true; }
+    });
+    if(!exists) {
+        if(container.innerHTML.includes("প্রোডাক্ট পাওয়া যায়নি") || container.innerHTML.includes("আগে ভেন্ডর")) container.innerHTML = "";
+        container.innerHTML += `<label class="product-item"><input type="checkbox" value="${typedVal}" checked onchange="updatePriceQtyInputs()"> <span>${typedVal}</span></label>`;
+    }
+    updatePriceQtyInputs();
+    document.getElementById("productSearchInput").value = "";
+}
+
+function updatePriceQtyInputs() {
+    let cbs = document.querySelectorAll('#productList input[type="checkbox"]:checked');
+    let vVal = document.getElementById("vendorSearchInput").value.trim().toLowerCase();
+    let tbody = document.getElementById("priceQtyBody"); tbody.innerHTML = "";
+
+    if(cbs.length > 0) {
+        cbs.forEach(cb => {
+            let pName = cb.value;
+            let subs = [...new Set(masterDataList.filter(i => (!vVal || i.vendor.toLowerCase() === vVal) && i.product.toLowerCase() === pName.toLowerCase()).map(i => i.subProduct))].filter(Boolean);
+            
+            if(subs.length === 0) {
+                subs = [pName];
+            }
+
+            subs.forEach(sName => {
+                tbody.innerHTML += `<tr class="price-qty-row" data-prod-name="${pName}" data-sub-name="${sName}">
+                    <td style="text-align: left;">
+                        <label class="sub-product-item">
+                            <input type="checkbox" class="sub-chk" onchange="toggleSubRow(this)">
+                            <span><b>${pName}</b> (${sName})</span>
+                        </label>
+                    </td>
+                    <td><input type="number" class="p-qty" min="1" value="1" disabled style="width:100%; height:26px; text-align:left;"></td>
+                    <td><input type="number" class="p-rate" placeholder="দর" disabled style="width:100%; height:26px; text-align:left;"></td>
+                </tr>`;
+            });
+        });
+    } else { resetPriceQtyTable(); }
+}
+
+function toggleSubRow(chk) {
+    let tr = chk.closest('tr');
+    let qtyInp = tr.querySelector('.p-qty');
+    let rateInp = tr.querySelector('.p-rate');
+    if(!chk.checked) {
+        qtyInp.disabled = true;
+        rateInp.disabled = true;
+        tr.style.opacity = "0.5";
+    } else {
+        qtyInp.disabled = false;
+        rateInp.disabled = false;
+        tr.style.opacity = "1";
+    }
+}
+
+function resetPriceQtyTable() { document.getElementById("priceQtyBody").innerHTML = `<tr><td colspan="3" style="text-align: left; color: #64748b; padding: 25px 0;">কোনো প্রডাক্ট সিলেক্ট করা হয়নি</td></tr>`; }
+function resetProductSection() { document.getElementById("productList").innerHTML = '<span style="color: #64748b; font-size: 12px; padding: 6px; text-align: left; display: block;">আগে ভেন্ডর সিলেক্ট বা লিখুন</span>'; resetPriceQtyTable(); }
+
+function addToCart() {
+    let rows = document.querySelectorAll('.price-qty-row');
+    if(!rows.length) { alert("প্রডাক্ট সিলেক্ট করুন।"); return; }
+    let items = [];
+    rows.forEach(r => {
+        let chk = r.querySelector('.sub-chk');
+        if(chk && chk.checked) {
+            let qVal = Number(r.querySelector('.p-qty').value);
+            let rVal = Number(r.querySelector('.p-rate').value);
+            if(rVal > 0 && qVal > 0) {
+                let totalAmount = qVal * rVal;
+                items.push({ 
+                    name: r.getAttribute('data-prod-name'), 
+                    subName: r.getAttribute('data-sub-name'), 
+                    qty: qVal, 
+                    rate: rVal,
+                    amount: totalAmount 
+                });
+            }
+        }
+    });
+
+    if(!items.length) { alert("দয়া করে কমপক্ষে একটি সাব-প্রডাক্টে টিক দিয়ে পরিমাণ ও দর বসান।"); return; }
+
+    items.forEach(i => tempCart.push(i));
+    renderCartList(); resetProductSection(); 
+    document.getElementById("productSearchInput").value = "";
+}
+
+function renderCartList() {
+    let box = document.getElementById("cartListBox");
+    let summaryBar = document.getElementById("cartSummaryBar");
+    document.getElementById("cartCount").innerText = tempCart.length; box.innerHTML = "";
+    
+    if(!tempCart.length) { 
+        box.innerHTML = '<span style="color: #64748b; font-size: 12px; padding: 6px; text-align: left; display: block;">কার্ট খালি আছে</span>'; 
+        summaryBar.style.display = "none";
+        return; 
+    }
+
+    let totalQ = 0, totalA = 0;
+    tempCart.forEach((item, idx) => {
+        totalQ += item.qty;
+        totalA += item.amount;
+        box.innerHTML += `<div class="cart-item-row" style="text-align: left; display: flex; justify-content: space-between; align-items: center; gap: 4px; padding: 2px 0; border-bottom: 1px dashed var(--border);">
+            <span style="font-size: 10px;"><b>${item.name}</b> (${item.subName}) - ${item.qty}টি, দর:${item.rate}, মোট:${item.amount}</span>
+            <div style="display:flex; gap:2px; white-space: nowrap;">
+                <button type="button" class="action-btn btn-edit" style="padding: 1px 5px; font-size: 9px;" onclick="editCartItemToForm(${idx})">এডিট</button>
+                <button type="button" class="action-btn btn-delete" style="padding: 1px 5px; font-size: 9px;" onclick="tempCart.splice(${idx},1); renderCartList();">মুছুন</button>
+            </div>
+        </div>`;
+    });
+
+    document.getElementById("cartTotalQty").innerText = totalQ;
+    document.getElementById("cartTotalAmt").innerText = totalA.toLocaleString();
+    summaryBar.style.display = "block";
+}
+
+// কার্ট লিস্ট থেকে এডিট: আইটেমটি ফর্মের 03 ও 04 নম্বর ঘরে ফিরিয়ে নেওয়া
+function editCartItemToForm(idx) {
+    let item = tempCart[idx];
+    tempCart.splice(idx, 1); 
+    renderCartList();
+
+    let vendorVal = document.getElementById("vendorSearchInput").value.trim();
+    if(!vendorVal) {
+        document.getElementById("vendorSearchInput").value = "";
+    }
+    renderProductList();
+
+    setTimeout(() => {
+        let productCheckboxes = document.querySelectorAll('#productList input[type="checkbox"]');
+        productCheckboxes.forEach(cb => {
+            if(cb.value.toLowerCase() === item.name.toLowerCase()) {
+                cb.checked = true;
+                updatePriceQtyInputs();
+            }
+        });
+
+        setTimeout(() => {
+            let rows = document.querySelectorAll('.price-qty-row');
+            rows.forEach(r => {
+                if(r.getAttribute('data-prod-name').toLowerCase() === item.name.toLowerCase() &&
+                   r.getAttribute('data-sub-name').toLowerCase() === item.subName.toLowerCase()) {
+                    let chk = r.querySelector('.sub-chk');
+                    if(chk) {
+                        chk.checked = true;
+                        toggleSubRow(chk);
+                        r.querySelector('.p-qty').value = item.qty;
+                        r.querySelector('.p-rate').value = item.rate;
+                    }
+                }
+            });
+        }, 50);
+    }, 50);
+}
+
+// টেবিল এডিট বাতিল করার ফাংশন
+function cancelEditMode() {
+    isEditingFromTable = false;
+    currentEditRowIndex = null;
+    tempCart = [];
+    renderCartList();
+    document.getElementById("compactForm").reset();
+    document.getElementById('transactionDate').valueAsDate = new Date();
+    document.getElementById("submitBtn").innerText = "চূড়ান্ত সাবমিট";
+    document.getElementById("cancelEditBtn").style.display = "none";
+    resetProductSection();
+}
+
+function submitFinalCart() {
+    let d = document.getElementById("transactionDate").value, b = document.getElementById("branchSelect").value.trim();
+    let t = document.getElementById("transactionType").value || "সাধারণ", v = document.getElementById("vendorSearchInput").value.trim();
+    if(!d || !b || !v || !tempCart.length) { alert("তারিখ, ব্রাঞ্চ, ভেন্ডর এবং কার্ট পূরণ করুন।"); return; }
+
+    let actionName = isEditingFromTable ? "updateTransaction" : "saveNew";
+    let payload = { action: actionName, rowIndex: currentEditRowIndex, itemCount: tempCart.length, date: formatToDDMMYYYY(d), branch: b, type: t, vendor: v, items: [...tempCart] };
+    let btn = document.getElementById("submitBtn"); btn.innerText = "সংরক্ষণ হচ্ছে...";
+
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) })
+    .then(res => res.json()).then(res => {
+        btn.innerText = "চূড়ান্ত সাবমিট";
+        if(res.status === "success") {
+            alert(isEditingFromTable ? "সফলভাবে আপডেট হয়েছে!" : "সফলভাবে জমা হয়েছে!");
+            cancelEditMode();
+            loadDataFromSheet();
+        } else { alert("ত্রুটি: " + res.message); }
+    });
+}
+
+function resetSearchFilters() {
+    document.getElementById("startDate").valueAsDate = new Date();
+    document.getElementById("endDate").valueAsDate = new Date();
+    document.getElementById("filterBranch").value = "all";
+    document.getElementById("filterType").value = "all";
+    document.getElementById("filterVendorInput").value = "";
+    renderTable();
+}
+
+function renderTable() {
+    let fb = document.getElementById("filterBranch").value, ft = document.getElementById("filterType").value;
+    let fv = document.getElementById("filterVendorInput").value.toLowerCase();
+    let sd = document.getElementById("startDate").value, ed = document.getElementById("endDate").value;
+    let tbody = document.getElementById("tableBody"); tbody.innerHTML = "";
+
+    let data = allTransactions;
+    if(fb !== "all") data = data.filter(x => x.branch === fb);
+    if(ft !== "all") data = data.filter(x => x.type === ft);
+    if(fv) data = data.filter(x => x.vendor.toLowerCase().includes(fv));
+    if(sd && ed) data = data.filter(x => { let ymd = formatToYYYYMMDD(x.date); return ymd >= sd && ymd <= ed; });
+
+    let tQty = 0, tAmt = 0;
+    data.forEach(item => {
+        if(item.items && Array.isArray(item.items)) {
+            item.items.forEach(it => { tQty += Number(it.qty) || 0; tAmt += Number(it.amount) || 0; });
+        }
+    });
+    
+    document.getElementById("sumTotalCount").innerText = data.length;
+    document.getElementById("sumTotalQty").innerText = tQty;
+    document.getElementById("sumTotalAmount").innerText = tAmt.toLocaleString();
+
+    if(!data.length) { tbody.innerHTML = `<tr><td colspan="12" style="text-align: left; padding: 15px;">কোনো তথ্য পাওয়া যায়নি।</td></tr>`; return; }
+    if(userRole === "Viewer") document.getElementById("actionHeaderTh").style.display = "none";
+
+    data.forEach((item, idx) => {
+        if(!item.items || !item.items.length) return;
+        let itemCount = item.items.length;
+        let bCls = item.type === "ক্রয়" ? "badge-buy" : item.type === "বিক্রয়" ? "badge-sale" : item.type === "ইনকাম" ? "badge-income" : "badge-expense";
+        let origIdx = allTransactions.indexOf(item);
+
+        let productGroups = [];
+        let currentProd = null;
+        item.items.forEach(it => {
+            if(!currentProd || currentProd.name !== it.name) {
+                currentProd = { name: it.name, subItems: [], prodTotal: 0 };
+                productGroups.push(currentProd);
+            }
+            currentProd.subItems.push(it);
+            currentProd.prodTotal += Number(it.amount) || 0;
+        });
+
+        let firstRowForTrans = true;
+
+        productGroups.forEach(prodGroup => {
+            let prodSpan = prodGroup.subItems.length;
+            let prodTotalAmount = prodGroup.prodTotal;
+
+            prodGroup.subItems.forEach((it, subIdx) => {
+                let rowHtml = "";
+                let rateVal = it.rate || (it.qty > 0 ? (it.amount / it.qty) : 0);
+
+                if(firstRowForTrans) {
+                    let actionTdHtml = userRole !== "Viewer" ? `<td style="text-align: left; vertical-align: middle; white-space: nowrap;" rowspan="${itemCount}">
+                        <div style="display:flex; gap:3px;">
+                            <button type="button" class="action-btn btn-edit" onclick="editMainTransaction(${origIdx})">এডিট</button>
+                            <button type="button" class="action-btn btn-delete" onclick="deleteMainTransaction(${origIdx}, ${itemCount})">মুছুন</button>
+                        </div>
+                    </td>` : "";
+
+                    rowHtml = `<tr>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}"><b>${idx+1}</b></td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}">${item.date}</td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}"><b>${item.branch}</b></td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}"><span class="${bCls}">${item.type}</span></td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}">${item.vendor}</td>`;
+                        
+                        if(subIdx === 0) {
+                            rowHtml += `<td style="text-align: left; vertical-align: middle;" rowspan="${prodSpan}"><b>${prodGroup.name}</b></td>`;
+                        }
+
+                        rowHtml += `<td style="text-align: left; vertical-align: middle;">${it.subName}</td>
+                        <td style="text-align: left; vertical-align: middle;">${it.qty}</td>
+                        <td style="text-align: left; vertical-align: middle;">${rateVal}</td>
+                        <td style="text-align: left; vertical-align: middle;">${Number(it.amount).toLocaleString()}</td>`;
+
+                        if(subIdx === 0) {
+                            rowHtml += `<td style="text-align: left; vertical-align: middle; font-weight: bold; color: var(--success);" rowspan="${prodSpan}">${prodTotalAmount.toLocaleString()}</td>`;
+                        }
+
+                        rowHtml += `${actionTdHtml}
+                    </tr>`;
+                    firstRowForTrans = false;
+                } else {
+                    rowHtml = `<tr>`;
+                    if(subIdx === 0) {
+                        rowHtml += `<td style="text-align: left; vertical-align: middle;" rowspan="${prodSpan}"><b>${prodGroup.name}</b></td>`;
+                    }
+                    rowHtml += `<td style="text-align: left; vertical-align: middle;">${it.subName}</td>
+                    <td style="text-align: left; vertical-align: middle;">${it.qty}</td>
+                    <td style="text-align: left; vertical-align: middle;">${rateVal}</td>
+                    <td style="text-align: left; vertical-align: middle;">${Number(it.amount).toLocaleString()}</td>`;
+
+                    if(subIdx === 0) {
+                        rowHtml += `<td style="text-align: left; vertical-align: middle; font-weight: bold; color: var(--success);" rowspan="${prodSpan}">${prodTotalAmount.toLocaleString()}</td>`;
+                    }
+
+                    rowHtml += `</tr>`;
+                }
+                tbody.innerHTML += rowHtml;
+            });
+        });
+    });
+
+    tbody.innerHTML += `<tr class="grand-total-row">
+        <td colspan="7" style="text-align: left;">সর্বমোট:</td>
+        <td style="text-align: left;">${tQty}</td>
+        <td colspan="${userRole === 'Viewer' ? '3' : '4'}" style="text-align: left; color:var(--success);">${tAmt.toLocaleString()}</td>
+        ${userRole === 'Viewer' ? '' : '<td></td>'}
+    </tr>`;
+}
+
+function editMainTransaction(origIdx) {
+    let item = allTransactions[origIdx]; isEditingFromTable = true; currentEditRowIndex = item.rowIndex;
+    document.getElementById("transactionDate").value = formatToYYYYMMDD(item.date);
+    document.getElementById("branchSelect").value = item.branch;
+    document.getElementById("transactionType").value = item.type;
+    document.getElementById("vendorSearchInput").value = item.vendor; 
+    handleVendorChange();
+    
+    tempCart = item.items.map(it => ({
+        name: it.name,
+        subName: it.subName,
+        qty: it.qty,
+        rate: it.rate || (it.qty > 0 ? it.amount / it.qty : 0),
+        amount: it.amount
+    })); 
+
+    renderCartList();
+    document.getElementById("submitBtn").innerText = "🔄 আপডেট করুন";
+    document.getElementById("cancelEditBtn").style.display = "block";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function deleteMainTransaction(origIdx, itemCount) {
+    if(!confirm('সত্যিই এই লেনদেনটি মুছে ফেলতে চান?')) return;
+    let item = allTransactions[origIdx];
+    fetch(SCRIPT_URL, { method: 'POST', body: JSON.stringify({ action: "deleteTransaction", type: item.type, rowIndex: item.rowIndex, itemCount: itemCount }) })
+    .then(res => res.json()).then(res => { if(res.status === "success") { alert("সফলভাবে ডিলিট হয়েছে!"); loadDataFromSheet(); } });
+}
+
+function triggerCustomPrint() {
+    document.getElementById("printTotalCount").innerText = document.getElementById("sumTotalCount").innerText;
+    document.getElementById("printTotalQty").innerText = document.getElementById("sumTotalQty").innerText;
+    document.getElementById("printTotalAmount").innerText = document.getElementById("sumTotalAmount").innerText;
+    
+    let selectedBranch = document.getElementById("filterBranch").value;
+    if(selectedBranch !== "all") {
+        document.getElementById("printBranchTitle").innerText = "ব্রাঞ্চ: " + selectedBranch;
+    } else {
+        document.getElementById("printBranchTitle").innerText = "সকল ব্রাঞ্চের হিসাব বিবরণী";
+    }
+
+    let printTbody = document.getElementById("printTableBody");
+    printTbody.innerHTML = "";
+
+    let fb = document.getElementById("filterBranch").value, ft = document.getElementById("filterType").value;
+    let fv = document.getElementById("filterVendorInput").value.toLowerCase();
+    let sd = document.getElementById("startDate").value, ed = document.getElementById("endDate").value;
+
+    let data = allTransactions;
+    if(fb !== "all") data = data.filter(x => x.branch === fb);
+    if(ft !== "all") data = data.filter(x => x.type === ft);
+    if(fv) data = data.filter(x => x.vendor.toLowerCase().includes(fv));
+    if(sd && ed) data = data.filter(x => { let ymd = formatToYYYYMMDD(x.date); return ymd >= sd && ymd <= ed; });
+
+    let tAmt = 0;
+    data.forEach(item => {
+        if(item.items && Array.isArray(item.items)) {
+            item.items.forEach(it => { tAmt += Number(it.amount) || 0; });
+        }
+    });
+
+    if(!data.length) {
+        printTbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 15px;">কোনো তথ্য পাওয়া যায়নি।</td></tr>`;
+        window.print();
+        return;
+    }
+
+    data.forEach((item) => {
+        if(!item.items || !item.items.length) return;
+        let itemCount = item.items.length;
+        let bCls = item.type === "ক্রয়" ? "badge-buy" : item.type === "বিক্রয়" ? "badge-sale" : item.type === "ইনকাম" ? "badge-income" : "badge-expense";
+
+        let productGroups = [];
+        let currentProd = null;
+        item.items.forEach(it => {
+            if(!currentProd || currentProd.name !== it.name) {
+                currentProd = { name: item.name || it.name, subItems: [] };
+                productGroups.push(currentProd);
+            }
+            currentProd.subItems.push(it);
+        });
+
+        // Safe grouping check
+        productGroups = [];
+        currentProd = null;
+        item.items.forEach(it => {
+            if(!currentProd || currentProd.name !== it.name) {
+                currentProd = { name: it.name, subItems: [] };
+                productGroups.push(currentProd);
+            }
+            currentProd.subItems.push(it);
+        });
+
+        let firstRowForTrans = true;
+
+        productGroups.forEach(prodGroup => {
+            let prodSpan = prodGroup.subItems.length;
+
+            prodGroup.subItems.forEach((it, subIdx) => {
+                let rowHtml = "";
+                let rateVal = it.rate || (it.qty > 0 ? (it.amount / it.qty) : 0);
+
+                if(firstRowForTrans) {
+                    rowHtml = `<tr>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}">${item.date}</td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}"><b>${item.branch}</b></td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}"><span class="${bCls}">${item.type}</span></td>
+                        <td style="text-align: left; vertical-align: middle;" rowspan="${itemCount}">${item.vendor}</td>`;
+                        
+                        if(subIdx === 0) {
+                            rowHtml += `<td style="text-align: left; vertical-align: middle;" rowspan="${prodSpan}"><b>${prodGroup.name}</b></td>`;
+                        }
+
+                        rowHtml += `<td style="text-align: left; vertical-align: middle;">${it.subName}</td>
+                        <td style="text-align: left; vertical-align: middle;">${it.qty}</td>
+                        <td style="text-align: left; vertical-align: middle;">${rateVal}</td>
+                        <td style="text-align: left; vertical-align: middle;">${Number(it.amount).toLocaleString()}</td>
+                    </tr>`;
+                    firstRowForTrans = false;
+                } else {
+                    rowHtml = `<tr>`;
+                    if(subIdx === 0) {
+                        rowHtml += `<td style="text-align: left; vertical-align: middle;" rowspan="${prodSpan}"><b>${prodGroup.name}</b></td>`;
+                    }
+                    rowHtml += `<td style="text-align: left; vertical-align: middle;">${it.subName}</td>
+                    <td style="text-align: left; vertical-align: middle;">${it.qty}</td>
+                    <td style="text-align: left; vertical-align: middle;">${rateVal}</td>
+                    <td style="text-align: left; vertical-align: middle;">${Number(it.amount).toLocaleString()}</td>
+                    </tr>`;
+                }
+                printTbody.innerHTML += rowHtml;
+            });
+        });
+    });
+
+    printTbody.innerHTML += `<tr style="font-weight: bold;">
+        <td colspan="8" style="text-align: right; border: 1px solid #000;">মোট-</td>
+        <td style="text-align: left; color: #000; border: 1px solid #000;">${tAmt.toLocaleString()}</td>
+    </tr>`;
+
+    window.print();
+}
+</script>
+
+</body>
+</html>

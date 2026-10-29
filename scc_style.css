@@ -1,0 +1,49 @@
+:root {
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --dark: #1e293b;
+    --slate: #64748b;
+    --light: #f8fafc;
+    --border: #cbd5e1;
+    --radius: 6px;
+}
+* { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+body { background-color: #f1f5f9; margin: 0; padding: 10px; font-size: 12px; color: var(--dark); text-align: left; }
+.container { max-width: 1350px; margin: 0 auto; background: #ffffff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+.header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+.header-flex h3 { margin: 0; color: var(--primary); font-size: 16px; }
+.btn-logout { background-color: var(--danger); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-weight: 600; }
+.btn-admin-link { background-color: #7c3aed; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-weight: 600; }
+.main-form-flex { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 15px; align-items: flex-start; }
+.col-form-narrow, .col-prod-narrow, .col-details-wide, .extra-space-col { flex: 1; min-width: 220px; background: #f8fafc; padding: 10px; border: 1px solid var(--border); border-radius: var(--radius); }
+label { display: block; font-weight: 600; margin-bottom: 4px; font-size: 11px; }
+input, select { width: 100%; height: 28px; padding: 3px 6px; border: 1px solid var(--border); border-radius: 4px; font-size: 12px; margin-bottom: 8px; background: white; }
+.product-list-box, .cart-list-box { max-height: 120px; overflow-y: auto; border: 1px solid var(--border); background: white; padding: 4px; border-radius: 4px; margin-bottom: 8px; }
+.product-item { display: block; font-size: 11px; padding: 2px; cursor: pointer; }
+.compact-table { width: 100%; border-collapse: collapse; }
+.compact-table th, .compact-table td { border: 1px solid var(--border); padding: 3px 5px; font-size: 11px; }
+.compact-table th { background: #e2e8f0; }
+.btn-add-cart, .btn-submit { width: 100%; background: var(--primary); color: white; border: none; padding: 6px; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 5px; }
+.btn-submit { background: var(--success); }
+.cart-item-row { display: flex; justify-content: space-between; align-items: center; font-size: 11px; border-bottom: 1px dashed var(--border); padding: 3px 0; }
+.summary-cards-bar { display: flex; gap: 10px; margin-bottom: 15px; }
+.summary-card { flex: 1; background: #f8fafc; border: 1px solid var(--border); padding: 8px; border-radius: var(--radius); text-align: center; }
+.summary-card-title { font-size: 10px; color: var(--slate); font-weight: 700; }
+.summary-card-value { font-size: 14px; font-weight: 800; color: var(--dark); }
+.report-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 5px; }
+.search-print-box { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.search-print-box input, .search-print-box select { height: 26px; font-size: 11px; width: auto; margin: 0; }
+.table-responsive { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+.memo-table { width: 100%; border-collapse: collapse; min-width: 900px; }
+.memo-table th, .memo-table td { border: 1px solid var(--border); padding: 5px; font-size: 11px; }
+.memo-table th { background: var(--dark); color: white; }
+.badge-buy { background: #fee2e2; color: #991b1b; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.badge-sale { background: #dcfce7; color: #166534; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.badge-income { background: #e0f2fe; color: #0369a1; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.badge-expense { background: #fef3c7; color: #92400e; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.action-btn { padding: 2px 6px; font-size: 10px; border-radius: 3px; border: none; cursor: pointer; }
+.btn-edit { background: #f59e0b; color: white; }
+.btn-delete { background: var(--danger); color: white; }
+.grand-total-row { background: #f8fafc; font-weight: bold; }

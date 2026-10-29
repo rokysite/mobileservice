@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ভেন্ডর ক্যাটালগ ম্যানেজমেন্ট - এডমিন প্যানেল</title>
+    <link rel="stylesheet" href="scc_admin.css">
+</head>
+<body>
+
+<script>
+    let userRole = localStorage.getItem("userRole");
+    if(userRole !== "Admin") {
+        alert("⚠️ আপনার এই পেজে প্রবেশ করার অনুমতি নেই!");
+        window.location.href = "scc_index.html";
+    }
+</script>
+
+<div class="container">
+    <div class="admin-header">
+        <h2>🛠️ ভেন্ডর ও প্রোডাক্ট ক্যাটালগ ম্যানেজমেন্ট</h2>
+        <a href="scc_index.html" class="btn-nav">⬅️ মূল পেজে যান</a>
+    </div>
+
+    <div style="background: #f3e8ff; border: 1px solid #d8b4fe; padding: 10px 15px; border-radius: 6px; margin-bottom: 15px; color: #581c87; font-size: 12px; text-align: left;">
+        📌 <b>নির্দেশনা:</b> এখানে ভেন্ডর সিলেক্ট করে প্রোডাক্টের নাম লিখুন এবং <b>"+ সাব-প্রডাক্ট"</b> বাটন দিয়ে একই প্রোডাক্টের আন্ডারে একাধিক সাব-প্রডাক্ট বা মডেল যুক্ত করুন।
+    </div>
+
+    <div class="action-bar">
+        <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+            <label style="font-weight: 700; font-size: 13px; color: var(--admin-primary);">🏪 ভেন্ডর/দোকান:</label>
+            <input type="text" id="selectedVendorInput" list="vendorListDatalist" oninput="onVendorSelected()" placeholder="ভেন্ডরের নাম লিখুন বা বাছুন..." style="width: 280px; height: 34px; padding: 4px 10px; font-size: 13px; border: 1px solid var(--border); border-radius: 6px; text-align: left;">
+            <datalist id="vendorListDatalist"></datalist>
+            <button type="button" class="btn-sm btn-primary" onclick="addNewVendorGroup()">+ নতুন ভেন্ডর যোগ করুন</button>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button type="button" class="btn-sm btn-primary" onclick="addProductRow()">+ নতুন প্রডাক্ট রো</button>
+            <button type="button" class="btn-sm btn-success" onclick="saveToCloud()">☁️ গুগল শিটে সেভ করুন</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th style="width: 35%; text-align: left;">প্রোডাক্টের নাম</th>
+                    <th style="width: 55%; text-align: left;">সাব-প্রডাক্ট / মডেল (একাধিক যোগ করতে পারবেন)</th>
+                    <th style="width: 10%; text-align: center;">অ্যাকশন</th>
+                </tr>
+            </thead>
+            <tbody id="vendorProductsTableBody">
+                <tr><td colspan="3" style="text-align: center; padding: 25px; color: #64748b;">ডাটা লোড হচ্ছে...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxTWKsHqRWJH4W7wLgvHwQICS9jtvbePd0ZQDbasoKV39V2YEb0s-vAbFr9MeciVy5zyw/exec";
+let masterList = [];
+
+window.onload = function() {
+    fetch(SCRIPT_URL)
+    .then(res => res.json())
+    .then(data => {
+        masterList = data.masterData || [];
+        populateVendorDatalist();
+        let lastVendor = localStorage.getItem("lastEditedVendor");
+        if(lastVendor) {
+            document.getElementById("selectedVendorInput").value = lastVendor;
+            onVendorSelected();
+        }
+    });
+};
+
+function populateVendorDatalist() {
+    let vendors = [...new Set(masterList.map(i => i.vendor))].filter(Boolean);
+    let datalist = document.getElementById("vendorListDatalist");
+    datalist.innerHTML = "";
+    vendors.forEach(v => {
+        let opt = document.createElement("option"); opt.value = v; datalist.appendChild(opt);
+    });
+}
+
+function onVendorSelected() {
+    let vendorName = document.getElementById("selectedVendorInput").value.trim();
+    localStorage.setItem("lastEditedVendor", vendorName);
+    let tbody = document.getElementById("vendorProductsTableBody");
+    tbody.innerHTML = "";
+
+    if (!vendorName) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 25px; color: #64748b;">উপরে থেকে একটি ভেন্ডর সিলেক্ট করুন বা নতুন ভেন্ডর যোগ করুন।</td></tr>`;
+        return;
+    }
+
+    let matchedItems = masterList.map((item, index) => ({ item, index })).filter(x => (x.item.vendor || "").toLowerCase() === vendorName.toLowerCase());
+
+    if (matchedItems.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align: center; padding: 25px; color: #64748b;">এই ভেন্ডরের অধীনে এখনো কোনো প্রোডাক্ট নেই। উপরে "+ নতুন প্রডাক্ট রো" বাটনে ক্লিক করুন।</td></tr>`;
+        return;
+    }
+
+    matchedItems.forEach(obj => {
+        let item = obj.item, index = obj.index;
+        tbody.innerHTML += `<tr>
+            <td style="text-align: left;"><input type="text" value="${item.product || ''}" oninput="masterList[${index}].product=this.value" placeholder="প্রোডাক্টের নাম (যেমন: রাউটার)" style="text-align: left;"></td>
+            <td style="text-align: left;">
+                <div style="display: flex; gap: 5px; align-items: center;">
+                    <input type="text" value="${item.subProduct || ''}" oninput="masterList[${index}].subProduct=this.value" placeholder="সাব-প্রডাক্ট / মডেল (যেমন: Tenda F3)" style="text-align: left;">
+                    <button type="button" class="btn-sm btn-primary" style="height: 30px; padding: 0 8px; font-size: 11px; white-space: nowrap;" onclick="addSubProductUnder(${index})">+ সাব-প্রডাক্ট</button>
+                </div>
+            </td>
+            <td style="text-align: center;"><button type="button" class="btn-del" onclick="deleteMasterItem(${index})">ডিলিট</button></td>
+        </tr>`;
+    });
+}
+
+function addNewVendorGroup() {
+    let vName = prompt("নতুন ভেন্ডর বা দোকানের নাম লিখুন:");
+    if (!vName) return;
+    document.getElementById("selectedVendorInput").value = vName;
+    masterList.push({ vendor: vName, product: "", subProduct: "" });
+    populateVendorDatalist();
+    onVendorSelected();
+}
+
+function addProductRow() {
+    let vendorName = document.getElementById("selectedVendorInput").value.trim();
+    if (!vendorName) { alert("প্রথমে একটি ভেন্ডর সিলেক্ট বা লিখুন!"); document.getElementById("selectedVendorInput").focus(); return; }
+    
+    masterList.push({ vendor: vendorName, product: "", subProduct: "" });
+    onVendorSelected();
+}
+
+function addSubProductUnder(index) {
+    let currentItem = masterList[index];
+    if (!currentItem) return;
+
+    masterList.splice(index + 1, 0, {
+        vendor: currentItem.vendor,
+        product: currentItem.product, 
+        subProduct: ""                
+    });
+
+    onVendorSelected();
+}
+
+function deleteMasterItem(index) {
+    masterList.splice(index, 1);
+    populateVendorDatalist();
+    onVendorSelected();
+}
+
+function saveToCloud() {
+    let btn = event.target; btn.innerText = "সেভ হচ্ছে..."; btn.disabled = true;
+    fetch(SCRIPT_URL, {
+        method: 'POST',
+        body: JSON.stringify({ action: "saveMasterData", items: masterList })
+    })
+    .then(res => res.json())
+    .then(res => {
+        btn.innerText = "☁️ গুগল শিটে সেভ করুন"; btn.disabled = false;
+        if(res.status === "success") { 
+            alert("সফলভাবে গুগল শিটে মাস্টার ডাটা সেভ হয়েছে!"); 
+            populateVendorDatalist(); 
+            onVendorSelected(); 
+        } else { 
+            alert("ত্রুটি: " + res.message); 
+        }
+    })
+    .catch(err => {
+        btn.innerText = "☁️ গুগল শিটে সেভ করুন"; btn.disabled = false;
+        alert("নেটওয়ার্ক সমস্যা!");
+    });
+}
+</script>
+
+</body>
+</html>
